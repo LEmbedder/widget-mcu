@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>setting_extend.jpg</file>
+        <file>setting.jpg</file>
+        <file>set_time.jpg</file>
+        <file>key.jpg</file>
+        <file>error.jpg</file>
+        <file>factory.jpg</file>
+    </qresource>
+</RCC>
