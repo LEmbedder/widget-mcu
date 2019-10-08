@@ -4,8 +4,8 @@ ProgressBar::ProgressBar(QWidget *parent) : QWidget(parent)
 {
     itemNumber = 10;
 
-    widthtWidth = 800;
-    widthtHeight = 50;
+    widthtWidth = 700;
+    widthtHeight = 30;
     irregularMapWidth = 1.0*widthtWidth/itemNumber+9;
     irregularMapHeight = widthtHeight;
 
@@ -24,11 +24,12 @@ ProgressBar::ProgressBar(QWidget *parent) : QWidget(parent)
     irregularMapEnd = QPixmap(irregularMapWidth,irregularMapHeight);
     irregularMapEnd.fill(Qt::transparent);
 
-//    drawItem();
+
     drawBottomMap();
     drawItemFirst();
     drawItem();
     drawItemEnd();
+
     fillMap();
 }
 
@@ -216,13 +217,13 @@ void ProgressBar::setProgressValue(double value)
         };
         painter.drawPolygon(points, 5);
         painter.end();
-        painter.begin(&map);
+        painter.begin(&maptemp);
         painter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
         painter.drawPixmap(0,0,irregularMapFirst2);
         painter.end();
 
         /*填充中间的不规则图像*/
-        painter.begin(&map);
+        painter.begin(&maptemp);
         painter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
         int intx;
         int i;
@@ -274,7 +275,7 @@ void ProgressBar::setProgressValue(double value)
         };
         painter.drawPolygon(points, 5);
         painter.end();
-        painter.begin(&map);
+        painter.begin(&maptemp);
         painter.drawPixmap(0,0,irregularMapFirst2);
         painter.end();
 
