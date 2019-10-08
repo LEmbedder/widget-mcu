@@ -22,6 +22,10 @@ FormMain::FormMain(QWidget *parent) :
     ui->verticalLayout_2->addWidget(formArguSetting);
     formArguSetting->close();
 
+    formViewData = new FormViewData;
+    ui->verticalLayout_2->addWidget(formViewData);
+    formViewData->close();
+
 
 }
 
@@ -40,6 +44,7 @@ void FormMain::on_pushButton_clicked()
 
     formChannleSettings->close();
     formArguSetting->close();
+    formViewData->close();
     ui->widget_target->show();
 
 }
@@ -54,6 +59,7 @@ void FormMain::on_pushButton_2_clicked()
 
     formChannleSettings->close();
     ui->widget_target->close();
+    formViewData->close();
     formArguSetting->show();
 }
 
@@ -64,6 +70,11 @@ void FormMain::on_pushButton_3_clicked()
     witchButtonChecked(ui->pushButton_2);
     witchButtonChecked(ui->pushButton_3);
     witchButtonChecked(ui->pushButton_4);
+
+    formArguSetting->close();
+    ui->widget_target->close();
+    formChannleSettings->close();
+    formViewData->show();
 }
 
 void FormMain::on_pushButton_4_clicked()
@@ -76,12 +87,11 @@ void FormMain::on_pushButton_4_clicked()
 
     formArguSetting->close();
     ui->widget_target->close();
+    formViewData->close();
     formChannleSettings->show();
 }
 void FormMain::witchButtonChecked(QPushButton *button)
 {
-
-
     if(button->isChecked())
     {
         button->setStyleSheet("background-color: rgb(196, 160, 0);");

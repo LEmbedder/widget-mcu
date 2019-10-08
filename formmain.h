@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include "formchannelsettings.h"
 #include "formargusetting.h"
+#include "formviewdata.h"
 
 namespace Ui {
 class FormMain;
@@ -32,6 +33,7 @@ private:
     void witchButtonChecked(QPushButton *button);
     FormChannelSettings *formChannleSettings;
     FormArguSetting *formArguSetting;
+    FormViewData *formViewData;
 };
 
 #endif // FORMMAIN_H

@@ -36,7 +36,10 @@ SOURCES += main.cpp\
     formargusetting.cpp \
     formsystemsetting.cpp \
     formtimesetting.cpp \
-    formpasswordsetting.cpp
+    formpasswordsetting.cpp \
+    formcalibration.cpp \
+    formextend.cpp \
+    formviewdata.cpp
 
 HEADERS  += widget.h \
     navprogress.h \
@@ -48,7 +51,10 @@ HEADERS  += widget.h \
     formargusetting.h \
     formsystemsetting.h \
     formtimesetting.h \
-    formpasswordsetting.h
+    formpasswordsetting.h \
+    formcalibration.h \
+    formextend.h \
+    formviewdata.h
 
 FORMS    += widget.ui \
     formmain.ui \
@@ -58,7 +64,10 @@ FORMS    += widget.ui \
     formargusetting.ui \
     formsystemsetting.ui \
     formtimesetting.ui \
-    formpasswordsetting.ui
+    formpasswordsetting.ui \
+    formcalibration.ui \
+    formextend.ui \
+    formviewdata.ui
 
 
 RESOURCES += \
