@@ -6,7 +6,7 @@ FormArgsSettings::FormArgsSettings(QDialog *parent) :
     ui(new Ui::FormArgsSettings)
 {
     ui->setupUi(this);
-    QWidget::setCursor(QCursor(Qt::BlankCursor));
+//    QWidget::setCursor(QCursor(Qt::BlankCursor));
     setFixedSize(800,480);
 }
 

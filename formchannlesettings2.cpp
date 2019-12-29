@@ -7,7 +7,6 @@ FormChannleSettings2::FormChannleSettings2(QWidget *parent) :
 {
     ui->setupUi(this);
     bt1 = ui->pushButton;
-//    connect(bt1,SIGNAL(clicked(bool)),this,SLOT());
     bt2 = ui->pushButton_2;
     bt3 = ui->pushButton_3;
     bt4 = ui->pushButton_4;
@@ -35,81 +34,79 @@ FormChannleSettings2::~FormChannleSettings2()
 void FormChannleSettings2::on_pushButton_clicked()
 {
     fas->show();
-//    FormArgsSettings f;
-//    f.exec();
 }
 void FormChannleSettings2::on_pushButton_6_clicked()
 {
-fas->show();
+    fas->show();
 
 }
 
 void FormChannleSettings2::on_pushButton_16_clicked()
 {
-fas->show();
+    fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_3_clicked()
 {
-fas->show();
+    fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_2_clicked()
 {
-fas->show();
+    fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_4_clicked()
 {
-fas->show();
+    fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_5_clicked()
 {
-fas->show();
+    fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_7_clicked()
 {
-fas->show();
+    fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_8_clicked()
 {
-fas->show();
+    fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_10_clicked()
 {
-fas->show();
+    fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_9_clicked()
 {
-fas->show();
+    fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_11_clicked()
 {
-fas->show();
+    fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_12_clicked()
 {
-fas->show();
+    fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_13_clicked()
 {
-fas->show();
+    fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_14_clicked()
 {
-fas->show();
+    fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_15_clicked()
 {
-fas->show();
+    fas->show();
 }

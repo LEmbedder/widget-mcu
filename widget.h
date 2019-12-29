@@ -10,7 +10,12 @@
 
 namespace Ui {
 class Widget;
+
+
 }
+
+#define VERSION  "v1.1.1"
+
 
 class Widget : public QWidget
 {
@@ -20,6 +25,7 @@ public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
     QTimer *timer;
+    void updateForm();
 private slots:
     void timerOut();
 private:
@@ -29,6 +35,9 @@ private:
     double value;
 
     ProgressBar *pb;
+
+    double process;
+    void testSql();
 };
 
 #endif // WIDGET_H

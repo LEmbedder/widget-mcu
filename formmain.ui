@@ -110,7 +110,7 @@
                 <string>测试压力</string>
                </property>
               </widget>
-              <widget class="QLabel" name="label_2">
+              <widget class="QLabel" name="label_test_pressure">
                <property name="geometry">
                 <rect>
                  <x>10</x>
@@ -121,11 +121,11 @@
                </property>
                <property name="font">
                 <font>
-                 <pointsize>46</pointsize>
+                 <pointsize>41</pointsize>
                 </font>
                </property>
                <property name="text">
-                <string>12.5443</string>
+                <string>12.5445</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -135,7 +135,7 @@
                <property name="geometry">
                 <rect>
                  <x>170</x>
-                 <y>90</y>
+                 <y>80</y>
                  <width>67</width>
                  <height>17</height>
                 </rect>
@@ -182,7 +182,7 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QTextEdit" name="textEdit">
+                <widget class="QTextEdit" name="textEdit_workpiece_number">
                  <property name="minimumSize">
                   <size>
                    <width>170</width>
@@ -234,7 +234,7 @@ p, li { white-space: pre-wrap; }
                 </spacer>
                </item>
                <item>
-                <widget class="QLineEdit" name="lineEdit">
+                <widget class="QLineEdit" name="lineEdit_worker_number">
                  <property name="minimumSize">
                   <size>
                    <width>170</width>
@@ -261,7 +261,7 @@ p, li { white-space: pre-wrap; }
                <item>
                 <widget class="QLabel" name="label_6">
                  <property name="text">
-                  <string>工件号:</string>
+                  <string>模式:</string>
                  </property>
                 </widget>
                </item>
@@ -279,7 +279,7 @@ p, li { white-space: pre-wrap; }
                 </spacer>
                </item>
                <item>
-                <widget class="QLineEdit" name="lineEdit_2">
+                <widget class="QLineEdit" name="lineEdit_mode">
                  <property name="minimumSize">
                   <size>
                    <width>170</width>
@@ -344,6 +344,9 @@ p, li { white-space: pre-wrap; }
          <item>
           <widget class="QWidget" name="widget_5" native="true">
            <layout class="QVBoxLayout" name="verticalLayout_3">
+            <property name="spacing">
+             <number>0</number>
+            </property>
             <property name="leftMargin">
              <number>0</number>
             </property>
@@ -358,9 +361,187 @@ p, li { white-space: pre-wrap; }
             </property>
             <item>
              <widget class="QWidget" name="widget_12" native="true">
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>300</height>
+               </size>
+              </property>
               <property name="styleSheet">
                <string notr="true">background-color: rgb(255, 255, 255);</string>
               </property>
+              <layout class="QVBoxLayout" name="verticalLayout_4">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QWidget" name="widget_14" native="true">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>60</height>
+                  </size>
+                 </property>
+                 <widget class="QLabel" name="label_2">
+                  <property name="geometry">
+                   <rect>
+                    <x>180</x>
+                    <y>20</y>
+                    <width>131</width>
+                    <height>31</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>21</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>654165</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                 <widget class="QLabel" name="label_7">
+                  <property name="geometry">
+                   <rect>
+                    <x>380</x>
+                    <y>20</y>
+                    <width>17</width>
+                    <height>17</height>
+                   </rect>
+                  </property>
+                  <property name="text">
+                   <string>pa</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </widget>
+               </item>
+               <item>
+                <widget class="QWidget" name="widget_2" native="true">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>210</height>
+                  </size>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_chart">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QWidget" name="widget_15" native="true">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_3">
+                  <property name="spacing">
+                   <number>3</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QLabel" name="label_8">
+                    <property name="text">
+                     <string>谱图上限</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="lineEdit"/>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_9">
+                    <property name="text">
+                     <string>谱图下限</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="lineEdit_2"/>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_10">
+                    <property name="text">
+                     <string>泄露标准上限</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_11">
+                    <property name="text">
+                     <string>5</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_12">
+                    <property name="text">
+                     <string>泄露标准下限</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_13">
+                    <property name="text">
+                     <string>-5</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
             <item>
