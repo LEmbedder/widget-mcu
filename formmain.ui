@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>826</width>
     <height>400</height>
    </rect>
   </property>
@@ -279,12 +279,15 @@ p, li { white-space: pre-wrap; }
                 </spacer>
                </item>
                <item>
-                <widget class="QLineEdit" name="lineEdit_mode">
+                <widget class="QComboBox" name="comboBoxModelSelect">
                  <property name="minimumSize">
                   <size>
-                   <width>170</width>
+                   <width>150</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="mouseTracking">
+                  <bool>true</bool>
                  </property>
                 </widget>
                </item>
@@ -364,7 +367,7 @@ p, li { white-space: pre-wrap; }
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>300</height>
+                <height>320</height>
                </size>
               </property>
               <property name="styleSheet">

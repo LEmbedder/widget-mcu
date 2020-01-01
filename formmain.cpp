@@ -36,6 +36,8 @@ FormMain::FormMain(QWidget *parent) :
     main_Form_Infor.test_pressure    = 12.5445;
     main_Form_Infor.worker_number    = "123456789";
     main_Form_Infor.workpiece_number = "123123123";
+    ui->comboBoxModelSelect->addItem("手动模式");
+    ui->comboBoxModelSelect->addItem("自动模式");
     updateForm();
 
 
@@ -113,7 +115,7 @@ void FormMain::updateForm()
     ui->label_test_pressure->setText( QString::number(main_Form_Infor.test_pressure) );
     ui->lineEdit_worker_number->setText(main_Form_Infor.worker_number);
     ui->textEdit_workpiece_number->setText(main_Form_Infor.workpiece_number);
-    ui->lineEdit_mode->setText(QString(main_Form_Infor.mode));
+//    ui->lineEdit_mode->setText(QString(main_Form_Infor.mode));
 }
 /*
  * 按键切换为主界面

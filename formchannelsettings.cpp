@@ -20,7 +20,7 @@ FormChannelSettings::FormChannelSettings(QWidget *parent) :
     fcs2_3->close();
 
     fcs2_4 = new FormChannleSettings2;
-    fcs2_4->bt1->setText("22");
+    fcs2_4->bt1->setText("2\n2");
     ui->verticalLayout_3->addWidget(fcs2_4);
     fcs2_4->close();
 
