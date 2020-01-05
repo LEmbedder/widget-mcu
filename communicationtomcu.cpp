@@ -2,7 +2,7 @@
 
 communicationToMCU::communicationToMCU(QObject *parent) : QObject(parent)
 {
-
+    initSerialPort();
 
 }
 void communicationToMCU::initSerialPort()
@@ -18,7 +18,7 @@ void communicationToMCU::initSerialPort()
     serialPortToMCU->setPortName( "/dev/ttyPS1" );
     if ( !serialPortToMCU->open(QIODevice::ReadOnly) )//用ReadWrite 的模式尝试打开串口
     {
-        qDebug("error");
+        qDebug("serialPortToMCU error");
     }
     serialPortToMCU->setBaudRate(QSerialPort::Baud115200,QSerialPort::AllDirections);//设置波特率和读写方向
     serialPortToMCU->setDataBits(QSerialPort::Data8);		//数据位为8位

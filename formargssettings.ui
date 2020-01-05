@@ -37,10 +37,25 @@
        <height>150</height>
       </size>
      </property>
+     <property name="sizeIncrement">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="font">
       <font>
        <pointsize>10</pointsize>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QTabBar::tab{height:50}</string>
      </property>
      <property name="tabPosition">
       <enum>QTabWidget::North</enum>

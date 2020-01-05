@@ -11,6 +11,8 @@
 
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
+#include <qpixmap.h>
+
 QT_CHARTS_USE_NAMESPACE
 
 namespace Ui {
@@ -65,6 +67,10 @@ private:
     QLineSeries *series ;
     QChart *chart;
     QChartView *chartView;
+
+    /* 最近几次的测试结果显示图片 */
+    QPixmap mapSucess;
+    QPixmap mapFailed;
 };
 
 #endif // FORMMAIN_H
