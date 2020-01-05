@@ -1,9 +1,14 @@
+/*
+ * 主界面的控制
+ * 2020年01月01日14:46:46
+ */
 #include "formmain.h"
 #include "ui_formmain.h"
 #include <QDebug>
 
 
-
+#define SELECTMODEAUTO "自动模式"
+#define SELECTMODEMANU "手动模式"
 FormMain::FormMain(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::FormMain)
@@ -36,11 +41,9 @@ FormMain::FormMain(QWidget *parent) :
     main_Form_Infor.test_pressure    = 12.5445;
     main_Form_Infor.worker_number    = "123456789";
     main_Form_Infor.workpiece_number = "123123123";
-    ui->comboBoxModelSelect->addItem("手动模式");
-    ui->comboBoxModelSelect->addItem("自动模式");
+    ui->comboBoxModelSelect->addItem(SELECTMODEAUTO);
+    ui->comboBoxModelSelect->addItem(SELECTMODEMANU);
     updateForm();
-
-
 
     QStringList m_serialPortName;
     foreach(const QSerialPortInfo &info,QSerialPortInfo::availablePorts())
@@ -87,17 +90,28 @@ FormMain::FormMain(QWidget *parent) :
     chart->addSeries(series);
     chart->createDefaultAxes();
     chart->axisX()->setRange(0, 15);
-    chart->axisX()->setGridLineVisible(false);
+//    chart->axisX()->setGridLineVisible(false);
     chart->axisY()->setRange(-100, 100);
-    chart->axisY()->setGridLineVisible(false);
+//    chart->axisY()->setGridLineVisible(false);
     chart->axisX()->setVisible(false);
 //    chart->setTitle("Simple line chart example");
+    chart->legend()->setAlignment(Qt::AlignBottom);
+    chart->setContentsMargins(0, 0, 0, 0);
+    chart->setMargins(QMargins(0, 0, 0, 0));
+    chart->setBackgroundRoundness(0);       //设置背景区域无圆角
 
     chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
 
     ui->widget_2->layout()->addWidget(chartView);
     ui->widget_2->show();
+
+    /*
+     * 工位通道设置
+     */
+
+
+
 }
 
 FormMain::~FormMain()
@@ -197,5 +211,23 @@ void FormMain::witchButtonChecked(QPushButton *button)
     else
     {
         button->setStyleSheet("background-color: rgb(200, 200, 200);");
+    }
+}
+
+/*
+ * 模式选择
+ * arg1 :
+ *      SELECTMODEAUTO
+ *      SELECTMODEMANU
+ */
+void FormMain::on_comboBoxModelSelect_currentIndexChanged(const QString &arg1)
+{
+    if (arg1 == SELECTMODEAUTO)
+    {
+        qDebug()<<SELECTMODEAUTO;
+    }
+    else if (arg1 == SELECTMODEMANU)
+    {
+        qDebug()<<SELECTMODEMANU;
     }
 }

@@ -45,8 +45,12 @@ Widget::Widget(QWidget *parent) :
 
     /*
      * 初始化变量
-    */
+     */
     process  = 2.6;
+    /*
+     * MCU通信控制
+     */
+    communication = new communicationToMCU;
     /* 更行界面 */
     updateForm();
 }

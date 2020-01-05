@@ -51,6 +51,8 @@ private slots:
 
     void on_pushButton_4_clicked();
 
+    void on_comboBoxModelSelect_currentIndexChanged(const QString &arg1);
+
 private:
     Ui::FormMain *ui;
     void witchButtonChecked(QPushButton *button);

@@ -7,6 +7,7 @@
 #include "progressbar.h"
 #include <QDateTime>
 #include <QDebug>
+#include <communicationtomcu.h>
 
 namespace Ui {
 class Widget;
@@ -35,7 +36,7 @@ private:
     double value;
 
     ProgressBar *pb;
-
+    communicationToMCU *communication;
     double process;
     void testSql();
 };

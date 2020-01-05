@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     formpasswordsetting.cpp \
     formcalibration.cpp \
     formextend.cpp \
-    formviewdata.cpp
+    formviewdata.cpp \
+    communicationtomcu.cpp
 
 HEADERS  += widget.h \
     navprogress.h \
@@ -54,7 +55,8 @@ HEADERS  += widget.h \
     formpasswordsetting.h \
     formcalibration.h \
     formextend.h \
-    formviewdata.h
+    formviewdata.h \
+    communicationtomcu.h
 
 FORMS    += widget.ui \
     formmain.ui \
