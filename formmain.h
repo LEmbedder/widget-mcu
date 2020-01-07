@@ -13,7 +13,10 @@
 #include <QtCharts/QLineSeries>
 #include <qpixmap.h>
 
+#include <string.h>
+
 QT_CHARTS_USE_NAMESPACE
+
 
 namespace Ui {
 class FormMain;
@@ -26,10 +29,10 @@ enum Mode{
 };
 
 struct Main_Form{
-    double test_pressure;       /* 测试压力  */
-    QString workpiece_number;   /* 工号     */
-    QString worker_number;      /* 工件号   */
-    enum Mode mode;             /* 模式    */
+    double test_pressure;       /* 测试压力 */
+    QString workpiece_number;   /* 工号    */
+    QString worker_number;      /* 工件号      */
+    enum Mode mode;             /* 模式       */
 };
 
 class FormMain : public QWidget
@@ -42,6 +45,7 @@ public:
     struct Main_Form main_Form_Infor;
 
     void updateForm();
+    void updateLabelSucess(int next);
 public slots:
     void receiveInfo();
 private slots:
@@ -68,9 +72,7 @@ private:
     QChart *chart;
     QChartView *chartView;
 
-    /* 最近几次的测试结果显示图片 */
-    QPixmap mapSucess;
-    QPixmap mapFailed;
+    int labelSucess[10];
 };
 
 #endif // FORMMAIN_H

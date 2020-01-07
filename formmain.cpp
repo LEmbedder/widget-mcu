@@ -7,8 +7,10 @@
 #include <QDebug>
 
 
-#define SELECTMODEAUTO "自动模式"
-#define SELECTMODEMANU "手动模式"
+#define SELECT_MODE_AUTO "自动模式"
+#define SELECT_MODE_MANU "手动模式"
+#define TEST_FAILED      "background-color:rgb(255,0,0)"
+#define TEST_SUCESS      "background-color:rgb(0,255,0)"
 FormMain::FormMain(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::FormMain)
@@ -41,8 +43,8 @@ FormMain::FormMain(QWidget *parent) :
     main_Form_Infor.test_pressure    = 12.5445;
     main_Form_Infor.worker_number    = "123456789";
     main_Form_Infor.workpiece_number = "123123123";
-    ui->comboBoxModelSelect->addItem(SELECTMODEAUTO);
-    ui->comboBoxModelSelect->addItem(SELECTMODEMANU);
+    ui->comboBoxModelSelect->addItem(SELECT_MODE_AUTO);
+    ui->comboBoxModelSelect->addItem(SELECT_MODE_MANU);
     updateForm();
 
     QStringList m_serialPortName;
@@ -106,8 +108,23 @@ FormMain::FormMain(QWidget *parent) :
     ui->widget_2->show();
 
     /*
-     * 工位通道设置
+     * 最近几次的测试结果显示
      */
+    for (int i = 0; i < sizeof(labelSucess)/sizeof(int); i++)
+    {
+        labelSucess[i] = 2;
+    }
+    updateLabelSucess(1);
+    updateLabelSucess(1);
+    updateLabelSucess(1);
+    updateLabelSucess(1);
+    updateLabelSucess(1);
+    updateLabelSucess(0);
+    updateLabelSucess(1);
+    updateLabelSucess(1);
+    updateLabelSucess(1);
+    updateLabelSucess(1);
+    updateLabelSucess(0);
 
 
 
@@ -117,6 +134,99 @@ FormMain::~FormMain()
 {
     delete ui;
 }
+/*
+ * 更新最近几次的测试结果显示图片
+ */
+void FormMain::updateLabelSucess(int next)
+{
+    for (int i = 9; i > 0; i--)
+    {
+        labelSucess[i] = labelSucess[i-1];
+    }
+    labelSucess[0] = next;
+
+    if(labelSucess[0] == 1)
+    {
+        ui->label_sign10->setStyleSheet(TEST_SUCESS);
+    }else if(labelSucess[0] == 0)
+    {
+        ui->label_sign10->setStyleSheet(TEST_FAILED);
+    }
+
+    if(labelSucess[1] == 1)
+    {
+        ui->label_sign09->setStyleSheet(TEST_SUCESS);
+    }else if(labelSucess[1] == 0)
+    {
+        ui->label_sign09->setStyleSheet(TEST_FAILED);
+    }
+
+    if(labelSucess[2] == 1)
+    {
+        ui->label_sign08->setStyleSheet(TEST_SUCESS);
+    }else if(labelSucess[2] == 0)
+    {
+        ui->label_sign08->setStyleSheet(TEST_FAILED);
+    }
+
+    if(labelSucess[3] == 1)
+    {
+        ui->label_sign07->setStyleSheet(TEST_SUCESS);
+    }else if(labelSucess[3] == 0)
+    {
+        ui->label_sign07->setStyleSheet(TEST_FAILED);
+    }
+
+    if(labelSucess[4] == 1)
+    {
+        ui->label_sign06->setStyleSheet(TEST_SUCESS);
+    }else if(labelSucess[4] == 0)
+    {
+        ui->label_sign06->setStyleSheet(TEST_FAILED);
+    }
+
+    if(labelSucess[5] == 1)
+    {
+        ui->label_sign05->setStyleSheet(TEST_SUCESS);
+    }else if(labelSucess[5] == 0)
+    {
+        ui->label_sign05->setStyleSheet(TEST_FAILED);
+    }
+
+    if(labelSucess[6] == 1)
+    {
+        ui->label_sign04->setStyleSheet(TEST_SUCESS);
+    }else if(labelSucess[6] == 0)
+    {
+        ui->label_sign04->setStyleSheet(TEST_FAILED);
+    }
+
+    if(labelSucess[7] == 1)
+    {
+        ui->label_sign03->setStyleSheet(TEST_SUCESS);
+    }else if(labelSucess[7] == 0)
+    {
+        ui->label_sign03->setStyleSheet(TEST_FAILED);
+    }
+
+    if(labelSucess[8] == 1)
+    {
+        ui->label_sign02->setStyleSheet(TEST_SUCESS);
+    }else if(labelSucess[8] == 0)
+    {
+        ui->label_sign02->setStyleSheet(TEST_FAILED);
+    }
+
+    if(labelSucess[9] == 1)
+    {
+        ui->label_sign01->setStyleSheet(TEST_SUCESS);
+    }else if(labelSucess[9] == 0)
+    {
+        ui->label_sign01->setStyleSheet(TEST_FAILED);
+    }
+
+}
+
 void FormMain::receiveInfo()
 {
     QByteArray info = serialPort->readAll();
@@ -221,12 +331,12 @@ void FormMain::witchButtonChecked(QPushButton *button)
  */
 void FormMain::on_comboBoxModelSelect_currentIndexChanged(const QString &arg1)
 {
-    if (arg1 == SELECTMODEAUTO)
+    if (arg1 == SELECT_MODE_AUTO)
     {
-        qDebug()<<SELECTMODEAUTO;
+        qDebug()<<SELECT_MODE_AUTO;
     }
-    else if (arg1 == SELECTMODEMANU)
+    else if (arg1 == SELECT_MODE_MANU)
     {
-        qDebug()<<SELECTMODEMANU;
+        qDebug()<<SELECT_MODE_AUTO;
     }
 }

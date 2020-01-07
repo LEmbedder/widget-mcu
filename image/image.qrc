@@ -6,5 +6,6 @@
         <file>key.jpg</file>
         <file>error.jpg</file>
         <file>factory.jpg</file>
+        <file>label.png</file>
     </qresource>
 </RCC>

@@ -76,4 +76,5 @@ RESOURCES += \
     image/image.qrc
 
 DISTFILES += \
-    image/factory.jpg
+    image/factory.jpg \
+    image/label.png
