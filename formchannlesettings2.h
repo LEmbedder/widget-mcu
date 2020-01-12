@@ -5,6 +5,9 @@
 #include <QPushButton>
 #include "formargssettings.h"
 
+#define BUTTON_NUMBER 16
+
+
 namespace Ui {
 class FormChannleSettings2;
 }
@@ -32,7 +35,9 @@ public:
     QPushButton *bt14;
     QPushButton *bt15;
     QPushButton *bt16;
-
+    void initSets();
+public slots:
+    void soltUpdataSets(Sets set);
 private slots:
     void on_pushButton_clicked();
 
@@ -69,6 +74,7 @@ private slots:
 private:
     Ui::FormChannleSettings2 *ui;
     FormArgsSettings *fas;
+    struct Sets sets[BUTTON_NUMBER];
 
 };
 

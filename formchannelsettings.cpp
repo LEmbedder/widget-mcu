@@ -1,3 +1,6 @@
+/*
+ * 参数设置界面
+ */
 #include "formchannelsettings.h"
 #include "ui_formchannelsettings.h"
 
@@ -7,6 +10,10 @@ FormChannelSettings::FormChannelSettings(QWidget *parent) :
     ui(new Ui::FormChannelSettings)
 {
     ui->setupUi(this);
+
+    /*
+     *  需要加载保持的参数来设置控件参数
+     */
     index = 1;
     fcs2_1 = new FormChannleSettings2;
     ui->verticalLayout_3->addWidget(fcs2_1);
@@ -20,11 +27,9 @@ FormChannelSettings::FormChannelSettings(QWidget *parent) :
     fcs2_3->close();
 
     fcs2_4 = new FormChannleSettings2;
-    fcs2_4->bt1->setText("2\n2");
     ui->verticalLayout_3->addWidget(fcs2_4);
+    fcs2_4->bt1->setText("2\n2");
     fcs2_4->close();
-
-
 
 }
 
@@ -33,10 +38,9 @@ FormChannelSettings::~FormChannelSettings()
     delete ui;
 }
 
-
-
-
-
+/*
+ * 翻页
+ */
 void FormChannelSettings::on_bt_up_clicked()
 {
     QChar tmp[10];
@@ -57,10 +61,8 @@ void FormChannelSettings::on_bt_up_clicked()
     string = QString(tmp);
     ui->lb_index->setText(string);
 //    qDebug("%s",string.toStdString().c_str());
-
     switchForm();
 }
-
 void FormChannelSettings::on_bt_next_clicked()
 {
     QChar tmp[10];

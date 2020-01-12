@@ -101,7 +101,7 @@
               <string>测试节拍(s)</string>
              </property>
              <property name="buddy">
-              <cstring>lineEdit</cstring>
+              <cstring>lineEditTab1</cstring>
              </property>
             </widget>
            </item>
@@ -119,7 +119,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit">
+            <widget class="QLineEdit" name="lineEditTab1">
              <property name="statusTip">
               <string extracomment="s"/>
              </property>
@@ -172,7 +172,7 @@
               <string>测试节拍(s)</string>
              </property>
              <property name="buddy">
-              <cstring>lineEdit</cstring>
+              <cstring>lineEditTab1</cstring>
              </property>
             </widget>
            </item>
@@ -190,7 +190,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_15">
+            <widget class="QLineEdit" name="lineEditTab2">
              <property name="statusTip">
               <string extracomment="s"/>
              </property>
@@ -243,7 +243,7 @@
               <string>测试节拍(s)</string>
              </property>
              <property name="buddy">
-              <cstring>lineEdit</cstring>
+              <cstring>lineEditTab1</cstring>
              </property>
             </widget>
            </item>
@@ -261,7 +261,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_42">
+            <widget class="QLineEdit" name="lineEditTab3">
              <property name="statusTip">
               <string extracomment="s"/>
              </property>
@@ -314,7 +314,7 @@
               <string>测试节拍(s)</string>
              </property>
              <property name="buddy">
-              <cstring>lineEdit</cstring>
+              <cstring>lineEditTab1</cstring>
              </property>
             </widget>
            </item>
@@ -332,7 +332,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_70">
+            <widget class="QLineEdit" name="lineEditTab4">
              <property name="statusTip">
               <string extracomment="s"/>
              </property>
@@ -385,7 +385,7 @@
               <string>测试节拍(s)</string>
              </property>
              <property name="buddy">
-              <cstring>lineEdit</cstring>
+              <cstring>lineEditTab1</cstring>
              </property>
             </widget>
            </item>
@@ -403,7 +403,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_84">
+            <widget class="QLineEdit" name="lineEditTab5">
              <property name="statusTip">
               <string extracomment="s"/>
              </property>
@@ -456,7 +456,7 @@
               <string>测试节拍(s)</string>
              </property>
              <property name="buddy">
-              <cstring>lineEdit</cstring>
+              <cstring>lineEditTab1</cstring>
              </property>
             </widget>
            </item>
@@ -474,7 +474,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_98">
+            <widget class="QLineEdit" name="lineEditTab6">
              <property name="statusTip">
               <string extracomment="s"/>
              </property>
@@ -527,7 +527,7 @@
               <string>测试节拍(s)</string>
              </property>
              <property name="buddy">
-              <cstring>lineEdit</cstring>
+              <cstring>lineEditTab1</cstring>
              </property>
             </widget>
            </item>
@@ -545,7 +545,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_112">
+            <widget class="QLineEdit" name="lineEditTab7">
              <property name="statusTip">
               <string extracomment="s"/>
              </property>
@@ -598,7 +598,7 @@
               <string>测试节拍(s)</string>
              </property>
              <property name="buddy">
-              <cstring>lineEdit</cstring>
+              <cstring>lineEditTab1</cstring>
              </property>
             </widget>
            </item>
@@ -616,7 +616,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_126">
+            <widget class="QLineEdit" name="lineEditTab8">
              <property name="statusTip">
               <string extracomment="s"/>
              </property>
@@ -669,7 +669,7 @@
               <string>测试节拍(s)</string>
              </property>
              <property name="buddy">
-              <cstring>lineEdit</cstring>
+              <cstring>lineEditTab1</cstring>
              </property>
             </widget>
            </item>
@@ -687,7 +687,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_140">
+            <widget class="QLineEdit" name="lineEditTab9">
              <property name="statusTip">
               <string extracomment="s"/>
              </property>
@@ -740,7 +740,7 @@
               <string>测试节拍(s)</string>
              </property>
              <property name="buddy">
-              <cstring>lineEdit</cstring>
+              <cstring>lineEditTab1</cstring>
              </property>
             </widget>
            </item>
@@ -758,7 +758,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_154">
+            <widget class="QLineEdit" name="lineEditTab10">
              <property name="statusTip">
               <string extracomment="s"/>
              </property>
@@ -811,7 +811,7 @@
               <string>测试节拍(s)</string>
              </property>
              <property name="buddy">
-              <cstring>lineEdit</cstring>
+              <cstring>lineEditTab1</cstring>
              </property>
             </widget>
            </item>
@@ -829,7 +829,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_168">
+            <widget class="QLineEdit" name="lineEditTab11">
              <property name="statusTip">
               <string extracomment="s"/>
              </property>
@@ -882,7 +882,7 @@
               <string>测试节拍(s)</string>
              </property>
              <property name="buddy">
-              <cstring>lineEdit</cstring>
+              <cstring>lineEditTab1</cstring>
              </property>
             </widget>
            </item>
@@ -900,7 +900,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_182">
+            <widget class="QLineEdit" name="lineEditTab12">
              <property name="statusTip">
               <string extracomment="s"/>
              </property>
@@ -953,7 +953,7 @@
               <string>测试节拍(s)</string>
              </property>
              <property name="buddy">
-              <cstring>lineEdit</cstring>
+              <cstring>lineEditTab1</cstring>
              </property>
             </widget>
            </item>
@@ -971,7 +971,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_196">
+            <widget class="QLineEdit" name="lineEditTab13">
              <property name="statusTip">
               <string extracomment="s"/>
              </property>
@@ -1010,7 +1010,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_2">
+         <widget class="QLineEdit" name="lineEdit_revealStandardUpLimit">
           <property name="text">
            <string>0</string>
           </property>
@@ -1028,7 +1028,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_5">
+         <widget class="QLineEdit" name="lineEdit_bigRevealStandardValue">
           <property name="text">
            <string>0</string>
           </property>
@@ -1046,7 +1046,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_8">
+         <widget class="QLineEdit" name="lineEdit_testPressureUpLimit">
           <property name="text">
            <string>0</string>
           </property>
@@ -1064,7 +1064,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_11">
+         <widget class="QLineEdit" name="lineEdit_standerVolume">
           <property name="text">
            <string>0</string>
           </property>
@@ -1082,7 +1082,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_3">
+         <widget class="QLineEdit" name="lineEdit_revealStandardDownLimit">
           <property name="text">
            <string>0</string>
           </property>
@@ -1100,7 +1100,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_6">
+         <widget class="QLineEdit" name="lineEdit_testPressure">
           <property name="text">
            <string>0</string>
           </property>
@@ -1118,7 +1118,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_9">
+         <widget class="QLineEdit" name="lineEdit_testPressureDownLimit">
           <property name="text">
            <string>0</string>
           </property>
@@ -1136,7 +1136,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_12">
+         <widget class="QLineEdit" name="lineEdit_markingTime">
           <property name="text">
            <string>1</string>
           </property>
@@ -1154,7 +1154,10 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_14">
+         <widget class="QLineEdit" name="lineEdit_channelNumber">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="text">
            <string>1</string>
           </property>
@@ -1172,11 +1175,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_4">
-          <property name="text">
-           <string>pa</string>
-          </property>
-         </widget>
+         <widget class="QComboBox" name="comboBox_revealUnit"/>
         </item>
        </layout>
       </item>
@@ -1190,11 +1189,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_7">
-          <property name="text">
-           <string>kpa</string>
-          </property>
-         </widget>
+         <widget class="QComboBox" name="comboBox_testPressureBigRevealUint"/>
         </item>
        </layout>
       </item>
@@ -1208,7 +1203,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_10">
+         <widget class="QLineEdit" name="lineEdit_measuredVolume">
           <property name="text">
            <string>0</string>
           </property>
@@ -1226,7 +1221,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_13">
+         <widget class="QLineEdit" name="lineEdit_channelDescribe">
           <property name="text">
            <string>0</string>
           </property>
@@ -1253,7 +1248,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="pushButton_delete">
         <property name="text">
          <string>X 删除</string>
         </property>
@@ -1290,14 +1285,14 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_4">
+       <widget class="QPushButton" name="pushButton_save">
         <property name="text">
          <string>保存</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_5">
+       <widget class="QPushButton" name="pushButton_return">
         <property name="text">
          <string>返回</string>
         </property>

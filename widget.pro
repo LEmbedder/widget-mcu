@@ -56,7 +56,8 @@ HEADERS  += widget.h \
     formcalibration.h \
     formextend.h \
     formviewdata.h \
-    communicationtomcu.h
+    communicationtomcu.h \
+    config.h
 
 FORMS    += widget.ui \
     formmain.ui \

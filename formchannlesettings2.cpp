@@ -1,5 +1,6 @@
 #include "formchannlesettings2.h"
 #include "ui_formchannlesettings2.h"
+#include <QDebug>
 
 FormChannleSettings2::FormChannleSettings2(QWidget *parent) :
     QWidget(parent),
@@ -23,90 +24,141 @@ FormChannleSettings2::FormChannleSettings2(QWidget *parent) :
     bt15 = ui->pushButton_15;
     bt16 = ui->pushButton_16;
     fas = new FormArgsSettings;
-
+    connect(fas,SIGNAL(emitSave(Sets)),this,SLOT(soltUpdataSets(Sets)));
+    initSets();
 }
 
 FormChannleSettings2::~FormChannleSettings2()
 {
-
+    delete ui;
 }
-
+/*
+ * 设置当前的是第几个按键弹出的界面
+ */
+void FormChannleSettings2::soltUpdataSets(struct Sets set)
+{
+    memcpy(&sets[fas->index],&set,sizeof(struct Sets));
+    qDebug()<<"set"<<fas->index;
+}
+/*  */
+void FormChannleSettings2::initSets()
+{
+    for(int i = 0; i < BUTTON_NUMBER; i++)
+    {
+        memcpy(&sets[i],&fas->sets,sizeof(struct Sets));
+    }
+}
+/*
+ * 每个按键都需要加载自己私有的控件属性配置
+ */
 void FormChannleSettings2::on_pushButton_clicked()
 {
+    fas->setSets(sets[0]);
+    /* 设置当前的是第几个按键弹出的界面 */
+    fas->index = 0;
     fas->show();
 }
 void FormChannleSettings2::on_pushButton_6_clicked()
 {
+    fas->setSets(sets[1]);
+    fas->index = 1;
     fas->show();
-
 }
 
 void FormChannleSettings2::on_pushButton_16_clicked()
 {
+    fas->setSets(sets[2]);
+    fas->index = 2;
     fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_3_clicked()
 {
+    fas->setSets(sets[3]);
+    fas->index = 3;
     fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_2_clicked()
 {
+    fas->setSets(sets[4]);
+    fas->index = 4;
     fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_4_clicked()
 {
+    fas->setSets(sets[5]);
+    fas->index = 5;
     fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_5_clicked()
 {
+    fas->setSets(sets[6]);
+    fas->index = 6;
     fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_7_clicked()
 {
+    fas->setSets(sets[7]);
+    fas->index = 7;
     fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_8_clicked()
 {
+    fas->setSets(sets[8]);
+    fas->index = 8;
     fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_10_clicked()
 {
+    fas->setSets(sets[9]);
+    fas->index = 9;
     fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_9_clicked()
 {
+    fas->setSets(sets[10]);
+    fas->index = 10;
     fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_11_clicked()
 {
+    fas->setSets(sets[11]);
+    fas->index = 11;
     fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_12_clicked()
 {
+    fas->setSets(sets[12]);
+    fas->index = 12;
     fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_13_clicked()
 {
+    fas->setSets(sets[13]);
+    fas->index = 13;
     fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_14_clicked()
 {
+    fas->setSets(sets[14]);
+    fas->index = 14;
     fas->show();
 }
 
 void FormChannleSettings2::on_pushButton_15_clicked()
 {
+    fas->setSets(sets[15]);
+    fas->index = 15;
     fas->show();
 }
