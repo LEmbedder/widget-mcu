@@ -38,7 +38,60 @@ FormChannleSettings2::~FormChannleSettings2()
 void FormChannleSettings2::soltUpdataSets(struct Sets set)
 {
     memcpy(&sets[fas->index],&set,sizeof(struct Sets));
+    bt1->setText("1\n2");
     qDebug()<<"set"<<fas->index;
+    switch (fas->index) {
+    case 0:
+        bt1->setText("1\n"+sets[0].channelDescribe);
+        break;
+    case 1:
+        bt1->setText("1\n"+sets[1].channelDescribe);
+        break;
+    case 2:
+        bt1->setText("1\n"+sets[2].channelDescribe);
+        break;
+    case 3:
+        bt1->setText("1\n"+sets[3].channelDescribe);
+        break;
+    case 0:
+        bt1->setText("1\n"+sets[4].channelDescribe);
+        break;
+    case 0:
+        bt1->setText("1\n"+sets[5].channelDescribe);
+        break;
+    case 0:
+        bt1->setText("1\n"+sets[6].channelDescribe);
+        break;
+    case 0:
+        bt1->setText("1\n"+sets[7].channelDescribe);
+        break;
+    case 0:
+        bt1->setText("1\n"+sets[8].channelDescribe);
+        break;
+    case 0:
+        bt1->setText("1\n"+sets[9].channelDescribe);
+        break;
+    case 0:
+        bt1->setText("1\n"+sets[10].channelDescribe);
+        break;
+    case 0:
+        bt1->setText("1\n"+sets[11].channelDescribe);
+        break;
+    case 0:
+        bt1->setText("1\n"+sets[12].channelDescribe);
+        break;
+    case 0:
+        bt1->setText("1\n"+sets[13].channelDescribe);
+        break;
+    case 0:
+        bt1->setText("1\n"+sets[14].channelDescribe);
+        break;
+    case 0:
+        bt1->setText("1\n"+sets[15].channelDescribe);
+        break;
+    default:
+        break;
+    }
 }
 /*  */
 void FormChannleSettings2::initSets()
