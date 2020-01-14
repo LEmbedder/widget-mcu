@@ -144,9 +144,9 @@ void FormArgsSettings::saveParameter()
  * 设置显示参数
  * 点击按键时更新界面
  */
-void FormArgsSettings::setSets(struct Sets set)
+void FormArgsSettings::setSets(struct SetsPara set)
 {
-    memcpy(&sets, &set, sizeof(struct Sets));
+    memcpy(&sets, &set, sizeof(struct SetsPara));
     updateUI();
 }
 
@@ -168,5 +168,5 @@ void FormArgsSettings::on_pushButton_save_clicked()
 void FormArgsSettings::on_pushButton_return_clicked()
 {
     close();
-    emit emitClicked(true);
+//    emit emitClicked(true);
 }

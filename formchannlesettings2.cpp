@@ -24,7 +24,7 @@ FormChannleSettings2::FormChannleSettings2(QWidget *parent) :
     bt15 = ui->pushButton_15;
     bt16 = ui->pushButton_16;
     fas = new FormArgsSettings;
-    connect(fas,SIGNAL(emitSave(Sets)),this,SLOT(soltUpdataSets(Sets)));
+    connect(fas,SIGNAL(emitSave(SetsPara)),this,SLOT(soltUpdataSets(SetsPara)));
     initSets();
 }
 
@@ -35,9 +35,9 @@ FormChannleSettings2::~FormChannleSettings2()
 /*
  * 设置当前的是第几个按键弹出的界面
  */
-void FormChannleSettings2::soltUpdataSets(struct Sets set)
+void FormChannleSettings2::soltUpdataSets(struct SetsPara set)
 {
-    memcpy(&sets[fas->index],&set,sizeof(struct Sets));
+    memcpy(&sets[fas->index],&set,sizeof(struct SetsPara));
     qDebug()<<"set"<<fas->index;
     switch (fas->index) {
     case 0:
@@ -97,7 +97,7 @@ void FormChannleSettings2::initSets()
 {
     for(int i = 0; i < BUTTON_NUMBER; i++)
     {
-        memcpy(&sets[i],&fas->sets,sizeof(struct Sets));
+        memcpy(&sets[i],&fas->sets,sizeof(struct SetsPara));
     }
 }
 /*

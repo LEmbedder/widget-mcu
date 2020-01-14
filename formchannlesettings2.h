@@ -37,7 +37,7 @@ public:
     QPushButton *bt16;
     void initSets();
 public slots:
-    void soltUpdataSets(Sets set);
+    void soltUpdataSets(SetsPara set);
 private slots:
     void on_pushButton_clicked();
 
@@ -74,7 +74,7 @@ private slots:
 private:
     Ui::FormChannleSettings2 *ui;
     FormArgsSettings *fas;
-    struct Sets sets[BUTTON_NUMBER];
+    struct SetsPara sets[BUTTON_NUMBER];
 
 };
 
