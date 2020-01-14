@@ -38,9 +38,9 @@ class FormArgsSettings : public QDialog
 public:
     explicit FormArgsSettings(QDialog *parent = 0);
     ~FormArgsSettings();
-    struct SetsPara sets;
+    struct SetsPara *sets;
     int modelSelect;/* 工作模式选择 */
-    void setSets(SetsPara set);
+    void setSets(SetsPara *set);
     int index;
     void updateUI();
     void saveParameter();
@@ -58,7 +58,7 @@ private:
     void initParameter();
 signals:
     void emitClicked(bool);
-    void emitSave(struct SetsPara set);/* 更新参数 */
+    void emitSave(struct SetsPara *set);/* 更新参数 */
 };
 
 #endif // FORMARGSSETTINGS_H

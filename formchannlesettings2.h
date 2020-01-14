@@ -37,7 +37,7 @@ public:
     QPushButton *bt16;
     void initSets();
 public slots:
-    void soltUpdataSets(SetsPara set);
+    void soltUpdataSets(struct SetsPara *set);
 private slots:
     void on_pushButton_clicked();
 
