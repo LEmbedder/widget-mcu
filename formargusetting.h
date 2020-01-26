@@ -19,7 +19,13 @@ class FormArguSetting : public QWidget
 public:
     explicit FormArguSetting(QWidget *parent = 0);
     ~FormArguSetting();
+    FormSystemSetting *formSystemSetting;
+    FormTimeSetting *formTimeSetting;
+    FormPasswordSetting *formPasswordSetting;
+    FormCalibration *formCalibration;
+    FormExtend *formExtend;
 
+    struct Args_config args_config;
 private slots:
     void on_pushButton_systemSetting_clicked();
 
@@ -31,13 +37,11 @@ private slots:
 
     void on_pushButton_10_clicked();
 
+    void slots_save_args_config(struct Args_config *config);
+
 private:
     Ui::FormArguSetting *ui;
-    FormSystemSetting *formSystemSetting;
-    FormTimeSetting *formTimeSetting;
-    FormPasswordSetting *formPasswordSetting;
-    FormCalibration *formCalibration;
-    FormExtend *formExtend;
+
 };
 
 #endif // FORMARGUSETTING_H

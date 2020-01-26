@@ -73,27 +73,15 @@
              <property name="text">
               <string>B工位模式</string>
              </property>
-             <property name="buddy">
-              <cstring>lineEdit_4</cstring>
-             </property>
             </widget>
            </item>
            <item row="6" column="1">
             <widget class="QLineEdit" name="lineEdit_6"/>
            </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="lineEdit_2"/>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="lineEdit_3"/>
-           </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_2">
              <property name="text">
               <string>工作模式</string>
-             </property>
-             <property name="buddy">
-              <cstring>lineEdit</cstring>
              </property>
             </widget>
            </item>
@@ -102,18 +90,12 @@
              <property name="text">
               <string>工位</string>
              </property>
-             <property name="buddy">
-              <cstring>lineEdit_2</cstring>
-             </property>
             </widget>
            </item>
            <item row="5" column="0">
             <widget class="QLabel" name="label_6">
              <property name="text">
               <string>产品模式</string>
-             </property>
-             <property name="buddy">
-              <cstring>lineEdit_5</cstring>
              </property>
             </widget>
            </item>
@@ -127,9 +109,6 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="1">
-            <widget class="QLineEdit" name="lineEdit_5"/>
-           </item>
            <item row="7" column="1">
             <widget class="QLineEdit" name="lineEdit_7"/>
            </item>
@@ -138,16 +117,7 @@
              <property name="text">
               <string>A工位模式</string>
              </property>
-             <property name="buddy">
-              <cstring>lineEdit_3</cstring>
-             </property>
             </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="lineEdit"/>
-           </item>
-           <item row="4" column="1">
-            <widget class="QLineEdit" name="lineEdit_4"/>
            </item>
            <item row="7" column="0">
             <widget class="QLabel" name="label_8">
@@ -174,6 +144,21 @@
               <set>Qt::AlignCenter</set>
              </property>
             </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QComboBox" name="comboBoxModelSelect"/>
+           </item>
+           <item row="2" column="1">
+            <widget class="QComboBox" name="comboBox_worker"/>
+           </item>
+           <item row="3" column="1">
+            <widget class="QComboBox" name="comboBox_a_worker"/>
+           </item>
+           <item row="4" column="1">
+            <widget class="QComboBox" name="comboBox_b_worker"/>
+           </item>
+           <item row="5" column="1">
+            <widget class="QComboBox" name="comboBox_product_model"/>
            </item>
           </layout>
          </widget>
@@ -208,9 +193,6 @@
              <property name="text">
               <string>打印机/份数</string>
              </property>
-             <property name="buddy">
-              <cstring>lineEdit</cstring>
-             </property>
             </widget>
            </item>
            <item row="1" column="1">
@@ -220,9 +202,6 @@
             <widget class="QLabel" name="label_13">
              <property name="text">
               <string>打码方式</string>
-             </property>
-             <property name="buddy">
-              <cstring>lineEdit_2</cstring>
              </property>
             </widget>
            </item>
@@ -234,9 +213,6 @@
              <property name="text">
               <string>条码XY坐标</string>
              </property>
-             <property name="buddy">
-              <cstring>lineEdit_3</cstring>
-             </property>
             </widget>
            </item>
            <item row="3" column="1">
@@ -247,9 +223,6 @@
              <property name="text">
               <string>条形码宽度</string>
              </property>
-             <property name="buddy">
-              <cstring>lineEdit_4</cstring>
-             </property>
             </widget>
            </item>
            <item row="4" column="1">
@@ -259,9 +232,6 @@
             <widget class="QLabel" name="label_14">
              <property name="text">
               <string>打标方式</string>
-             </property>
-             <property name="buddy">
-              <cstring>lineEdit_5</cstring>
              </property>
             </widget>
            </item>
@@ -340,9 +310,6 @@
              <property name="text">
               <string>外设1端口</string>
              </property>
-             <property name="buddy">
-              <cstring>lineEdit_2</cstring>
-             </property>
             </widget>
            </item>
            <item row="4" column="1">
@@ -352,9 +319,6 @@
             <widget class="QLabel" name="label_23">
              <property name="text">
               <string>外设2端口</string>
-             </property>
-             <property name="buddy">
-              <cstring>lineEdit_4</cstring>
              </property>
             </widget>
            </item>
@@ -368,9 +332,6 @@
             <widget class="QLabel" name="label_20">
              <property name="text">
               <string>波特率</string>
-             </property>
-             <property name="buddy">
-              <cstring>lineEdit_3</cstring>
              </property>
             </widget>
            </item>
@@ -391,9 +352,6 @@
             <widget class="QLabel" name="label_22">
              <property name="text">
               <string>波特率</string>
-             </property>
-             <property name="buddy">
-              <cstring>lineEdit_5</cstring>
              </property>
             </widget>
            </item>

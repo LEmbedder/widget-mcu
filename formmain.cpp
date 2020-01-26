@@ -6,9 +6,6 @@
 #include "ui_formmain.h"
 #include <QDebug>
 
-
-#define SELECT_MODE_AUTO "自动模式"
-#define SELECT_MODE_MANU "手动模式"
 #define TEST_FAILED      "background-color:rgb(255,0,0)"
 #define TEST_SUCESS      "background-color:rgb(0,255,0)"
 FormMain::FormMain(QWidget *parent) :
@@ -16,6 +13,11 @@ FormMain::FormMain(QWidget *parent) :
     ui(new Ui::FormMain)
 {
     ui->setupUi(this);
+    globalVariable = new GlobalVariable;
+    for(int i = 0; i< 48;i++)
+    {
+        ui->comboBox_channel_number->addItem(QString::number(i+1));
+    }
     /* 选择第一个按键 */
     ui->pushButton->setChecked(true);
 
@@ -31,6 +33,10 @@ FormMain::FormMain(QWidget *parent) :
 
     formArguSetting = new FormArguSetting;
     ui->verticalLayout_2->addWidget(formArguSetting);
+    connect(formArguSetting->formSystemSetting,SIGNAL(emit_update_config(Args_config*)),
+            this,SLOT(update_args_config(Args_config*)));
+    /* 显示配置 */
+    update_args_config(NULL);
     formArguSetting->close();
 
     formViewData = new FormViewData;
@@ -43,8 +49,6 @@ FormMain::FormMain(QWidget *parent) :
     main_Form_Infor.test_pressure    = 12.5445;
     main_Form_Infor.worker_number    = "123456789";
     main_Form_Infor.workpiece_number = "123123123";
-    ui->comboBoxModelSelect->addItem(SELECT_MODE_AUTO);
-    ui->comboBoxModelSelect->addItem(SELECT_MODE_MANU);
     updateForm();
 
     QStringList m_serialPortName;
@@ -308,7 +312,7 @@ void FormMain::on_pushButton_4_clicked()
     formChannleSettings->show();
 }
 
-/**
+/*
  * 更改选中后的颜色
 */
 void FormMain::witchButtonChecked(QPushButton *button)
@@ -323,20 +327,20 @@ void FormMain::witchButtonChecked(QPushButton *button)
     }
 }
 
-/*
- * 模式选择
- * arg1 :
- *      SELECTMODEAUTO
- *      SELECTMODEMANU
- */
-void FormMain::on_comboBoxModelSelect_currentIndexChanged(const QString &arg1)
+/* 更新设置界面部分 */
+void FormMain::update_args_config(struct Args_config* config)
 {
-    if (arg1 == SELECT_MODE_AUTO)
-    {
-        qDebug()<<SELECT_MODE_AUTO;
-    }
-    else if (arg1 == SELECT_MODE_MANU)
-    {
-        qDebug()<<SELECT_MODE_AUTO;
-    }
+    ui->label_select_display->setText(
+                formArguSetting->formSystemSetting->return_model()
+                );
+    ui->label_workspace_1->setText(
+                formArguSetting->formSystemSetting->return_worker_space()
+                );
+    ui->comboBox_channel_number->setCurrentText(QString::number(globalVariable->systemData.channel_number));
+}
+
+void FormMain::on_comboBox_channel_number_currentIndexChanged(int index)
+{
+    // This is available in all editors.
+    globalVariable->systemData.channel_number = index-1;
 }

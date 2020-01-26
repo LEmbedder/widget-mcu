@@ -40,7 +40,8 @@ SOURCES += main.cpp\
     formcalibration.cpp \
     formextend.cpp \
     formviewdata.cpp \
-    communicationtomcu.cpp
+    communicationtomcu.cpp \
+    globalvariable.cpp
 
 HEADERS  += widget.h \
     navprogress.h \
@@ -57,7 +58,8 @@ HEADERS  += widget.h \
     formextend.h \
     formviewdata.h \
     communicationtomcu.h \
-    config.h
+    config.h \
+    globalvariable.h
 
 FORMS    += widget.ui \
     formmain.ui \

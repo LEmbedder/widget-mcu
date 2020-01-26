@@ -14,6 +14,7 @@
 #include <qpixmap.h>
 
 #include <string.h>
+#include "globalvariable.h"
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -48,6 +49,7 @@ public:
     void updateLabelSucess(int next);
 public slots:
     void receiveInfo();
+    void update_args_config(Args_config *config);
 private slots:
     void on_pushButton_clicked();
 
@@ -57,11 +59,12 @@ private slots:
 
     void on_pushButton_4_clicked();
 
-    void on_comboBoxModelSelect_currentIndexChanged(const QString &arg1);
+    void on_comboBox_channel_number_currentIndexChanged(int index);
 
 private:
     Ui::FormMain *ui;
     void witchButtonChecked(QPushButton *button);
+    GlobalVariable *globalVariable;
     FormChannelSettings *formChannleSettings;
     FormArguSetting *formArguSetting;
     FormViewData *formViewData;

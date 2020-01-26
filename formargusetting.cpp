@@ -1,3 +1,7 @@
+/*
+ * 设置界面
+ * 2020年01月26日22:07:10
+*/
 #include "formargusetting.h"
 #include "ui_formargusetting.h"
 
@@ -8,6 +12,8 @@ FormArguSetting::FormArguSetting(QWidget *parent) :
 {
     ui->setupUi(this);
     formSystemSetting = new FormSystemSetting;
+    connect(formSystemSetting,SIGNAL(emit_update_config(Args_config*)),
+            this,SLOT(slots_save_args_config(Args_config*)));
     formSystemSetting->close();
 
     formTimeSetting = new FormTimeSetting;
@@ -33,6 +39,7 @@ FormArguSetting::~FormArguSetting()
 void FormArguSetting::on_pushButton_systemSetting_clicked()
 {
     formSystemSetting->show();
+    formSystemSetting->update_system_setting();
 }
 
 void FormArguSetting::on_pushButton_timeSetting_clicked()
@@ -53,4 +60,10 @@ void FormArguSetting::on_pushButton_12_clicked()
 void FormArguSetting::on_pushButton_10_clicked()
 {
     formExtend->show();
+}
+
+/* 更新界面参数 */
+void FormArguSetting::slots_save_args_config(struct Args_config *config)
+{
+    memcpy(&args_config,config,sizeof(struct Args_config));
 }
