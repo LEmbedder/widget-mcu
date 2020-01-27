@@ -13,7 +13,6 @@ FormMain::FormMain(QWidget *parent) :
     ui(new Ui::FormMain)
 {
     ui->setupUi(this);
-    globalVariable = new GlobalVariable;
     for(int i = 0; i< 48;i++)
     {
         ui->comboBox_channel_number->addItem(QString::number(i+1));
@@ -336,11 +335,11 @@ void FormMain::update_args_config(struct Args_config* config)
     ui->label_workspace_1->setText(
                 formArguSetting->formSystemSetting->return_worker_space()
                 );
-    ui->comboBox_channel_number->setCurrentText(QString::number(globalVariable->systemData.channel_number));
+    ui->comboBox_channel_number->setCurrentText(QString::number(systemData.channel_number));
 }
 
 void FormMain::on_comboBox_channel_number_currentIndexChanged(int index)
 {
     // This is available in all editors.
-    globalVariable->systemData.channel_number = index-1;
+    systemData.channel_number = index-1;
 }

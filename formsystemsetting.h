@@ -5,19 +5,12 @@
 #include "config.h"
 #include <QStringList>
 #include <string.h>
+#include "globalvariable.h"
 
 namespace Ui {
 class FormSystemSetting;
 }
 
-/* 界面参数配置 */
-struct Args_config {
-    int model;
-    int worker_space;
-    int A_model;
-    int B_model;
-    int product_model;
-};
 class FormSystemSetting : public QWidget
 {
     Q_OBJECT
@@ -25,7 +18,6 @@ class FormSystemSetting : public QWidget
 public:
     explicit FormSystemSetting(QWidget *parent = 0);
     ~FormSystemSetting();
-    struct Args_config args_config;
     struct Args_config args_config_temp;
     void update_system_setting();
     QString return_model();
@@ -47,7 +39,7 @@ private slots:
 
 private:
     Ui::FormSystemSetting *ui;
-    signals:
+signals:
     void emit_update_config(struct Args_config*);
 };
 

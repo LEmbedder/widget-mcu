@@ -64,7 +64,6 @@ private slots:
 private:
     Ui::FormMain *ui;
     void witchButtonChecked(QPushButton *button);
-    GlobalVariable *globalVariable;
     FormChannelSettings *formChannleSettings;
     FormArguSetting *formArguSetting;
     FormViewData *formViewData;

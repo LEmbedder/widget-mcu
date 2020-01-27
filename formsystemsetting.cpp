@@ -19,8 +19,7 @@ FormSystemSetting::FormSystemSetting(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    /* 默认选择0 */
-    memset(&args_config,0,sizeof(struct Args_config));
+    /* 默认选择 */
     ui->comboBoxModelSelect->addItems(model_select);
     ui->comboBox_worker->addItems(work_model);
     ui->comboBox_a_worker->addItems(a_worker);
@@ -36,26 +35,26 @@ FormSystemSetting::~FormSystemSetting()
 /* 返回当前模式 */
 QString FormSystemSetting::return_model()
 {
-    return model_select.at(args_config.model);
+    return model_select.at( systemData.args_config.model);
 }
 /* 返回当前工位 */
 QString FormSystemSetting::return_worker_space()
 {
-    return work_model.at(args_config.worker_space);
+    return work_model.at(systemData.args_config.worker_space);
 }
 /* 更新界面 */
 void FormSystemSetting::update_system_setting()
 {
-    ui->comboBoxModelSelect->setCurrentIndex(args_config.model);
-    ui->comboBox_a_worker->setCurrentIndex(args_config.A_model);
-    ui->comboBox_b_worker->setCurrentIndex(args_config.B_model);
-    ui->comboBox_worker->setCurrentIndex(args_config.worker_space);
-    ui->comboBox_product_model->setCurrentIndex(args_config.product_model);
+    ui->comboBoxModelSelect->setCurrentIndex(systemData.args_config.model);
+    ui->comboBox_a_worker->setCurrentIndex(systemData.args_config.A_model);
+    ui->comboBox_b_worker->setCurrentIndex(systemData.args_config.B_model);
+    ui->comboBox_worker->setCurrentIndex(systemData.args_config.worker_space);
+    ui->comboBox_product_model->setCurrentIndex(systemData.args_config.product_model);
 }
 void FormSystemSetting::on_pushButton_return_clicked()
 {
     this->close();
-    memcpy(&args_config_temp,&args_config,sizeof(struct Args_config));
+    memcpy(&args_config_temp,&systemData.args_config,sizeof(struct Args_config));
 }
 /* 保存参数 */
 void FormSystemSetting::on_comboBoxModelSelect_currentIndexChanged(int index)
@@ -66,8 +65,8 @@ void FormSystemSetting::on_comboBoxModelSelect_currentIndexChanged(int index)
 
 void FormSystemSetting::on_pushButton_save_clicked()
 {
-    memcpy(&args_config,&args_config_temp,sizeof(struct Args_config));
-    emit emit_update_config(&args_config);
+    memcpy(&systemData.args_config,&args_config_temp,sizeof(struct Args_config));
+    emit emit_update_config(&systemData.args_config);
 }
 
 void FormSystemSetting::on_comboBox_worker_currentIndexChanged(int index)
