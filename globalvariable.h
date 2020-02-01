@@ -12,9 +12,15 @@ struct Args_config {
 
 /* 全局变量 */
 struct SystemData{
-
+    double test_press;
+    double temp_test_result;/* 测试结果 */
     struct Args_config args_config;
     int channel_number;//通道号 1-48
+    /* 绘图的上下限 */
+    struct Up_down_limit{
+        int up_limit;
+        int down_limit;
+    }up_down_limit;
 };
 
 extern SystemData systemData;

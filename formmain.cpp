@@ -44,10 +44,10 @@ FormMain::FormMain(QWidget *parent) :
     /* 创建界面结束 */
 
     /* 初始化变量 */
-    main_Form_Infor.mode             = Mode::AUTO;
-    main_Form_Infor.test_pressure    = 12.5445;
-    main_Form_Infor.worker_number    = "123456789";
-    main_Form_Infor.workpiece_number = "123123123";
+//    main_Form_Infor.mode             = Mode::AUTO;
+//    main_Form_Infor.test_pressure    = 12.5445;
+//    main_Form_Infor.worker_number    = "123456789";
+//    main_Form_Infor.workpiece_number = "123123123";
     updateForm();
 
     QStringList m_serialPortName;
@@ -95,7 +95,7 @@ FormMain::FormMain(QWidget *parent) :
     chart->createDefaultAxes();
     chart->axisX()->setRange(0, 10);
 //    chart->axisX()->setGridLineVisible(false);
-    chart->axisY()->setRange(-100, 100);
+    chart->axisY()->setRange(-1000, 1000);
 //    chart->axisY()->setGridLineVisible(false);
     chart->axisX()->setVisible(false);
 //    chart->setTitle("Simple line chart example");
@@ -113,7 +113,7 @@ FormMain::FormMain(QWidget *parent) :
     /*
      * 最近几次的测试结果显示
      */
-    for (int i = 0; i < sizeof(labelSucess)/sizeof(int); i++)
+    for (uint i = 0; i < sizeof(labelSucess)/sizeof(int); i++)
     {
         labelSucess[i] = 2;
     }
@@ -129,7 +129,11 @@ FormMain::FormMain(QWidget *parent) :
     updateLabelSucess(1);
     updateLabelSucess(0);
 
-
+    /* 上下限更新 */
+    systemData.up_down_limit.down_limit = -1000;
+    systemData.up_down_limit.up_limit = 1000;
+    ui->lineEdit_up_limit->setText("1000");
+    ui->lineEdit_down_limit->setText("-1000");
 
 }
 
@@ -238,17 +242,19 @@ void FormMain::receiveInfo()
 }
 void FormMain::updateForm()
 {
-    ui->label_test_pressure->setText( QString::number(main_Form_Infor.test_pressure) );
-    ui->lineEdit_worker_number->setText(main_Form_Infor.worker_number);
-    ui->textEdit_workpiece_number->setText(main_Form_Infor.workpiece_number);
-//    ui->lineEdit_mode->setText(QString(main_Form_Infor.mode));
+//    ui->label_test_pressure->setText( QString::number(main_Form_Infor.test_pressure) );
+    disp_test_press(systemData.test_press);
+    disp_test_result(systemData.temp_test_result);
+//    ui->lineEdit_worker_number->setText(main_Form_Infor.worker_number);
+//    ui->textEdit_workpiece_number->setText(main_Form_Infor.workpiece_number);
+
 }
 /*
  * 按键切换为主界面
 */
 void FormMain::on_pushButton_clicked()
 {
-    qDebug()<<"on_pushButton_clicked";
+//    qDebug()<<"on_pushButton_clicked";
     witchButtonChecked(ui->pushButton);
     witchButtonChecked(ui->pushButton_2);
     witchButtonChecked(ui->pushButton_3);
@@ -266,7 +272,7 @@ void FormMain::on_pushButton_clicked()
 */
 void FormMain::on_pushButton_2_clicked()
 {
-    qDebug()<<"on_pushButton_2_clicked";
+//    qDebug()<<"on_pushButton_2_clicked";
     witchButtonChecked(ui->pushButton);
     witchButtonChecked(ui->pushButton_2);
     witchButtonChecked(ui->pushButton_3);
@@ -283,7 +289,7 @@ void FormMain::on_pushButton_2_clicked()
 */
 void FormMain::on_pushButton_3_clicked()
 {
-    qDebug()<<"on_pushButton_3_clicked";
+//    qDebug()<<"on_pushButton_3_clicked";
     witchButtonChecked(ui->pushButton);
     witchButtonChecked(ui->pushButton_2);
     witchButtonChecked(ui->pushButton_3);
@@ -299,7 +305,7 @@ void FormMain::on_pushButton_3_clicked()
 */
 void FormMain::on_pushButton_4_clicked()
 {
-    qDebug()<<"on_pushButton_4_clicked";
+//    qDebug()<<"on_pushButton_4_clicked";
     witchButtonChecked(ui->pushButton);
     witchButtonChecked(ui->pushButton_2);
     witchButtonChecked(ui->pushButton_3);
@@ -337,9 +343,39 @@ void FormMain::update_args_config(struct Args_config* config)
                 );
     ui->comboBox_channel_number->setCurrentText(QString::number(systemData.channel_number));
 }
-
+/*
+ * 通道选择变化了
+ */
 void FormMain::on_comboBox_channel_number_currentIndexChanged(int index)
 {
-    // This is available in all editors.
     systemData.channel_number = index-1;
+}
+/*
+ * 显示测试压
+ */
+void FormMain::disp_test_press(double value)
+{
+    ui->label_test_pressure->setText(QString::number(value,'f',2));
+}
+
+/*
+ *  测试结果
+ */
+void FormMain::disp_test_result(double value)
+{
+    ui->label_test_result->setText(QString::number(value,'f',2));
+}
+/* 上限控制 */
+void FormMain::on_lineEdit_up_limit_editingFinished()
+{
+    systemData.up_down_limit.up_limit = ui->lineEdit_up_limit->text().toInt();
+    chart->axisY()->setRange(systemData.up_down_limit.down_limit, systemData.up_down_limit.up_limit);
+    chart->update();
+}
+
+void FormMain::on_lineEdit_down_limit_editingFinished()
+{
+    systemData.up_down_limit.down_limit = ui->lineEdit_down_limit->text().toInt();
+    chart->axisY()->setRange(systemData.up_down_limit.down_limit, systemData.up_down_limit.up_limit);
+    chart->update();
 }

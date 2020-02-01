@@ -699,7 +699,7 @@ p, li { white-space: pre-wrap; }
                    <height>60</height>
                   </size>
                  </property>
-                 <widget class="QLabel" name="label_2">
+                 <widget class="QLabel" name="label_test_result">
                   <property name="geometry">
                    <rect>
                     <x>180</x>
@@ -808,7 +808,7 @@ p, li { white-space: pre-wrap; }
                    </widget>
                   </item>
                   <item>
-                   <widget class="QLineEdit" name="lineEdit"/>
+                   <widget class="QLineEdit" name="lineEdit_up_limit"/>
                   </item>
                   <item>
                    <widget class="QLabel" name="label_9">
@@ -823,7 +823,7 @@ p, li { white-space: pre-wrap; }
                    </widget>
                   </item>
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_2"/>
+                   <widget class="QLineEdit" name="lineEdit_down_limit"/>
                   </item>
                   <item>
                    <widget class="QLabel" name="label_10">

@@ -43,10 +43,11 @@ class FormMain : public QWidget
 public:
     explicit FormMain(QWidget *parent = 0);
     ~FormMain();
-    struct Main_Form main_Form_Infor;
 
     void updateForm();
     void updateLabelSucess(int next);
+    void disp_test_press(double value);
+    void disp_test_result(double value);
 public slots:
     void receiveInfo();
     void update_args_config(Args_config *config);
@@ -60,6 +61,10 @@ private slots:
     void on_pushButton_4_clicked();
 
     void on_comboBox_channel_number_currentIndexChanged(int index);
+
+    void on_lineEdit_up_limit_editingFinished();
+
+    void on_lineEdit_down_limit_editingFinished();
 
 private:
     Ui::FormMain *ui;

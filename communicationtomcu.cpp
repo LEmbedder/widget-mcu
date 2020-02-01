@@ -47,7 +47,7 @@ void communicationToMCU::initSerialPort()
     }
 
     serialPortToMCU->setPortName( "/dev/ttyPS1" );
-    if ( !serialPortToMCU->open(QIODevice::ReadOnly) )//用ReadWrite 的模式尝试打开串口
+    if ( !serialPortToMCU->open(QIODevice::ReadWrite))//用ReadWrite 的模式尝试打开串口
     {
         qDebug("serialPortToMCU error");
     }
