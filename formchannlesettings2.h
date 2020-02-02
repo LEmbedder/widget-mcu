@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QPushButton>
+#include <QSettings>
+#include <QFile>
 #include "formargssettings.h"
 
 #define BUTTON_NUMBER 16
@@ -36,6 +38,8 @@ public:
     QPushButton *bt15;
     QPushButton *bt16;
     void initSets();
+    void loadParam(QString number);
+    void updateChannelDesc();
 public slots:
     void soltUpdataSets(struct SetsPara *set);
 private slots:
@@ -71,10 +75,13 @@ private slots:
 
     void on_pushButton_15_clicked();
 
+    void savePara();
 private:
     Ui::FormChannleSettings2 *ui;
     FormArgsSettings *fas;
     struct SetsPara sets[BUTTON_NUMBER];
+    QString page;/* 当前页面 */
+
 
 };
 
