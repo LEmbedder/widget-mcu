@@ -18,8 +18,11 @@ public:
 private slots:
     void on_pushButton_return_clicked();
 
+    void on_pushButton_setted_clicked();
+
 private:
     Ui::FormTimeSetting *ui;
+    QString timeString;
 };
 
 #endif // FORMTIMESETTING_H

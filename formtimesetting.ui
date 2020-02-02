@@ -41,7 +41,7 @@
    </item>
    <item>
     <widget class="QWidget" name="widget_2" native="true">
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>70</x>
@@ -61,7 +61,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit"/>
+          <widget class="QLineEdit" name="lineEdit_yy"/>
          </item>
          <item>
           <widget class="QLabel" name="label_2">
@@ -71,7 +71,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_2"/>
+          <widget class="QLineEdit" name="lineEdit_mm"/>
          </item>
          <item>
           <widget class="QLabel" name="label_3">
@@ -81,7 +81,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_3"/>
+          <widget class="QLineEdit" name="lineEdit_dd"/>
          </item>
         </layout>
        </item>
@@ -95,7 +95,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_4"/>
+          <widget class="QLineEdit" name="lineEdit_hh"/>
          </item>
          <item>
           <widget class="QLabel" name="label_5">
@@ -105,7 +105,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_5"/>
+          <widget class="QLineEdit" name="lineEdit_mi"/>
          </item>
          <item>
           <widget class="QLabel" name="label_6">
@@ -115,7 +115,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_6"/>
+          <widget class="QLineEdit" name="lineEdit_ss"/>
          </item>
         </layout>
        </item>
@@ -155,7 +155,7 @@
       <item>
        <widget class="QPushButton" name="pushButton_setted">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="minimumSize">
          <size>
