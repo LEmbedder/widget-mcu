@@ -5,7 +5,7 @@
 QStringList model_select = {"自动模式","手动模式"};
 
 /* 工位选择 */
-QStringList work_model = {"A工位","B工位","A-B工位","A/B工位"};
+QStringList work_space = {"A工位","B工位","A-B工位","A/B工位"};
 
 /* A工位模式 */
 QStringList a_worker = {"正压","负压","正负压","负正压"};
@@ -21,7 +21,7 @@ FormSystemSetting::FormSystemSetting(QWidget *parent) :
 
     /* 默认选择 */
     ui->comboBoxModelSelect->addItems(model_select);
-    ui->comboBox_worker->addItems(work_model);
+    ui->comboBox_worker->addItems(work_space);
     ui->comboBox_a_worker->addItems(a_worker);
     ui->comboBox_b_worker->addItems(a_worker);
     ui->comboBox_product_model->addItems(product_model);
@@ -35,12 +35,20 @@ FormSystemSetting::~FormSystemSetting()
 /* 返回当前模式 */
 QString FormSystemSetting::return_model()
 {
+    if (systemData.args_config.model >= model_select.size())
+    {
+        printf("model_select error at = %d",systemData.args_config.model);
+    }
     return model_select.at( systemData.args_config.model);
 }
 /* 返回当前工位 */
 QString FormSystemSetting::return_worker_space()
 {
-    return work_model.at(systemData.args_config.worker_space);
+    if (systemData.args_config.worker_space >= work_space.size())
+    {
+        printf("worker_space error at = %d",systemData.args_config.model);
+    }
+    return work_space.at(systemData.args_config.worker_space);
 }
 /* 更新界面 */
 void FormSystemSetting::update_system_setting()
@@ -60,7 +68,6 @@ void FormSystemSetting::on_pushButton_return_clicked()
 void FormSystemSetting::on_comboBoxModelSelect_currentIndexChanged(int index)
 {
     args_config_temp.model = index;
-    qDebug()<<model_select.at(index);
 }
 
 void FormSystemSetting::on_pushButton_save_clicked()
