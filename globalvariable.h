@@ -51,5 +51,5 @@ struct SetsPara{
 };
 
 extern SystemData systemData;
-extern SetsPara sets[BUTTON_NUMBER];
+extern SetsPara sets[4][BUTTON_NUMBER];
 #endif // GLOBALVARIABLE_H

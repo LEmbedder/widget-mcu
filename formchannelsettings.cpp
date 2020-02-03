@@ -17,23 +17,27 @@ FormChannelSettings::FormChannelSettings(QWidget *parent) :
     index = 1;
     fcs2_1 = new FormChannleSettings2;
     /* fcs2_1 从文件里加载参数 */
+    fcs2_1->initSets(0);
     fcs2_1->loadParam("0");
     fcs2_1->updateChannelDesc();
     ui->verticalLayout_3->addWidget(fcs2_1);
 
     fcs2_2 = new FormChannleSettings2;
+    fcs2_2->initSets(1);
     fcs2_2->loadParam("1");
     fcs2_2->updateChannelDesc();
     ui->verticalLayout_3->addWidget(fcs2_2);
     fcs2_2->close();
 
     fcs2_3 = new FormChannleSettings2;
+    fcs2_3->initSets(2);
     fcs2_3->loadParam("2");
     fcs2_3->updateChannelDesc();
     ui->verticalLayout_3->addWidget(fcs2_3);
     fcs2_3->close();
 
     fcs2_4 = new FormChannleSettings2;
+    fcs2_4->initSets(3);
     fcs2_4->loadParam("3");
     fcs2_4->updateChannelDesc();
     ui->verticalLayout_3->addWidget(fcs2_4);

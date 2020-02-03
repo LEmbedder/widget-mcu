@@ -36,7 +36,7 @@ public:
     QPushButton *bt14;
     QPushButton *bt15;
     QPushButton *bt16;
-    void initSets();
+    void initSets(int );
     void loadParam(QString number);
     void updateChannelDesc();
 public slots:
@@ -79,6 +79,7 @@ private:
     Ui::FormChannleSettings2 *ui;
     FormArgsSettings *fas;
     QString page;/* 当前页面 */
+    int page_int;
 
 
 };

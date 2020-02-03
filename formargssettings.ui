@@ -1156,10 +1156,13 @@
         <item>
          <widget class="QLineEdit" name="lineEdit_channelNumber">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="text">
            <string>1</string>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
