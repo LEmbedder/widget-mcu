@@ -36,7 +36,7 @@ private:
     double value;
 
     ProgressBar *pb;
-    communicationToMCU *communication;
+
     double process;
     void testSql();
 };

@@ -2,7 +2,7 @@
 #define GLOBALVARIABLE_H
 
 #include <QString>
-
+#include "communicationtomcu.h"
 
 #define BUTTON_NUMBER 16
 
@@ -56,4 +56,5 @@ struct CopyPaste{
 extern SystemData systemData;
 extern SetsPara sets[4][BUTTON_NUMBER];
 extern CopyPaste copyPaste;
+extern communicationToMCU *communication;
 #endif // GLOBALVARIABLE_H
