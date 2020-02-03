@@ -49,7 +49,11 @@ struct SetsPara{
     unsigned int channelNumber;//通道号
     QString channelDescribe;//通道描述
 };
-
+struct CopyPaste{
+    struct SetsPara *tempSets;
+    bool enable;
+};
 extern SystemData systemData;
 extern SetsPara sets[4][BUTTON_NUMBER];
+extern CopyPaste copyPaste;
 #endif // GLOBALVARIABLE_H

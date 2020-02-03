@@ -1258,14 +1258,14 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="pushButton_copy">
         <property name="text">
          <string>复制</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="pushButton_paste">
         <property name="enabled">
          <bool>false</bool>
         </property>

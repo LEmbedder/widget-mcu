@@ -82,6 +82,11 @@ void FormArgsSettings::updateUI()
     ui->lineEdit_markingTime->setText(QString::number(sets->markingTime));
     ui->lineEdit_channelNumber->setText(QString::number(sets->channelNumber));
     ui->lineEdit_channelDescribe->setText(sets->channelDescribe);
+
+    if(copyPaste.enable == true)
+    {
+        ui->pushButton_paste->setEnabled(true);
+    }
 }
 /*
  * 更新界面参数
@@ -111,6 +116,7 @@ void FormArgsSettings::saveParameter()
     sets->standerVolume =  ui->lineEdit_standerVolume->text().toDouble();
     sets->markingTime = ui->lineEdit_markingTime->text().toInt();
     sets->channelDescribe = ui->lineEdit_channelDescribe->text();
+    qDebug()<<ui->lineEdit_channelDescribe->text();
 }
 
 /*
@@ -120,6 +126,7 @@ void FormArgsSettings::saveParameter()
 void FormArgsSettings::setSets(struct SetsPara *set)
 {
     sets = set;
+    tempsets = sets;
     updateUI();
 }
 
@@ -167,7 +174,7 @@ void FormArgsSettings::on_pushButton_delete_clicked()
 
     ui->lineEdit_standerVolume->setText("0");
     ui->lineEdit_markingTime->setText("0");
-    ui->lineEdit_channelNumber->setText("1");
+//    ui->lineEdit_channelNumber->setText("1");
     ui->lineEdit_channelDescribe->setText("1");
 }
 
@@ -186,3 +193,24 @@ void FormArgsSettings::on_pushButton_return_clicked()
 //    emit emitClicked(true);
 }
 
+/*
+ * 复制按键槽函数
+ */
+void FormArgsSettings::on_pushButton_copy_clicked()
+{
+    /* 1: 返回当前的参数地址 */
+    copyPaste.tempSets = this->tempsets;
+
+    copyPaste.enable = true;
+    ui->pushButton_paste->setEnabled(true);
+
+}
+
+/* 粘贴参数 */
+void FormArgsSettings::on_pushButton_paste_clicked()
+{
+    uint tubleNumber = sets->channelNumber;
+    this->sets = copyPaste.tempSets;
+    updateUI();
+    ui->lineEdit_channelNumber->setText(QString::number(tubleNumber));
+}

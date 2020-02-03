@@ -10,7 +10,6 @@ namespace Ui {
 class FormArgsSettings;
 }
 
-
 class FormArgsSettings : public QDialog
 {
     Q_OBJECT
@@ -18,7 +17,7 @@ class FormArgsSettings : public QDialog
 public:
     explicit FormArgsSettings(QDialog *parent = 0);
     ~FormArgsSettings();
-    struct SetsPara *sets;
+    struct SetsPara *sets,*tempsets;
     int modelSelect;/* 工作模式选择 */
     void setSets(SetsPara *set);
     int index;
@@ -31,6 +30,10 @@ private slots:
     void on_pushButton_save_clicked();
 
     void on_pushButton_return_clicked();
+
+    void on_pushButton_copy_clicked();
+
+    void on_pushButton_paste_clicked();
 
 private:
     Ui::FormArgsSettings *ui;

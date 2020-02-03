@@ -59,7 +59,10 @@ void FormChannleSettings2::updateChannelDesc()
  */
 void FormChannleSettings2::soltUpdataSets(struct SetsPara *set)
 {
-    memcpy(&sets[fas->index],set,sizeof(struct SetsPara));
+    uint tubleNumber = sets[page_int][fas->index].channelNumber;
+    memcpy(&sets[page_int][fas->index],set,sizeof(struct SetsPara));
+    sets[page_int][fas->index].channelNumber = tubleNumber;
+
     qDebug()<<"set"<<fas->index;
     switch (fas->index) {
     case 0:
