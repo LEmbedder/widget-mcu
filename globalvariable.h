@@ -57,4 +57,5 @@ extern SystemData systemData;
 extern SetsPara sets[4][BUTTON_NUMBER];
 extern CopyPaste copyPaste;
 extern communicationToMCU *communication;
+
 #endif // GLOBALVARIABLE_H

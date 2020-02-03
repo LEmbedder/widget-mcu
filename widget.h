@@ -8,6 +8,7 @@
 #include <QDateTime>
 #include <QDebug>
 #include <communicationtomcu.h>
+#include <QTimeZone>
 
 namespace Ui {
 class Widget;

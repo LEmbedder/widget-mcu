@@ -42,4 +42,5 @@ void FormTimeSetting::on_pushButton_setted_clicked()
             ui->lineEdit_hh->text()+":"+ui->lineEdit_mi->text()+":00";
     timeString  = "date -s"+timeString;
     system(timeString.toStdString().c_str());
+    system("hwclock -w");
 }
