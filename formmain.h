@@ -23,19 +23,6 @@ namespace Ui {
 class FormMain;
 }
 
-/* 模式 */
-enum Mode{
-  AUTO,
-  MANUAL,
-};
-
-struct Main_Form{
-    double test_pressure;       /* 测试压力 */
-    QString workpiece_number;   /* 工号    */
-    QString worker_number;      /* 工件号      */
-    enum Mode mode;             /* 模式       */
-};
-
 class FormMain : public QWidget
 {
     Q_OBJECT
