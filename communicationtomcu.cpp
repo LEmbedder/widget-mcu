@@ -2,6 +2,12 @@
 #include "communicationtomcu.h"
 
 
+#define HCP_PDUOFFSET         4     //应用层包净载荷偏移量
+
+//0xaa 收到命令回复
+//0x55 收到命令没有回复，或者是回复命令不支持
+unsigned char send_flag = 0x55;
+
 //CCITT模式CRC余式表
 static const unsigned short int CRC_Table[256] =
 {
@@ -46,10 +52,14 @@ void communicationToMCU::initSerialPort()
         serialPortToMCU->close();
     }
 
-    serialPortToMCU->setPortName( "/dev/ttyPS1" );
+    serialPortToMCU->setPortName( "/dev/ttySAC4" );
     if ( !serialPortToMCU->open(QIODevice::ReadWrite))//用ReadWrite 的模式尝试打开串口
     {
         qDebug("serialPortToMCU error");
+    }
+    else
+    {
+        qDebug("serial port open success!\n");
     }
     serialPortToMCU->setBaudRate(QSerialPort::Baud115200,QSerialPort::AllDirections);//设置波特率和读写方向
     serialPortToMCU->setDataBits(QSerialPort::Data8);		//数据位为8位
@@ -68,7 +78,12 @@ void communicationToMCU::receiveInfo()
     QByteArray info = serialPortToMCU->readAll();
     tmp = info.data();
     hcp_txBuf_len = info.length();
+    qDebug("hcp_txBuf_len = %d",hcp_txBuf_len);
+    for(int i = 0; i < info.length(); i++)
+        qDebug("tmp[%d] = 0x%02x",i,tmp[i]);
+    memset(hcp_rxBuf,0x00,HCP_TXBUFLEN);
     memcpy(hcp_rxBuf,tmp,hcp_txBuf_len);
+    HcpProcessPacket();
 }
 
 void communicationToMCU::SendToMcu(const char *data, qint64 len)
@@ -206,9 +221,16 @@ void communicationToMCU::HcpSendPacket(int length)
     unsigned char *pTxBuf = NULL;
     pTxBuf = hcp_txBuf;
     tmp = crc(pTxBuf,length);       //计算CRC值
+    printf("length =%d\n",length);
     pTxBuf[length++] = (tmp>>8) & 0xFF;
     pTxBuf[length++] = tmp & 0xFF;
     hcp_txBuf_len = length;
+
+    printf("send--------------------------------------------------------------\n");
+    printf("hcp_txBuf_len =%d\n",hcp_txBuf_len);
+    for(int i = 0; i < hcp_txBuf_len; i++)
+        printf("0x%02x  ",pTxBuf[i]);
+    printf("\n");
     SendToMcu((char *)pTxBuf,hcp_txBuf_len);
 }
 
@@ -307,7 +329,7 @@ void communicationToMCU::HcpSetRestore(unsigned char Hversion[10])
     pCmd.header.pduOffset = HCP_PDUOFFSET;
     pCmd.header.type      = ACK_PACKET;
     pCmd.header.sn        = HCP_sn;
-    pCmd.header.devAddr   = 0l;
+    pCmd.header.devAddr   = 0;
     pCmd.header.cmd = CMD_SET_HVERSION;
     memcpy(pCmd.hardwareVer,Hversion,10);
     memcpy(hcp_txBuf,(unsigned char *)&pCmd,sizeof(HCPCMD_SETHVER));
@@ -360,8 +382,31 @@ void communicationToMCU::HcpHandleGetDeviceInfo(void)
 //    pAck->firmwareVer;
 //    pAck->sn;
 //    pAck->cfgID;
-
 }
+
+// 工作模式：0xaa自动模式；0x55手动模式
+void communicationToMCU::HcpSetCmdWordMode(unsigned char WorkMode)
+{
+     HCPCMD_SETWORKMODE SetPara = {0};
+     SetPara.header.pduOffset = HCP_PDUOFFSET;
+     SetPara.header.type = CMD_PACKET;
+     SetPara.header.cmd = CMD_SET_WORKMODE;
+     SetPara.parmID = WorkMode;
+     memcpy(hcp_txBuf,(unsigned char *)&SetPara,sizeof(HCPCMD_SETWORKMODE));
+     HcpSendPacket(sizeof(HCPCMD_SETWORKMODE));
+}
+
+//ProductMode: 0xaa设置总成模式;0x55分离模式
+void communicationToMCU::HcpSetCmdProductMode(unsigned char ProductMode)
+{
+     HCPCMD_SETPARM SetPara = {0};
+     SetPara.header.type = CMD_PACKET;
+     SetPara.header.cmd = CMD_SET_PRODUCTMODE;
+     SetPara.parmID = ProductMode;
+     memcpy(hcp_txBuf,(unsigned char *)&SetPara,sizeof(HCPCMD_SETPRODUCMODE));
+     HcpSendPacket(sizeof(HCPCMD_SETPRODUCMODE));
+}
+
 /*---------------------------------------------------------------------------------------
  函数原型:  unsigned char *SetCmdPara(void)
  功    能:  参数设置
@@ -425,7 +470,6 @@ void communicationToMCU::HcpProcessPacket(void)
     switch(pCmd->cmd)   //命令码分析
     {
         case CMD_HANDSHAKE:
-
             break;
         case CMD_SET_PARM:
             break;
@@ -445,6 +489,10 @@ void communicationToMCU::HcpProcessPacket(void)
             break;
         case CMD_ENGMODE:
             break;
+        case CMD_SET_WORKMODE:
+        case CMD_SET_PRODUCTMODE:
+            HCP_SendNACK(0);
+        break;
         default:
             HCP_SendNACK(NACK_WHY_BADCMD);		 	//无效的命令，否认应答
             break;

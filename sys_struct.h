@@ -1,13 +1,15 @@
 #ifndef SYS_STRUCT_H
 #define SYS_STRUCT_H
 
-//Í¨ĞÅ»º³åÇø³¤¶È¶¨Òå
+//é€šä¿¡ç¼“å†²åŒºé•¿åº¦å®šä¹‰
 #define HCP_RXBUFLEN            64
 #define HCP_TXBUFLEN            256
 
-//ÃüÁî×Ö¶¨Òå
+//å‘½ä»¤å­—å®šä¹‰
 #define CMD_SET_PARM            0x10
 #define CMD_SET_PRESSURE        0x11
+#define CMD_SET_WORKMODE        0x12
+#define CMD_SET_PRODUCTMODE     0x13
 
 #define CMD_RESTORE             0x21
 #define CMD_SAVEDEFAULT         0x2F
@@ -20,33 +22,33 @@
 #define CMD_GET_INFO            0xF0
 #define CMD_ENGMODE             0xF1
 
-//»ù±¾Ó¦´ğ×Ö¶¨Òå
-#define ACK_DATA			    0x01		//Êı¾İÓ¦´ğ°ü×Ö
-#define ACK_ALIVE			    0x66		//ÎÕÊÖÓ¦´ğ×Ö
-#define ACK_YESSIR			    0x55		//È·ÈÏÓ¦´ğ×Ö
-#define ACK_NACK			    0xAA		//·ñÈÏÓ¦´ğ×Ö
+//åŸºæœ¬åº”ç­”å­—å®šä¹‰
+#define ACK_DATA                0x01        //æ•°æ®åº”ç­”åŒ…å­—
+#define ACK_ALIVE               0x66        //æ¡æ‰‹åº”ç­”å­—
+#define ACK_YESSIR              0x55        //ç¡®è®¤åº”ç­”å­—
+#define ACK_NACK                0xAA        //å¦è®¤åº”ç­”å­—
 
-//·ñÈÏÓ¦´ğÔ­Òò--WHY
-#define NACK_WHY_BUSY		    0x0001		//Éè±¸ÕıÔÚÖ´ĞĞÉÏÒ»¸öÃüÁî£¬²»ÄÜ´¦Àíµ±Ç°ÃüÁî
-#define NACK_WHY_ERROR		    0x0002		//Éè±¸´¦ÓÚ¹ÊÕÏ×´Ì¬£¬²»ÄÜÖ´ĞĞÃüÁî
-#define NACK_WHY_BADCRC		    0x0003		//Éè±¸ÊÕµ½ÁËÃüÁî°ü£¬µ«·¢ÏÖCRC´íÎó
-#define NACK_WHY_BADCMD		    0x0004		//Éè±¸²»Ö§³ÖÊÕµ½µÄÃüÁî×Ö
-#define NACK_WHY_NOTREADY	    0x0005		//Éè±¸Ã»ÓĞ×¼±¸ºÃËùÇëÇóµÄÊı¾İ
-#define NACK_WHY_DISABLED       0x0006		//Éè±¸µ±Ç°Ä£Ê½²»ÔÊĞíÖ´ĞĞ¸ÃÃüÁî
-#define NACK_WHY_BADPARM	    0x0007		//ÃüÁîĞ¯´øµÄ²ÎÊı²»ºÏÀí
+//å¦è®¤åº”ç­”åŸå› --WHY
+#define NACK_WHY_BUSY           0x0001      //è®¾å¤‡æ­£åœ¨æ‰§è¡Œä¸Šä¸€ä¸ªå‘½ä»¤ï¼Œä¸èƒ½å¤„ç†å½“å‰å‘½ä»¤
+#define NACK_WHY_ERROR          0x0002      //è®¾å¤‡å¤„äºæ•…éšœçŠ¶æ€ï¼Œä¸èƒ½æ‰§è¡Œå‘½ä»¤
+#define NACK_WHY_BADCRC         0x0003      //è®¾å¤‡æ”¶åˆ°äº†å‘½ä»¤åŒ…ï¼Œä½†å‘ç°CRCé”™è¯¯
+#define NACK_WHY_BADCMD         0x0004      //è®¾å¤‡ä¸æ”¯æŒæ”¶åˆ°çš„å‘½ä»¤å­—
+#define NACK_WHY_NOTREADY       0x0005      //è®¾å¤‡æ²¡æœ‰å‡†å¤‡å¥½æ‰€è¯·æ±‚çš„æ•°æ®
+#define NACK_WHY_DISABLED       0x0006      //è®¾å¤‡å½“å‰æ¨¡å¼ä¸å…è®¸æ‰§è¡Œè¯¥å‘½ä»¤
+#define NACK_WHY_BADPARM        0x0007      //å‘½ä»¤æºå¸¦çš„å‚æ•°ä¸åˆç†
 
-//Í¨ĞÅ°üÀàĞÍ±ê¼Ç
-#define CMD_PACKET 			    0x01		//ÃüÁî°üÀàĞÍ±ê¼Ç
-#define ACK_PACKET 			    0x02		//Ó¦´ğ°üÀàĞÍ±ê¼Ç
+//é€šä¿¡åŒ…ç±»å‹æ ‡è®°
+#define CMD_PACKET              0x01        //å‘½ä»¤åŒ…ç±»å‹æ ‡è®°
+#define ACK_PACKET              0x02        //åº”ç­”åŒ…ç±»å‹æ ‡è®°
 
-#define HCP_PDUOFFSET           4           //Ó¦ÓÃ²ã°ü¾»ÔØºÉÆ«ÒÆÁ¿
+#define HCP_PDUOFFSET           4           //åº”ç”¨å±‚åŒ…å‡€è½½è·åç§»é‡
 
 
-//±£´æ/»Ö¸´³ö³§ÉèÖÃ¿ØÖÆ×Ö
+//ä¿å­˜/æ¢å¤å‡ºå‚è®¾ç½®æ§åˆ¶å­—
 #define HCP_SAVEDEFAULT         0x5555
 #define HCP_RESTORE             0xAAAA
 
-//±¾Ä£¿éËùÒıÓÃµÄÊı¾İ×ÖµäÊı¾İ¶ÔÏóID¶¨Òå
+//æœ¬æ¨¡å—æ‰€å¼•ç”¨çš„æ•°æ®å­—å…¸æ•°æ®å¯¹è±¡IDå®šä¹‰
 #define DDID_WATCHDOG2          0x0003
 
 #define DDID_TIMEBASE           0x000C
@@ -57,106 +59,106 @@
 #define DDID_LASTSTEP_SAMPLE2   0x000A
 #define DDID_LASTSTEP_NUM       0x000B
 /*-----------------------------------------------------------------------------
-                            Êı¾İÀàĞÍ¶¨Òå
+                            æ•°æ®ç±»å‹å®šä¹‰
 -----------------------------------------------------------------------------*/
 
 
-//unsigned short int          Á½¸ö×Ö½Ú
-//unsigned char               Ò»¸ö×Ö½Ú
+//unsigned short int          ä¸¤ä¸ªå­—èŠ‚
+//unsigned char               ä¸€ä¸ªå­—èŠ‚
 
-typedef  struct HCPCMD_tag              //ÃüÁî°üÍ·Êı¾İ½á¹¹¶¨Òå
+typedef  struct HCPCMD_tag              //å‘½ä»¤åŒ…å¤´æ•°æ®ç»“æ„å®šä¹‰
 {
-    unsigned char   pduOffset;    //Í¨ĞÅ°ü¾»ÔØºÉÆ«ÒÆÁ¿
-    unsigned char   type;         //Í¨ĞÅ°üÀàĞÍ£ºCMD_PACKET or ACK_PACKET
-    unsigned short int  sn;       //Í¨ĞÅ°üĞòÁĞºÅ Á½¸ö×Ö½Ú
-    unsigned char   devAddr;      //RS485µØÖ·
-    unsigned char   cmd;          //ÃüÁî×Ö
+    unsigned char   pduOffset;    //é€šä¿¡åŒ…å‡€è½½è·åç§»é‡
+    unsigned char   type;         //é€šä¿¡åŒ…ç±»å‹ï¼šCMD_PACKET or ACK_PACKET
+    unsigned short int  sn;       //é€šä¿¡åŒ…åºåˆ—å· ä¸¤ä¸ªå­—èŠ‚
+    unsigned char   devAddr;      //RS485åœ°å€
+    unsigned char   cmd;          //å‘½ä»¤å­—
 }HCPCMD,*PHCPCMD;
 
-typedef  struct HCPCMD_SETPARM_tag      //ÉèÖÃ²ÎÊıÃüÁî°ü
+typedef  struct HCPCMD_SETPARM_tag      //è®¾ç½®å‚æ•°å‘½ä»¤åŒ…
 {
     HCPCMD      header;
-    unsigned int      DO;             //¿ª¹ØÁ¿ÅäÖÃÖµ
-    unsigned char       PFCtaskNum;     //²âÊÔ½ÚÅÄ±àºÅ
-    unsigned char       parmID;         //²ÎÊıÅäÖÃÃüÁî×Ö
-    unsigned int      PFCtaskTime;    //²âÊÔ½ÚÅÄÊ±¼ä
+    unsigned int      DO;             //å¼€å…³é‡é…ç½®å€¼
+    unsigned char       PFCtaskNum;     //æµ‹è¯•èŠ‚æ‹ç¼–å·
+    unsigned char       parmID;         //å‚æ•°é…ç½®å‘½ä»¤å­—
+    unsigned int      PFCtaskTime;    //æµ‹è¯•èŠ‚æ‹æ—¶é—´
 }HCPCMD_SETPARM,*PHCPCMD_SETPARM;
 
-typedef struct HCPCMD_SETPRESSURE_tag  //ÉèÖÃ¹¤×÷Ñ¹Á¦
+typedef struct HCPCMD_SETPRESSURE_tag  //è®¾ç½®å·¥ä½œå‹åŠ›
 {
     HCPCMD      header;
-    unsigned short int      range;          //¹¤×÷Ñ¹Á¦·¶Î§
+    unsigned short int      range;          //å·¥ä½œå‹åŠ›èŒƒå›´
 }HCPCMD_SETPRESSURE,*PHCPCMD_SETPRESSURE;
 
-typedef struct HCPCMD_READATA_tag      //¶ÁÈ¡Æ×Í¼Êı¾İÃüÁî°ü
+typedef struct HCPCMD_READATA_tag      //è¯»å–è°±å›¾æ•°æ®å‘½ä»¤åŒ…
 {
     HCPCMD      header;
     unsigned char       channel;
     unsigned char       count;
     unsigned short int      offset;
 }HCPCMD_READATA,*PHCPCMD_READATA;
-typedef  struct HCPCMD_SETHVER_tag      //ÉèÖÃÓ²¼ş°æ±¾ºÅÃüÁî°ü
+typedef  struct HCPCMD_SETHVER_tag      //è®¾ç½®ç¡¬ä»¶ç‰ˆæœ¬å·å‘½ä»¤åŒ…
 {
     HCPCMD      header;
     unsigned char       hardwareVer[10];
 }HCPCMD_SETHVER,*PHCPCMD_SETHVER;
 
-typedef struct HCPCMD_SETSN_tag        //ÉèÖÃÉú²úĞòÁĞºÅÃüÁî°ü
+typedef struct HCPCMD_SETSN_tag        //è®¾ç½®ç”Ÿäº§åºåˆ—å·å‘½ä»¤åŒ…
 {
     HCPCMD      header;
     unsigned char       sn[16];
 }HCPCMD_SETSN,*PHCPCMD_SETSN;
 
-typedef struct HCPCMD_SETCFGID_tag     //ÉèÖÃÅäÖÃID
+typedef struct HCPCMD_SETCFGID_tag     //è®¾ç½®é…ç½®ID
 {
     HCPCMD      header;
     unsigned char       cfgID[8];
 }HCPCMD_SETCFGID,*PHCPCMD_SETCFGID;
 
-typedef struct HCPCMD_ENGMODE_tag      //¹¤³ÌÄ£Ê½ÃüÁî
+typedef struct HCPCMD_ENGMODE_tag      //å·¥ç¨‹æ¨¡å¼å‘½ä»¤
 {
     HCPCMD      header;
     unsigned char       pwd[16];
 }HCPCMD_ENGMODE,*PHCPCMD_ENGMODE;
 
 
-typedef  struct HCPACK_tag              //Ó¦´ğ°üÍ·Êı¾İ½á¹¹¶¨Òå
+typedef  struct HCPACK_tag              //åº”ç­”åŒ…å¤´æ•°æ®ç»“æ„å®šä¹‰
 {
-    unsigned char   pduOffset;          //Í¨ĞÅ°ü¾»ÔØºÉÆ«ÒÆÁ¿
-    unsigned char   type;               //Í¨ĞÅ°üÀàĞÍ£ºCMD_PACKET or ACK_PACKET
-    unsigned short int  sn;             //Í¨ĞÅ°üĞòÁĞºÅ
-    unsigned char   devAddr;            //RS485µØÖ·
-    unsigned char   ack;                //Ó¦´ğ×Ö
+    unsigned char   pduOffset;          //é€šä¿¡åŒ…å‡€è½½è·åç§»é‡
+    unsigned char   type;               //é€šä¿¡åŒ…ç±»å‹ï¼šCMD_PACKET or ACK_PACKET
+    unsigned short int  sn;             //é€šä¿¡åŒ…åºåˆ—å·
+    unsigned char   devAddr;            //RS485åœ°å€
+    unsigned char   ack;                //åº”ç­”å­—
 }HCPACK,*PHCPACK;
 
-typedef struct HCPACK_NACK_tag        //·ñ¶¨Ó¦´ğ°üÍ·Êı¾İ½á¹¹¶¨Òå
+typedef struct HCPACK_NACK_tag        //å¦å®šåº”ç­”åŒ…å¤´æ•°æ®ç»“æ„å®šä¹‰
 {
-    unsigned char   pduOffset;          //Í¨ĞÅ°ü¾»ÔØºÉÆ«ÒÆÁ¿
-    unsigned char   type;               //Í¨ĞÅ°üÀàĞÍ£ºCMD_PACKET or ACK_PACKET
-    unsigned short int  sn;             //Í¨ĞÅ°üĞòÁĞºÅ
-    unsigned char   devAddr;            //RS485µØÖ·
-    unsigned char   ack;                //Ó¦´ğ×Ö
-    unsigned short int  why;            //·ñ¶¨Ó¦´ğÔ­Òò
+    unsigned char   pduOffset;          //é€šä¿¡åŒ…å‡€è½½è·åç§»é‡
+    unsigned char   type;               //é€šä¿¡åŒ…ç±»å‹ï¼šCMD_PACKET or ACK_PACKET
+    unsigned short int  sn;             //é€šä¿¡åŒ…åºåˆ—å·
+    unsigned char   devAddr;            //RS485åœ°å€
+    unsigned char   ack;                //åº”ç­”å­—
+    unsigned short int  why;            //å¦å®šåº”ç­”åŸå› 
 }HCPACK_NACK,*PHCPACK_NACK;
 
-typedef struct HCPACK_ALIVE_CMD_tag      //ÎÕÊÖÓ¦´ğ°ü
+typedef struct HCPACK_ALIVE_CMD_tag      //æ¡æ‰‹åº”ç­”åŒ…
 {
     HCPCMD      header;
 }HCPACK_ALIVE_CMD,*PHCPACK_ALIVE_CMD;
 
-typedef  struct HCPACK_ALIVE_tag      //ÎÕÊÖÓ¦´ğ°ü
+typedef  struct HCPACK_ALIVE_tag      //æ¡æ‰‹åº”ç­”åŒ…
 {
     HCPACK      header;
-    unsigned  int      timeBase;       //²âÊÔÁ÷³ÌÊ±¼ä»ù×¼
-    unsigned short int      writePos;       //Êı¾İ»º³åÇø(²îÑ¹)µ±Ç°Ğ´ÈëÎ»ÖÃ
-    unsigned short int      sample1;        //Ö±Ñ¹²ÉÑùÖµ
-    unsigned short int      currStepSample2;//µ±Ç°½ÚÅÄ²îÑ¹²ÉÑùÖµ
-    unsigned short int      lastStepSample1;//ÉÏÒ»½ÚÅÄÖ±Ñ¹²ÉÑùÖµ
-    unsigned short int      lastStepSample2;//ÉÏÒ»½ÚÅÄ²îÑ¹²ÉÑùÖµ
-    unsigned short int      lastStepNum;    //ÉÏÒ»½ÚÅÄ±àºÅ
+    unsigned  int      timeBase;       //æµ‹è¯•æµç¨‹æ—¶é—´åŸºå‡†
+    unsigned short int      writePos;       //æ•°æ®ç¼“å†²åŒº(å·®å‹)å½“å‰å†™å…¥ä½ç½®
+    unsigned short int      sample1;        //ç›´å‹é‡‡æ ·å€¼
+    unsigned short int      currStepSample2;//å½“å‰èŠ‚æ‹å·®å‹é‡‡æ ·å€¼
+    unsigned short int      lastStepSample1;//ä¸Šä¸€èŠ‚æ‹ç›´å‹é‡‡æ ·å€¼
+    unsigned short int      lastStepSample2;//ä¸Šä¸€èŠ‚æ‹å·®å‹é‡‡æ ·å€¼
+    unsigned short int      lastStepNum;    //ä¸Šä¸€èŠ‚æ‹ç¼–å·
 }HCPACK_ALIVE,*PHCPACK_ALIVE;
 
-typedef  struct HCPACK_DATA_tag       //¶ÁÈ¡Æ×Í¼Êı¾İÓ¦´ğ°ü
+typedef  struct HCPACK_DATA_tag       //è¯»å–è°±å›¾æ•°æ®åº”ç­”åŒ…
 {
     HCPACK      header;
     unsigned char       channel;
@@ -165,7 +167,7 @@ typedef  struct HCPACK_DATA_tag       //¶ÁÈ¡Æ×Í¼Êı¾İÓ¦´ğ°ü
 
 }HCPACK_DATA,*PHCPACK_DATA;
 
-typedef  struct HCPACK_DEVINFO_tag   //»ñÈ¡Éè±¸Ê¶±ğĞÅÏ¢Ó¦´ğ°ü
+typedef  struct HCPACK_DEVINFO_tag   //è·å–è®¾å¤‡è¯†åˆ«ä¿¡æ¯åº”ç­”åŒ…
 {
     HCPACK              header;
     unsigned short int  len;
@@ -177,5 +179,15 @@ typedef  struct HCPACK_DEVINFO_tag   //»ñÈ¡Éè±¸Ê¶±ğĞÅÏ¢Ó¦´ğ°ü
     unsigned char       sn[16];
 }HCPACK_DEVINFO,*PHCPACK_DEVINFO;
 
+typedef struct HCPCMD_SETWORKMODE_tag
+{
+    HCPCMD              header;
+    unsigned char       parmID;
+}HCPCMD_SETWORKMODE,*PHCPCMD_SETWORKMODE;
 
+typedef struct HCPCMD_SETPRODUCMODE_tag
+{
+    HCPCMD              header;
+    unsigned char       parmID;
+}HCPCMD_SETPRODUCMODE,*PHCPCMD_SETPRODUCMODE;
 #endif

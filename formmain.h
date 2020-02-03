@@ -26,7 +26,7 @@ class FormMain;
 /* 模式 */
 enum Mode{
   AUTO,
-  manual,
+  MANUAL,
 };
 
 struct Main_Form{

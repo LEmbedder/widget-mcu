@@ -59,7 +59,8 @@ HEADERS  += widget.h \
     formviewdata.h \
     communicationtomcu.h \
     config.h \
-    globalvariable.h
+    globalvariable.h \
+    sys_struct.h
 
 FORMS    += widget.ui \
     formmain.ui \

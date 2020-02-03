@@ -3,6 +3,7 @@
 #include "navprogress.h"
 #include "progressbar.h"
 #include "formmain.h"
+#include "globalvariable.h"
 
 #include <QSqlDatabase>
 #include <QStringList>
@@ -51,6 +52,10 @@ Widget::Widget(QWidget *parent) :
      * MCU通信控制
      */
     communication = new communicationToMCU;
+    systemData.args_config.model = 0x55;
+    systemData.args_config.product_model = 0x55;
+    communication->HcpSetCmdWordMode(systemData.args_config.model);
+    //communication->HcpSetCmdProductMode(systemData.args_config.product_model);
     /* 更行界面 */
     updateForm();
 }

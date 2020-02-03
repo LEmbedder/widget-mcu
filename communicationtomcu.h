@@ -33,6 +33,8 @@ public:
     void HcpSetCmdPara(PHCPCMD_SETPARM *pCmd);
     void SendToMcu(const char *data, qint64 len);
     void HcpSetPressure(unsigned short range);
+    void HcpSetCmdWordMode(unsigned char WorkMode);
+    void HcpSetCmdProductMode(unsigned char ProductMode);
 signals:
 
 public slots:

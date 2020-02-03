@@ -1,5 +1,6 @@
 #include "formargssettings.h"
 #include "ui_formargssettings.h"
+#include "globalvariable.h"
 
 /* 泄露单位 */
 static QString revealUint[][11] = {

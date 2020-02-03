@@ -10,27 +10,7 @@ namespace Ui {
 class FormArgsSettings;
 }
 
-struct SetsPara{
-    int time[13];
 
-    int revealStandardUpLimit;
-    int revealStandardDownLimit;
-    QString revealUnit;
-
-    int bigRevealStandardValue;
-    int testPressure;
-    QString testPressureBigRevealUint;
-
-    int testPressureUpLimit;
-    int testPressureDownLimit;
-    double measuredVolume;/* mL */
-
-    double standerVolume;/*mL*/
-    int markingTime; /**/
-
-    int channelNumber;
-    QString channelDescribe;/* 通道描述 */
-};
 class FormArgsSettings : public QDialog
 {
     Q_OBJECT

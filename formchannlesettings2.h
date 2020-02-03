@@ -6,8 +6,7 @@
 #include <QSettings>
 #include <QFile>
 #include "formargssettings.h"
-
-#define BUTTON_NUMBER 16
+#include "globalvariable.h"
 
 
 namespace Ui {
@@ -79,7 +78,6 @@ private slots:
 private:
     Ui::FormChannleSettings2 *ui;
     FormArgsSettings *fas;
-    struct SetsPara sets[BUTTON_NUMBER];
     QString page;/* 当前页面 */
 
 
