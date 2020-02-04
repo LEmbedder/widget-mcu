@@ -11,7 +11,8 @@ QStringList work_space = {"A工位","B工位","A-B工位","A/B工位"};
 QStringList a_worker = {"正压","负压","正负压","负正压"};
 /* 产品 */
 QStringList product_model= {"总成模式","分离模式"};
-
+/* 保留小数位 */
+QStringList decimal_bit = {"0","1","2","3"};
 /* 构建 */
 FormSystemSetting::FormSystemSetting(QWidget *parent) :
     QWidget(parent),
@@ -25,6 +26,8 @@ FormSystemSetting::FormSystemSetting(QWidget *parent) :
     ui->comboBox_a_worker->addItems(a_worker);
     ui->comboBox_b_worker->addItems(a_worker);
     ui->comboBox_product_model->addItems(product_model);
+    ui->comboBox_decimal_reveal->addItems(decimal_bit);
+    ui->comboBox_decimal_test_press->addItems(decimal_bit);
 
 }
 
@@ -58,6 +61,9 @@ void FormSystemSetting::update_system_setting()
     ui->comboBox_b_worker->setCurrentIndex(systemData.args_config.B_model);
     ui->comboBox_worker->setCurrentIndex(systemData.args_config.worker_space);
     ui->comboBox_product_model->setCurrentIndex(systemData.args_config.product_model);
+    ui->comboBox_decimal_reveal->setCurrentIndex(systemData.args_config.reveal_decimal_bit);
+    ui->comboBox_decimal_test_press->setCurrentIndex(systemData.args_config.test_press_decimal_bit);
+
 }
 void FormSystemSetting::on_pushButton_return_clicked()
 {
@@ -94,4 +100,14 @@ void FormSystemSetting::on_comboBox_b_worker_currentIndexChanged(int index)
 void FormSystemSetting::on_comboBox_product_model_currentIndexChanged(int index)
 {
     args_config_temp.product_model = index;
+}
+
+void FormSystemSetting::on_comboBox_decimal_reveal_currentIndexChanged(int index)
+{
+    args_config_temp.reveal_decimal_bit = index;
+}
+
+void FormSystemSetting::on_comboBox_decimal_test_press_currentIndexChanged(int index)
+{
+    args_config_temp.test_press_decimal_bit = index;
 }

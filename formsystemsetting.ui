@@ -75,9 +75,6 @@
              </property>
             </widget>
            </item>
-           <item row="6" column="1">
-            <widget class="QLineEdit" name="lineEdit_6"/>
-           </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_2">
              <property name="text">
@@ -104,13 +101,7 @@
              <property name="text">
               <string>泄露值小数位</string>
              </property>
-             <property name="buddy">
-              <cstring>lineEdit_6</cstring>
-             </property>
             </widget>
-           </item>
-           <item row="7" column="1">
-            <widget class="QLineEdit" name="lineEdit_7"/>
            </item>
            <item row="3" column="0">
             <widget class="QLabel" name="label_4">
@@ -123,9 +114,6 @@
             <widget class="QLabel" name="label_8">
              <property name="text">
               <string>测试压小数位</string>
-             </property>
-             <property name="buddy">
-              <cstring>lineEdit_7</cstring>
              </property>
             </widget>
            </item>
@@ -159,6 +147,12 @@
            </item>
            <item row="5" column="1">
             <widget class="QComboBox" name="comboBox_product_model"/>
+           </item>
+           <item row="6" column="1">
+            <widget class="QComboBox" name="comboBox_decimal_reveal"/>
+           </item>
+           <item row="7" column="1">
+            <widget class="QComboBox" name="comboBox_decimal_test_press"/>
            </item>
           </layout>
          </widget>
@@ -243,9 +237,6 @@
              <property name="text">
               <string>扫码枪</string>
              </property>
-             <property name="buddy">
-              <cstring>lineEdit_6</cstring>
-             </property>
             </widget>
            </item>
            <item row="6" column="1">
@@ -255,9 +246,6 @@
             <widget class="QLabel" name="label_10">
              <property name="text">
               <string>设备号</string>
-             </property>
-             <property name="buddy">
-              <cstring>lineEdit_7</cstring>
              </property>
             </widget>
            </item>
@@ -300,9 +288,6 @@
              <property name="text">
               <string>工号</string>
              </property>
-             <property name="buddy">
-              <cstring>lineEdit_7</cstring>
-             </property>
             </widget>
            </item>
            <item row="1" column="0">
@@ -342,9 +327,6 @@
             <widget class="QLabel" name="label_17">
              <property name="text">
               <string>语言</string>
-             </property>
-             <property name="buddy">
-              <cstring>lineEdit_6</cstring>
              </property>
             </widget>
            </item>

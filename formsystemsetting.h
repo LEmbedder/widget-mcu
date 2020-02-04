@@ -37,6 +37,10 @@ private slots:
 
     void on_comboBox_product_model_currentIndexChanged(int index);
 
+    void on_comboBox_decimal_reveal_currentIndexChanged(int index);
+
+    void on_comboBox_decimal_test_press_currentIndexChanged(int index);
+
 private:
     Ui::FormSystemSetting *ui;
 signals:

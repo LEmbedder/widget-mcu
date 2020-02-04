@@ -342,6 +342,7 @@ void FormMain::update_args_config(struct Args_config* config)
                 formArguSetting->formSystemSetting->return_worker_space()
                 );
     ui->comboBox_channel_number->setCurrentText(QString::number(systemData.channel_number));
+    updateForm();
 }
 /*
  * 通道选择变化了
@@ -355,7 +356,7 @@ void FormMain::on_comboBox_channel_number_currentIndexChanged(int index)
  */
 void FormMain::disp_test_press(double value)
 {
-    ui->label_test_pressure->setText(QString::number(value,'f',2));
+    ui->label_test_pressure->setText(QString::number(value,'f',systemData.args_config.test_press_decimal_bit));
 }
 
 /*
@@ -363,7 +364,7 @@ void FormMain::disp_test_press(double value)
  */
 void FormMain::disp_test_result(double value)
 {
-    ui->label_test_result->setText(QString::number(value,'f',2));
+    ui->label_test_result->setText(QString::number(value,'f',systemData.args_config.reveal_decimal_bit));
 }
 /* 上限控制 */
 void FormMain::on_lineEdit_up_limit_editingFinished()

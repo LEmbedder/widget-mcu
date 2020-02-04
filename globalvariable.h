@@ -13,6 +13,8 @@ struct Args_config {
     int A_model;
     int B_model;
     int product_model;
+    int test_press_decimal_bit;/* 测试压小数位 */
+    int reveal_decimal_bit; /* 泄露值小数位 */
 };
 
 /* 全局变量 */
