@@ -65,6 +65,63 @@ void FormSystemSetting::update_system_setting()
     ui->comboBox_decimal_test_press->setCurrentIndex(systemData.args_config.test_press_decimal_bit);
 
 }
+/*
+ * settings.ini配置文件里获取配置参数
+ */
+void FormSystemSetting::loadConfigArgs()
+{
+    QString fileName = QApplication::applicationDirPath() + "/settings.ini";
+    QSettings setting(fileName, QSettings::IniFormat);
+
+    QStringList tagList;
+    if (QFile(fileName).exists())
+    {
+        setting.beginGroup("Config Args");
+        tagList = setting.childKeys();
+        if (tagList.indexOf("model_select") != -1)
+        {
+            systemData.args_config.model = setting.value("model_select").toInt();
+        }
+        if (tagList.indexOf("work_space") != -1)
+        {
+            systemData.args_config.worker_space = setting.value("work_space").toInt();
+        }
+        if (tagList.indexOf("A_model") != -1)
+        {
+            systemData.args_config.A_model = setting.value("A_model").toInt();
+        }
+        if (tagList.indexOf("B_model") != -1)
+        {
+            systemData.args_config.B_model = setting.value("B_model").toInt();
+        }
+        if (tagList.indexOf("product_model") != -1)
+        {
+            systemData.args_config.product_model = setting.value("product_model").toInt();
+        }
+        if (tagList.indexOf("reveal_decimal") != -1)
+        {
+            systemData.args_config.reveal_decimal_bit = setting.value("reveal_decimal").toInt();
+        }
+        if (tagList.indexOf("test_press_decimal") != -1)
+        {
+            systemData.args_config.test_press_decimal_bit = setting.value("test_press_decimal").toInt();
+        }
+    }
+}
+void FormSystemSetting::saveConfigArgs()
+{
+    QString fileName = QApplication::applicationDirPath() + "/settings.ini";
+    QSettings setting(fileName, QSettings::IniFormat);
+
+    setting.beginGroup("Config Args");
+    setting.setValue("model_select",systemData.args_config.model);
+    setting.setValue("work_space",systemData.args_config.worker_space);
+    setting.setValue("A_model",systemData.args_config.A_model);
+    setting.setValue("B_model",systemData.args_config.A_model);
+    setting.setValue("product_model",systemData.args_config.product_model);
+    setting.setValue("reveal_decimal",systemData.args_config.reveal_decimal_bit);
+    setting.setValue("test_press_decimal",systemData.args_config.test_press_decimal_bit);
+}
 void FormSystemSetting::on_pushButton_return_clicked()
 {
     this->close();
@@ -79,6 +136,7 @@ void FormSystemSetting::on_comboBoxModelSelect_currentIndexChanged(int index)
 void FormSystemSetting::on_pushButton_save_clicked()
 {
     memcpy(&systemData.args_config,&args_config_temp,sizeof(struct Args_config));
+    saveConfigArgs();
     emit emit_update_config(&systemData.args_config);
 }
 

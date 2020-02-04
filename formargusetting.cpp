@@ -29,6 +29,7 @@ FormArguSetting::FormArguSetting(QWidget *parent) :
     //extend
     formExtend = new FormExtend;
     formExtend->close();
+    formSystemSetting->loadConfigArgs();
 }
 
 FormArguSetting::~FormArguSetting()

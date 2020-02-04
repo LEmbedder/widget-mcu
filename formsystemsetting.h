@@ -6,6 +6,8 @@
 #include <QStringList>
 #include <string.h>
 #include "globalvariable.h"
+#include <QSettings>
+#include <QFile>
 
 namespace Ui {
 class FormSystemSetting;
@@ -22,6 +24,8 @@ public:
     void update_system_setting();
     QString return_model();
     QString return_worker_space();
+    void loadConfigArgs();
+    void saveConfigArgs();
 private slots:
     void on_pushButton_return_clicked();
 
