@@ -17,3 +17,9 @@ void FormExtend::on_pushButton_2_clicked()
 {
     close();
 }
+
+void FormExtend::on_pushButton_ts_calibrate_clicked()
+{
+    system("ts_calibrate");
+    update();
+}
