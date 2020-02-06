@@ -41,7 +41,9 @@ SOURCES += main.cpp\
     formextend.cpp \
     formviewdata.cpp \
     communicationtomcu.cpp \
-    globalvariable.cpp
+    globalvariable.cpp \
+    formvolumetest.cpp \
+    formcalibrationtest.cpp
 
 HEADERS  += widget.h \
     navprogress.h \
@@ -60,7 +62,9 @@ HEADERS  += widget.h \
     communicationtomcu.h \
     config.h \
     globalvariable.h \
-    sys_struct.h
+    sys_struct.h \
+    formvolumetest.h \
+    formcalibrationtest.h
 
 FORMS    += widget.ui \
     formmain.ui \
@@ -73,7 +77,9 @@ FORMS    += widget.ui \
     formpasswordsetting.ui \
     formcalibration.ui \
     formextend.ui \
-    formviewdata.ui
+    formviewdata.ui \
+    formvolumetest.ui \
+    formcalibrationtest.ui
 
 
 RESOURCES += \

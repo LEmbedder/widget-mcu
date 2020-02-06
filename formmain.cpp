@@ -17,6 +17,15 @@ FormMain::FormMain(QWidget *parent) :
     {
         ui->comboBox_channel_number->addItem(QString::number(i+1));
     }
+
+    /* 容积测试和定标测试模式 */
+    formVolumeTest = new FormVolumeTest();
+    formVolumeTest->hide();
+    formCalibrationTest = new FormCalibrationTest();
+    formCalibrationTest->hide();
+    ui->widget_12->layout()->addWidget(formVolumeTest);
+    ui->widget_12->layout()->addWidget(formCalibrationTest);
+
     /* 选择第一个按键 */
     ui->pushButton->setChecked(true);
 
@@ -41,6 +50,9 @@ FormMain::FormMain(QWidget *parent) :
     formViewData = new FormViewData;
     ui->verticalLayout_2->addWidget(formViewData);
     formViewData->close();
+
+
+
     /* 创建界面结束 */
 
     /* 初始化变量 */
@@ -48,7 +60,7 @@ FormMain::FormMain(QWidget *parent) :
 //    main_Form_Infor.test_pressure    = 12.5445;
 //    main_Form_Infor.worker_number    = "123456789";
 //    main_Form_Infor.workpiece_number = "123123123";
-    updateForm();
+//    updateForm();
 
     QStringList m_serialPortName;
     foreach(const QSerialPortInfo &info,QSerialPortInfo::availablePorts())
@@ -134,6 +146,8 @@ FormMain::FormMain(QWidget *parent) :
     systemData.up_down_limit.up_limit = 1000;
     ui->lineEdit_up_limit->setText("1000");
     ui->lineEdit_down_limit->setText("-1000");
+
+    updateForm();
 
 }
 
@@ -251,6 +265,31 @@ void FormMain::updateForm()
     ui->label_worker_number->setText(QString(systemData.args_config.work_number));
 //    ui->lineEdit_worker_number->setText(main_Form_Infor.worker_number);
 //    ui->textEdit_workpiece_number->setText(main_Form_Infor.workpiece_number);
+    if ( systemData.args_config.test_mode == 0)
+    {
+        ui->widget_2->show();
+        ui->widget_14->show();
+        ui->widget_15->show();
+        formVolumeTest->hide();
+        formCalibrationTest->hide();
+        ui->widget_13->setEnabled(true);
+    }else if(systemData.args_config.test_mode == 1)
+    {
+        formVolumeTest->show();
+        ui->widget_2->hide();
+        ui->widget_14->hide();
+        ui->widget_15->hide();
+        formCalibrationTest->hide();
+        ui->widget_13->setEnabled(false);
+    }else if(systemData.args_config.test_mode == 2)
+    {
+        ui->widget_2->hide();
+        ui->widget_14->hide();
+        ui->widget_15->hide();
+        formCalibrationTest->show();
+        formVolumeTest->hide();
+        ui->widget_13->setEnabled(false);
+    }
 
 }
 /*

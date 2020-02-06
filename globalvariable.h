@@ -16,7 +16,13 @@ struct Args_config {
     int test_press_decimal_bit;/* 测试压小数位 */
     int reveal_decimal_bit; /* 泄露值小数位 */
     int test_mode;//测试模式
+    /* "容积测试","定标测试" */
+        int leak_quantity;//泄露量
+        int demarcate_leak;//标定泄露量
+        double demarcate_coefficient;//标定系数
+    /* "容积测试","定标测试" end*/
     char work_number[30] ;//工号
+
 
 };
 

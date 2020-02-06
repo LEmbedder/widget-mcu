@@ -15,6 +15,8 @@
 
 #include <string.h>
 #include "globalvariable.h"
+#include "formvolumetest.h"
+#include "formcalibrationtest.h"
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -60,6 +62,8 @@ private:
     FormChannelSettings *formChannleSettings;
     FormArguSetting *formArguSetting;
     FormViewData *formViewData;
+    FormVolumeTest *formVolumeTest;
+    FormCalibrationTest *formCalibrationTest;
 
     QSerialPort *serialPort;
 

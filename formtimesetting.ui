@@ -61,7 +61,11 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_yy"/>
+          <widget class="QLineEdit" name="lineEdit_yy">
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_2">
