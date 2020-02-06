@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.2.1, 2020-02-04T16:54:10. -->
+<!-- Written by QtCreator 4.2.1, 2020-02-04T18:58:21. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -356,7 +356,6 @@
      <value type="QString">TSLIB_FBDEVICE=/dev/fb0</value>
      <value type="QString">TSLIB_PLUGINDIR=/lib/ts</value>
      <value type="QString">TSLIB_TSDEVICE=/dev/input/event0</value>
-     <value type="QString">TZ=CST-8</value>
     </valuelist>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">widget (在远端设备上)</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>

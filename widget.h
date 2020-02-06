@@ -9,7 +9,7 @@
 #include <QDebug>
 #include <communicationtomcu.h>
 #include <QTimeZone>
-
+#include "formmain.h"
 namespace Ui {
 class Widget;
 
@@ -28,6 +28,7 @@ public:
     ~Widget();
     QTimer *timer;
     void updateForm();
+    FormMain *formain;
 private slots:
     void timerOut();
 private:

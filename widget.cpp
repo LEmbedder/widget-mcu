@@ -41,7 +41,7 @@ Widget::Widget(QWidget *parent) :
     /*
      * 添加控制主界面显示
     */
-    FormMain *formain = new FormMain(this);
+    formain = new FormMain(this);
     ui->verticalLayout_target->addWidget(formain);
 
     /*
@@ -76,7 +76,7 @@ void Widget::timerOut()
     current_date_time =QDateTime::currentDateTime();
     current_date =current_date_time.toString("yyyy/MM/dd--hh:mm:ss ddd");
     ui->label_time->setText(current_date);
-    QTimeZone timeZone;
+//    QTimeZone timeZone;
 //    timeZone.
 //    qDebug()<< timeZone.offsetFromUtc(current_date_time);
 //    qDebug()<<timeZone.id();

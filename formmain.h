@@ -35,6 +35,7 @@ public:
     void updateLabelSucess(int next);
     void disp_test_press(double value);
     void disp_test_result(double value);
+    void updateSeries(int position, double value);
 public slots:
     void receiveInfo();
     void update_args_config(Args_config *config);

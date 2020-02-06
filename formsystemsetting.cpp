@@ -28,6 +28,8 @@ FormSystemSetting::FormSystemSetting(QWidget *parent) :
     ui->comboBox_product_model->addItems(product_model);
     ui->comboBox_decimal_reveal->addItems(decimal_bit);
     ui->comboBox_decimal_test_press->addItems(decimal_bit);
+    ui->lineEdit_work_number->setMaxLength(20);
+    ui->lineEdit_work_number->setValidator(new QRegExpValidator(QRegExp("^[A-Za-z0-9]+$"), this));
 
 }
 
@@ -63,6 +65,7 @@ void FormSystemSetting::update_system_setting()
     ui->comboBox_product_model->setCurrentIndex(systemData.args_config.product_model);
     ui->comboBox_decimal_reveal->setCurrentIndex(systemData.args_config.reveal_decimal_bit);
     ui->comboBox_decimal_test_press->setCurrentIndex(systemData.args_config.test_press_decimal_bit);
+    ui->lineEdit_work_number->setText(QString(systemData.args_config.work_number));
 
 }
 /*
@@ -106,6 +109,11 @@ void FormSystemSetting::loadConfigArgs()
         {
             systemData.args_config.test_press_decimal_bit = setting.value("test_press_decimal").toInt();
         }
+        if (tagList.indexOf("work_number") != -1)
+        {
+            QString string = setting.value("work_number").toString();
+            strcpy(systemData.args_config.work_number,string.toStdString().c_str());
+        }
     }
 }
 void FormSystemSetting::saveConfigArgs()
@@ -121,6 +129,7 @@ void FormSystemSetting::saveConfigArgs()
     setting.setValue("product_model",systemData.args_config.product_model);
     setting.setValue("reveal_decimal",systemData.args_config.reveal_decimal_bit);
     setting.setValue("test_press_decimal",systemData.args_config.test_press_decimal_bit);
+    setting.setValue("work_number",systemData.args_config.work_number);
 }
 void FormSystemSetting::on_pushButton_return_clicked()
 {
@@ -168,4 +177,10 @@ void FormSystemSetting::on_comboBox_decimal_reveal_currentIndexChanged(int index
 void FormSystemSetting::on_comboBox_decimal_test_press_currentIndexChanged(int index)
 {
     args_config_temp.test_press_decimal_bit = index;
+}
+
+void FormSystemSetting::on_lineEdit_work_number_textChanged(const QString &arg1)
+{
+    strcpy(args_config_temp.work_number,arg1.toStdString().c_str());
+    args_config_temp.work_number[20] = '\0';
 }

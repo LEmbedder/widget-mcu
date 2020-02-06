@@ -15,6 +15,7 @@ struct Args_config {
     int product_model;
     int test_press_decimal_bit;/* 测试压小数位 */
     int reveal_decimal_bit; /* 泄露值小数位 */
+    char work_number[30] ;//工号
 };
 
 /* 全局变量 */

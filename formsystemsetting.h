@@ -45,6 +45,8 @@ private slots:
 
     void on_comboBox_decimal_test_press_currentIndexChanged(int index);
 
+    void on_lineEdit_work_number_textChanged(const QString &arg1);
+
 private:
     Ui::FormSystemSetting *ui;
 signals:

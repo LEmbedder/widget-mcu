@@ -87,13 +87,14 @@ FormMain::FormMain(QWidget *parent) :
     series->append(2, 8);
     series->append(3, 4);
     series->append(4, 5);
-    *series << QPointF(5, 1) << QPointF(6, 3) << QPointF(7, 6) << QPointF(8, 3) << QPointF(9, 2);
+//    *series << QPointF(5, 1) << QPointF(6, 3) << QPointF(7, 6) << QPointF(8, 3) << QPointF(9, 2);updateSeries
+
 
     chart = new QChart();
     chart->legend()->hide();
     chart->addSeries(series);
     chart->createDefaultAxes();
-    chart->axisX()->setRange(0, 10);
+    chart->axisX()->setRange(0, 14);
 //    chart->axisX()->setGridLineVisible(false);
     chart->axisY()->setRange(-1000, 1000);
 //    chart->axisY()->setGridLineVisible(false);
@@ -127,7 +128,6 @@ FormMain::FormMain(QWidget *parent) :
     updateLabelSucess(1);
     updateLabelSucess(1);
     updateLabelSucess(1);
-    updateLabelSucess(0);
 
     /* 上下限更新 */
     systemData.up_down_limit.down_limit = -1000;
@@ -143,6 +143,9 @@ FormMain::~FormMain()
 }
 /*
  * 更新最近几次的测试结果显示图片
+ * next:新的测试结果
+ *  1:成功
+ *  0:失败
  */
 void FormMain::updateLabelSucess(int next)
 {
@@ -245,6 +248,7 @@ void FormMain::updateForm()
 //    ui->label_test_pressure->setText( QString::number(main_Form_Infor.test_pressure) );
     disp_test_press(systemData.test_press);
     disp_test_result(systemData.temp_test_result);
+    ui->label_worker_number->setText(QString(systemData.args_config.work_number));
 //    ui->lineEdit_worker_number->setText(main_Form_Infor.worker_number);
 //    ui->textEdit_workpiece_number->setText(main_Form_Infor.workpiece_number);
 
@@ -379,4 +383,22 @@ void FormMain::on_lineEdit_down_limit_editingFinished()
     systemData.up_down_limit.down_limit = ui->lineEdit_down_limit->text().toInt();
     chart->axisY()->setRange(systemData.up_down_limit.down_limit, systemData.up_down_limit.up_limit);
     chart->update();
+}
+
+/*
+ * 更新曲线
+ * position:运行阶段,也是曲线画点的横坐标
+ * value:测试获得的值
+ */
+void FormMain::updateSeries(int position, double value)
+{
+    if ( position == 0 )
+    {
+        series->clear();
+    }
+    if (chart != NULL)
+    {
+        series->append(position,value);
+        chart->update();
+    }
 }
