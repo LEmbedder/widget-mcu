@@ -348,7 +348,7 @@
             </widget>
            </item>
            <item row="7" column="1">
-            <widget class="QLineEdit" name="lineEdit_16"/>
+            <widget class="QComboBox" name="comboBox_test_mode"/>
            </item>
           </layout>
          </widget>
