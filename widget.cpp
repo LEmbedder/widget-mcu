@@ -36,7 +36,7 @@ Widget::Widget(QWidget *parent) :
     */
     pb = new ProgressBar(ui->widget_6);
     pb->setFixedSize(700,50);
-    pb->setProgressValue(2.6);
+//    pb->setProgressValue(2.6);
 
 
 
