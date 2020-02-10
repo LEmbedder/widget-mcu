@@ -10,6 +10,7 @@
 #define CMD_SET_PRESSURE        0x11
 #define CMD_SET_WORKMODE        0x12
 #define CMD_SET_PRODUCTMODE     0x13
+#define CMD_SET_KEY             0x14
 
 #define CMD_RESTORE             0x21
 #define CMD_SAVEDEFAULT         0x2F
@@ -190,4 +191,10 @@ typedef struct HCPCMD_SETPRODUCMODE_tag
     HCPCMD              header;
     unsigned char       parmID;
 }HCPCMD_SETPRODUCMODE,*PHCPCMD_SETPRODUCMODE;
+
+typedef struct HCPCMD_SET_KEY_tag
+{
+    HCPCMD              header;
+    unsigned char       parmID;
+}HCPCMD_SET_KEY,*PHCPCMD_SETK_EY;
 #endif

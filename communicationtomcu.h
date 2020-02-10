@@ -14,6 +14,11 @@ class communicationToMCU : public QObject
     void initSerialPort();
     void writer(const char *data, qint64 len);
     QTimer *timer,*timer_over;
+    void DataInit();
+    void DownloadMode();
+    void DownloadProductMode();
+    void DownloadTestMode();
+    void HcpHandleKey();
 public:
     explicit communicationToMCU(QObject *parent = 0);
 
@@ -39,8 +44,9 @@ public:
     void HcpSetCmdProductMode(unsigned char ProductMode);
     void start_first();
     void download_args();
+    void DownloadSetPara();
 signals:
-    void update_window();
+
 public slots:
     void check_stage();
     void receiveInfo();

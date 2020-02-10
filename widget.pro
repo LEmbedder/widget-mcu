@@ -43,8 +43,7 @@ SOURCES += main.cpp\
     communicationtomcu.cpp \
     globalvariable.cpp \
     formvolumetest.cpp \
-    formcalibrationtest.cpp \
-    commthread.cpp
+    formcalibrationtest.cpp
 
 HEADERS  += widget.h \
     navprogress.h \
@@ -65,8 +64,7 @@ HEADERS  += widget.h \
     globalvariable.h \
     sys_struct.h \
     formvolumetest.h \
-    formcalibrationtest.h \
-    commthread.h
+    formcalibrationtest.h
 
 FORMS    += widget.ui \
     formmain.ui \

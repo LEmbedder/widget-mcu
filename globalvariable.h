@@ -11,6 +11,9 @@
 #define FLOW_TYPE_PARA           1
 #define DIFF_PRESSURE_PARA       2
 
+#define BEAT_STATE_START    0x55
+#define BEAT_STATE_STOP     0xaa
+
 
 /* 界面参数配置 */
 struct Args_config {
@@ -46,6 +49,8 @@ struct SystemData{
         int up_limit;
         int down_limit;
     }up_down_limit;
+    unsigned char KeyValue;//手动模式按键值  0xaa开始，0x55停止、0x00初始化
+    unsigned char BeatState;
 };
 
 

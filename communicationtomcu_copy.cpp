@@ -3,7 +3,6 @@
 #include "globalvariable.h"
 
 
-
 #define HCP_PDUOFFSET         4     //应用层包净载荷偏移量
 //Do配置参数
 static unsigned int DirectPressureParaDo[BEATS_NUM_MAX] ={0,0,0,0,0,0,0,0,0,0,0,0,0,0};
@@ -46,7 +45,7 @@ unsigned short int HCP_sn = 0;
 communicationToMCU::communicationToMCU(QObject *parent) : QObject(parent)
 {
     initSerialPort();
-    DataInit();
+
     /* 新建定时器用于定时检查 */
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(check_stage()));
@@ -470,27 +469,6 @@ void communicationToMCU::HcpSetCmdPara( unsigned int DO,unsigned char PFCtaskNum
 }
 
 
-//处理应答包
-void communicationToMCU::HcpHandleKey(void)
-{
-    PHCPCMD_SETK_EY pAck;
-    pAck = (PHCPCMD_SETK_EY)HcpGetTxBuf();
-
-    if( NULL == pAck)
-    {
-        return;
-    }
-    else
-    {}
-    if((0xaa == pAck->parmID)
-        || (0xaa == pAck->parmID))
-    {
-        systemData.KeyValue = pAck->parmID;
-    }
-    else
-    {}
-}
-
 /*---------------------------------------------------------------------------------------
  函数原型:  void HCP_ProcessPacket(void)
  功    能:  判断命令包类型，根据命令字做相应的处理
@@ -555,10 +533,7 @@ void communicationToMCU::HcpProcessPacket(void)
         case CMD_SET_WORKMODE:
         case CMD_SET_PRODUCTMODE:
             HCP_SendNACK(0);
-            break;
-        case CMD_SET_KEY:
-            HcpHandleKey();
-           break;
+        break;
         default:
             HCP_SendNACK(NACK_WHY_BADCMD);		 	//无效的命令，否认应答
             break;
@@ -566,7 +541,7 @@ void communicationToMCU::HcpProcessPacket(void)
   }
 
 
-void communicationToMCU::DataInit(void)
+void communicationToMCU::Init(void)
 {
     unsigned int i = 0;
     unsigned int m = 0;
@@ -608,8 +583,8 @@ void communicationToMCU::DataInit(void)
     systemData.press_diff = 0; //差压
     systemData.temp_test_result = 0;
     systemData.set_index = 0;//节拍序号清0
-    systemData.KeyValue = 0x00; //手动模式按键值  0xaa开始，0x55停止、0x00初始化
-    systemData.BeatState = BEAT_STATE_STOP;
+
+
 }
 
 
@@ -617,7 +592,7 @@ void communicationToMCU::DownloadMode(void)
 {
     if(systemData.args_config.model != systemData.args_config.model_prv)
     {
-         HcpSetCmdWordMode(systemData.args_config.model);
+         communication->HcpSetCmdWordMode(systemData.args_config.model);
     }
     else
     {}
@@ -627,7 +602,7 @@ void communicationToMCU::DownloadProductMode(void)
 {
     if(systemData.args_config.product_model != systemData.args_config.product_model_prv)
     {
-         HcpSetCmdProductMode(systemData.args_config.product_model);
+         communication->HcpSetCmdProductMode(systemData.args_config.product_model);
     }
     else
     {}
@@ -637,7 +612,7 @@ void communicationToMCU::DownloadTestMode(void)
 {
     if(systemData.args_config.test_mode != systemData.args_config.test_mode_prv)
     {
-        HcpSetCmdProductMode(systemData.args_config.test_mode);
+        communication->HcpSetCmdProductMode(systemData.args_config.test_mode);
     }
     else
     {}
@@ -692,7 +667,15 @@ void communicationToMCU::DownloadSetPara(void)
  */
 void communicationToMCU::start_first()
 {
-    HcpSetCmdWordMode(systemData.args_config.model);
+    /* 握手 */
+    if (systemData.args_config.model == 0)/* 自动模式 */
+    {
+
+    }
+    else
+    {
+
+    }
 }
 
 /*
@@ -702,32 +685,7 @@ void communicationToMCU::start_first()
  */
 void communicationToMCU::download_args()
 {
-    unsigned char flag = 0x55;
     /* 使用串口下发 */
-    if(0 == systemData.args_config.model) //自动模式
-    {
-        flag = 0xaa;
-    }
-    else if((1 == systemData.args_config.model) //手动模式
-            && (0xaa == systemData.KeyValue))
-    {
-        flag = 0xaa;
-        systemData.KeyValue = 0x00;
-    }
-    else
-    {
-        flag = 0x55;
-    }
-    if(flag == 0xaa)
-    {
-        //0x01: 开关量控制，清空参数列表，等待测试参数，复位差压采样数据更新标记
-        //0x02: 清空参数列表，等待测试参数，立即执行开关量
-        //0x03: 清空参数列表,复位差压采样数据更新标记
-        HcpSetCmdPara(0,0,0x03,0);
-        DownloadSetPara();
-    }
-    else
-    {}
 }
 
 /*
@@ -736,7 +694,7 @@ void communicationToMCU::download_args()
  */
 void communicationToMCU::check_stage()
 {
-    HcpCmdHandShake();
+
 }
 
 /*
@@ -744,5 +702,5 @@ void communicationToMCU::check_stage()
  */
 void communicationToMCU::start_again()
 {
-    download_args();
+
 }
