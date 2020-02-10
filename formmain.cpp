@@ -393,6 +393,7 @@ void FormMain::update_args_config(struct Args_config* config)
 void FormMain::on_comboBox_channel_number_currentIndexChanged(int index)
 {
     systemData.channel_number = index-1;
+    printf("systemData.channel_number = %d\n",systemData.channel_number);
 }
 /*
  * 显示测试压

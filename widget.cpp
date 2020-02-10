@@ -48,12 +48,12 @@ Widget::Widget(QWidget *parent) :
      * 初始化变量
      */
     process  = 2.6;
-    /*
-     * MCU通信控制
-     */
-    communication = new communicationToMCU;
-    communication->HcpSetCmdWordMode(systemData.args_config.model);
-    //communication->HcpSetCmdProductMode(systemData.args_config.product_model);
+
+
+//    communication = new communicationToMCU;
+//    communication->HcpSetCmdWordMode(systemData.args_config.model);
+//    communication->HcpSetCmdPara(1,1,0,5);
+//    communication->HcpSetCmdProductMode(systemData.args_config.product_model);
     /* 更行界面 */
     updateForm();
 }

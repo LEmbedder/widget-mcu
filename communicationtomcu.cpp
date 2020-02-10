@@ -1,5 +1,6 @@
 #include "sys_struct.h"
 #include "communicationtomcu.h"
+#include "globalvariable.h"
 
 
 #define HCP_PDUOFFSET         4     //应用层包净载荷偏移量
@@ -32,8 +33,8 @@ static const unsigned short int CRC_Table[256] =
 static unsigned char hcp_rxBuf[HCP_RXBUFLEN];     //uart通信接口接收缓冲区
 static unsigned char hcp_txBuf[HCP_TXBUFLEN];     //uart通信接口发送缓冲区
 
-unsigned char hcp_rxBuf_len = 0;   //发送长度
-unsigned char hcp_txBuf_len = 0;   //接收长度
+unsigned char hcp_rxBuf_len = 0;    //接收长度
+unsigned char hcp_txBuf_len = 0;    //发送长度
 
 unsigned short int HCP_sn = 0;
 
@@ -77,12 +78,12 @@ void communicationToMCU::receiveInfo()
     char *tmp = NULL;
     QByteArray info = serialPortToMCU->readAll();
     tmp = info.data();
-    hcp_txBuf_len = info.length();
-    qDebug("hcp_txBuf_len = %d",hcp_txBuf_len);
+    hcp_rxBuf_len = info.length();
+    qDebug("hcp_rxBuf_len = %d",hcp_rxBuf_len);
     for(int i = 0; i < info.length(); i++)
         qDebug("tmp[%d] = 0x%02x",i,tmp[i]);
     memset(hcp_rxBuf,0x00,HCP_TXBUFLEN);
-    memcpy(hcp_rxBuf,tmp,hcp_txBuf_len);
+    memcpy(hcp_rxBuf,tmp,hcp_rxBuf_len);
     HcpProcessPacket();
 }
 
@@ -238,6 +239,7 @@ void communicationToMCU::HcpSendPacket(int length)
 void communicationToMCU::HcpCmdHandShake(void)
 {
     HCPACK_ALIVE_CMD pAck;
+    memset((unsigned char *)&pAck,0x00,sizeof(HCPACK_ALIVE_CMD));
     pAck.header.pduOffset = HCP_PDUOFFSET;
     pAck.header.type      = ACK_PACKET;
     pAck.header.sn        = HCP_sn;
@@ -259,6 +261,10 @@ void communicationToMCU::hcpHandleHandShake(void)
     }
     else
     {}
+
+    systemData.test_press = pAck->sample1;        //直压采样值
+    systemData.press_diff = pAck->currStepSample2;//当前节拍差压采样值
+    systemData.set_index = pAck->lastStepNum + 1; //节拍编号
     /*
     pAck->timeBase; //测试流程时间基准
     pAck->writePos; //数据缓冲区(差压)当前写入位置
@@ -285,6 +291,7 @@ void communicationToMCU::hcpHandleHandShake(void)
 void communicationToMCU::HcpSetPressure(unsigned short int range)
 {
     HCPCMD_SETPRESSURE pAck;
+    memset((unsigned char *)&pAck,0x00,sizeof(HCPACK_ALIVE_CMD));
     pAck.header.pduOffset = HCP_PDUOFFSET;
     pAck.header.type      = ACK_PACKET;
     pAck.header.sn        = HCP_sn;
@@ -300,6 +307,7 @@ void communicationToMCU::HcpSetPressure(unsigned short int range)
 void communicationToMCU::HcpSetSaveDefault(void)
 {
     HCPCMD      header;
+    memset((unsigned char *)&header,0x00,sizeof(HCPCMD));
     header.pduOffset = HCP_PDUOFFSET;
     header.type      = ACK_PACKET;
     header.sn        = HCP_sn;
@@ -313,6 +321,7 @@ void communicationToMCU::HcpSetSaveDefault(void)
 void communicationToMCU::HcpSetRestore(void)
 {
     HCPCMD      header;
+    memset((unsigned char *)&header,0x00,sizeof(HCPCMD));
     header.pduOffset = HCP_PDUOFFSET;
     header.type      = ACK_PACKET;
     header.sn        = HCP_sn;
@@ -326,6 +335,7 @@ void communicationToMCU::HcpSetRestore(void)
 void communicationToMCU::HcpSetRestore(unsigned char Hversion[10])
 {
     HCPCMD_SETHVER      pCmd;
+    memset((unsigned char *)&pCmd,0x00,sizeof(HCPCMD_SETHVER));
     pCmd.header.pduOffset = HCP_PDUOFFSET;
     pCmd.header.type      = ACK_PACKET;
     pCmd.header.sn        = HCP_sn;
@@ -340,6 +350,7 @@ void communicationToMCU::HcpSetRestore(unsigned char Hversion[10])
 void communicationToMCU::HcpSetProductSn(unsigned char sn[16])
 {
     HCPCMD_SETSN      pCmd;
+    memset((unsigned char *)&pCmd,0x00,sizeof(HCPCMD_SETSN));
     pCmd.header.pduOffset = HCP_PDUOFFSET;
     pCmd.header.type      = ACK_PACKET;
     pCmd.header.sn        = HCP_sn;
@@ -354,6 +365,7 @@ void communicationToMCU::HcpSetProductSn(unsigned char sn[16])
 void communicationToMCU::HcpGetDeviceInfo(void)
 {
     HCPCMD head;
+    memset((unsigned char *)&head,0x00,sizeof(HCPCMD));
     head.pduOffset = HCP_PDUOFFSET;
     head.type      = ACK_PACKET;
     head.sn        = HCP_sn;
@@ -368,7 +380,7 @@ void communicationToMCU::HcpGetDeviceInfo(void)
 void communicationToMCU::HcpHandleGetDeviceInfo(void)
 {
     PHCPACK_DEVINFO pAck;
-
+    memset((unsigned char *)&pAck,0x00,sizeof(PHCPACK_DEVINFO));
     pAck = (PHCPACK_DEVINFO)HcpGetRxBuf();
     if(NULL == pAck)
     {
@@ -387,7 +399,8 @@ void communicationToMCU::HcpHandleGetDeviceInfo(void)
 // 工作模式：0xaa自动模式；0x55手动模式
 void communicationToMCU::HcpSetCmdWordMode(unsigned char WorkMode)
 {
-     HCPCMD_SETWORKMODE SetPara = {0};
+     HCPCMD_SETWORKMODE SetPara;
+     memset((unsigned char *)&SetPara,0x00,sizeof(HCPCMD_SETWORKMODE));
      SetPara.header.pduOffset = HCP_PDUOFFSET;
      SetPara.header.type = CMD_PACKET;
      SetPara.header.cmd = CMD_SET_WORKMODE;
@@ -399,7 +412,8 @@ void communicationToMCU::HcpSetCmdWordMode(unsigned char WorkMode)
 //ProductMode: 0xaa设置总成模式;0x55分离模式
 void communicationToMCU::HcpSetCmdProductMode(unsigned char ProductMode)
 {
-     HCPCMD_SETPARM SetPara = {0};
+     HCPCMD_SETPRODUCMODE SetPara;
+     memset((unsigned char *)&SetPara,0x00,sizeof(HCPCMD_SETPRODUCMODE));
      SetPara.header.type = CMD_PACKET;
      SetPara.header.cmd = CMD_SET_PRODUCTMODE;
      SetPara.parmID = ProductMode;
@@ -424,11 +438,22 @@ void communicationToMCU::HcpSetCmdProductMode(unsigned char ProductMode)
  返 回 值:发送缓冲区指针
  注意事项：
 ---------------------------------------------------------------------------------------*/
-void communicationToMCU::HcpSetCmdPara(PHCPCMD_SETPARM* pCmd)
+
+void communicationToMCU::HcpSetCmdPara( unsigned int DO,unsigned char PFCtaskNum,unsigned char parmID,unsigned int PFCtaskTime)
 {
-     memcpy(hcp_txBuf,(unsigned char *)&pCmd,sizeof(PHCPCMD_SETPARM));
-     HcpSendPacket(sizeof(PHCPCMD_SETPARM));
+     HCPCMD_SETPARM SetPara;
+     memset((unsigned char *)&SetPara,0x00,sizeof(HCPCMD_SETPARM));
+     SetPara.header.type = CMD_PACKET;
+     SetPara.header.cmd = CMD_SET_PARM;
+     SetPara.DO = DO;             //开关量配置值
+     SetPara.PFCtaskNum = PFCtaskNum;     //测试节拍编号
+     SetPara.parmID = parmID;         //参数配置命令字
+     SetPara.PFCtaskTime = PFCtaskTime;    //测试节拍时间
+     printf("len = %d\n",sizeof(HCPCMD_SETPARM));
+     memcpy(hcp_txBuf,(unsigned char *)&SetPara,sizeof(HCPCMD_SETPARM));
+     HcpSendPacket(sizeof(HCPCMD_SETPARM));
 }
+
 
 /*---------------------------------------------------------------------------------------
  函数原型:  void HCP_ProcessPacket(void)
@@ -441,7 +466,8 @@ void communicationToMCU::HcpSetCmdPara(PHCPCMD_SETPARM* pCmd)
 void communicationToMCU::HcpProcessPacket(void)
 {
     unsigned char  *pRxPacket = NULL;
-    PHCPCMD pCmd = {0};
+    PHCPCMD pCmd ;
+    memset((unsigned char *)&pCmd,0x00,sizeof(PHCPCMD));
     unsigned short int tmp = 0;
     unsigned short int tmpU16 = 0;
     unsigned short int packetLen = 0;
@@ -470,6 +496,7 @@ void communicationToMCU::HcpProcessPacket(void)
     switch(pCmd->cmd)   //命令码分析
     {
         case CMD_HANDSHAKE:
+            hcpHandleHandShake();
             break;
         case CMD_SET_PARM:
             break;

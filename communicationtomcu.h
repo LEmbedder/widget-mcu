@@ -30,7 +30,7 @@ public:
     void HcpSetProductSn(unsigned char sn[]);
     void HcpHandleGetDeviceInfo();
     void HcpProcessPacket();
-    void HcpSetCmdPara(PHCPCMD_SETPARM *pCmd);
+    void HcpSetCmdPara( unsigned int DO,unsigned char PFCtaskNum,unsigned char parmID,unsigned int PFCtaskTime);
     void SendToMcu(const char *data, qint64 len);
     void HcpSetPressure(unsigned short range);
     void HcpSetCmdWordMode(unsigned char WorkMode);
