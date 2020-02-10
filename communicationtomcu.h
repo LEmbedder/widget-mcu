@@ -40,7 +40,7 @@ public:
     void start_first();
     void download_args();
 signals:
-
+    void update_window();
 public slots:
     void check_stage();
     void receiveInfo();
