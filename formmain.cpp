@@ -260,12 +260,12 @@ void FormMain::receiveInfo()
 }
 void FormMain::updateForm()
 {
-//    ui->label_test_pressure->setText( QString::number(main_Form_Infor.test_pressure) );
     disp_test_press(systemData.test_press);
-    disp_test_result(systemData.temp_test_result);
+    disp_test_result(systemData.press_diff);
+    updateSeries(systemData.set_index,systemData.press_diff);
+    progressBar->setProgressValue(systemData.set_index);
     ui->label_worker_number->setText(QString(systemData.args_config.work_number));
-//    ui->lineEdit_worker_number->setText(main_Form_Infor.worker_number);
-//    ui->textEdit_workpiece_number->setText(main_Form_Infor.workpiece_number);
+
     if ( systemData.args_config.test_mode == 0)
     {
         ui->widget_2->show();

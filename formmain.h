@@ -17,6 +17,7 @@
 #include "globalvariable.h"
 #include "formvolumetest.h"
 #include "formcalibrationtest.h"
+#include "progressbar.h"
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -72,6 +73,7 @@ private:
     QLineSeries *series ;
     QChart *chart;
     QChartView *chartView;
+    ProgressBar *progressBar;
 
     int labelSucess[10];
 };

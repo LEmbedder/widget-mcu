@@ -55,6 +55,7 @@ Widget::Widget(QWidget *parent) :
      * 添加控制主界面显示
     */
     formain = new FormMain(this);
+    formain->progressBar = pb;
     ui->verticalLayout_target->addWidget(formain);
     /* 更行界面 */
     updateForm();
