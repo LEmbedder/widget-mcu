@@ -13,7 +13,7 @@ class communicationToMCU : public QObject
     Q_OBJECT
     void initSerialPort();
     void writer(const char *data, qint64 len);
-    QTimer *timer;
+    QTimer *timer,*timer_over;
 public:
     explicit communicationToMCU(QObject *parent = 0);
 
@@ -45,6 +45,7 @@ public slots:
     void check_stage();
     void receiveInfo();
     void HcpGetDeviceInfo();
+    void start_again();
 };
 
 #endif // COMMUNICATIONTOMCU_H

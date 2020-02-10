@@ -47,6 +47,11 @@ communicationToMCU::communicationToMCU(QObject *parent) : QObject(parent)
     connect(timer, SIGNAL(timeout()), this, SLOT(check_stage()));
 //    timer->start(1000*10);/* 启动定时器 */
 
+    /* 单次执行,最终节拍结束后执行 */
+    timer_over = new QTimer(this);
+    timer_over->setSingleShot(true);
+    connect(timer_over, SIGNAL(timeout()), this, SLOT(start_again()));
+//    timer->start(1000*10);/* 启动定时器 */
 }
 void communicationToMCU::initSerialPort()
 {
@@ -564,6 +569,14 @@ void communicationToMCU::download_args()
  *
  */
 void communicationToMCU::check_stage()
+{
+
+}
+
+/*
+ * 再次循环调用
+ */
+void communicationToMCU::start_again()
 {
 
 }

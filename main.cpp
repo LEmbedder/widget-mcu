@@ -14,9 +14,9 @@ int main(int argc, char *argv[])
     Widget w;
     w.show();
 
-    ComThread dt;
-    dt.setStackSize(1024 * 1024 * 4);
-    dt.start();
+//    ComThread dt;
+//    dt.setStackSize(1024 * 1024 * 4);
+//    dt.start();
 
     return a.exec();
 }
