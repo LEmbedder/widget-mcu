@@ -7,6 +7,7 @@
 #include <QByteArray>
 #include "sys_struct.h"
 #include <QTimer>
+#include <QDebug>
 
 class communicationToMCU : public QObject
 {

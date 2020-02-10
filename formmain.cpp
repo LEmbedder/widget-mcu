@@ -94,11 +94,11 @@ FormMain::FormMain(QWidget *parent) :
      * 图标绘制
      */
     series = new QLineSeries();
-    series->append(0, 6);
-    series->append(1, 4);
-    series->append(2, 8);
-    series->append(3, 4);
-    series->append(4, 5);
+//    series->append(0, 6);
+//    series->append(1, 4);
+//    series->append(2, 8);
+//    series->append(3, 4);
+//    series->append(4, 5);
 //    *series << QPointF(5, 1) << QPointF(6, 3) << QPointF(7, 6) << QPointF(8, 3) << QPointF(9, 2);updateSeries
 
 
@@ -149,7 +149,7 @@ FormMain::FormMain(QWidget *parent) :
 
     updateForm();
 
-    connect(communication,SIGNAL(update_window()),this,SLOT(updateForm()));
+    connect(communication,SIGNAL(update_window()),this,SLOT(update_mcu()));
 }
 
 FormMain::~FormMain()
@@ -255,15 +255,23 @@ void FormMain::updateLabelSucess(int next)
 void FormMain::receiveInfo()
 {
     QByteArray info = serialPort->readAll();
-//    qDebug()<<info;
     ui->textEdit_workpiece_number->setText(info.data());
 }
-void FormMain::updateForm()
+/*
+ * 更新mcu发来的信息
+ */
+void FormMain::update_mcu()
 {
     disp_test_press(systemData.test_press);/* 测试压更新 */
     disp_test_result(systemData.press_diff);/* 差压更新 */
     updateSeries(systemData.set_index,systemData.press_diff);/* 曲线更新 */
     progressBar->setProgressValue(systemData.set_index);/* 进度条更新 */
+
+}
+void FormMain::updateForm()
+{
+    disp_test_press(systemData.test_press);/* 测试压更新 */
+    disp_test_result(systemData.press_diff);/* 差压更新 */
     ui->label_worker_number->setText(QString(systemData.args_config.work_number));
 
     if ( systemData.args_config.test_mode == 0)
@@ -297,7 +305,6 @@ void FormMain::updateForm()
 */
 void FormMain::on_pushButton_clicked()
 {
-//    qDebug()<<"on_pushButton_clicked";
     witchButtonChecked(ui->pushButton);
     witchButtonChecked(ui->pushButton_2);
     witchButtonChecked(ui->pushButton_3);
@@ -315,7 +322,6 @@ void FormMain::on_pushButton_clicked()
 */
 void FormMain::on_pushButton_2_clicked()
 {
-//    qDebug()<<"on_pushButton_2_clicked";
     witchButtonChecked(ui->pushButton);
     witchButtonChecked(ui->pushButton_2);
     witchButtonChecked(ui->pushButton_3);
@@ -332,7 +338,6 @@ void FormMain::on_pushButton_2_clicked()
 */
 void FormMain::on_pushButton_3_clicked()
 {
-//    qDebug()<<"on_pushButton_3_clicked";
     witchButtonChecked(ui->pushButton);
     witchButtonChecked(ui->pushButton_2);
     witchButtonChecked(ui->pushButton_3);
@@ -348,7 +353,6 @@ void FormMain::on_pushButton_3_clicked()
 */
 void FormMain::on_pushButton_4_clicked()
 {
-//    qDebug()<<"on_pushButton_4_clicked";
     witchButtonChecked(ui->pushButton);
     witchButtonChecked(ui->pushButton_2);
     witchButtonChecked(ui->pushButton_3);
@@ -432,6 +436,10 @@ void FormMain::on_lineEdit_down_limit_editingFinished()
  */
 void FormMain::updateSeries(int position, double value)
 {
+    if (series == NULL)
+    {
+        return;
+    }
     if ( position == 0 )
     {
         series->clear();

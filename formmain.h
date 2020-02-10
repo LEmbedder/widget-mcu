@@ -39,9 +39,11 @@ public:
     void disp_test_press(double value);
     void disp_test_result(double value);
     void updateSeries(int position, double value);
+    ProgressBar *progressBar;
 public slots:
     void receiveInfo();
     void update_args_config(Args_config *config);
+    void update_mcu();
 private slots:
     void on_pushButton_clicked();
 
@@ -73,7 +75,7 @@ private:
     QLineSeries *series ;
     QChart *chart;
     QChartView *chartView;
-    ProgressBar *progressBar;
+
 
     int labelSucess[10];
 };
