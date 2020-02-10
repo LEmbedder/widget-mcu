@@ -260,10 +260,10 @@ void FormMain::receiveInfo()
 }
 void FormMain::updateForm()
 {
-    disp_test_press(systemData.test_press);
-    disp_test_result(systemData.press_diff);
-    updateSeries(systemData.set_index,systemData.press_diff);
-    progressBar->setProgressValue(systemData.set_index);
+    disp_test_press(systemData.test_press);/* 测试压更新 */
+    disp_test_result(systemData.press_diff);/* 差压更新 */
+    updateSeries(systemData.set_index,systemData.press_diff);/* 曲线更新 */
+    progressBar->setProgressValue(systemData.set_index);/* 进度条更新 */
     ui->label_worker_number->setText(QString(systemData.args_config.work_number));
 
     if ( systemData.args_config.test_mode == 0)
