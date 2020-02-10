@@ -42,6 +42,11 @@ communicationToMCU::communicationToMCU(QObject *parent) : QObject(parent)
 {
     initSerialPort();
 
+    /* 新建定时器用于定时检查 */
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(check_stage()));
+//    timer->start(1000*10);/* 启动定时器 */
+
 }
 void communicationToMCU::initSerialPort()
 {
@@ -525,3 +530,40 @@ void communicationToMCU::HcpProcessPacket(void)
             break;
     }
   }
+
+/*
+ * 第一步开始执行:
+ * 并判断是否是自动模式,再进行握手
+ * 公共函数所有类实例化后调用
+ */
+void communicationToMCU::start_first()
+{
+    /* 握手 */
+    if (systemData.args_config.model == 0)/* 自动模式 */
+    {
+
+    }
+    else
+    {
+
+    }
+}
+
+/*
+ * 第二步执行:
+ * 一次下发所有参数,
+ * 数据下发完就可以启动定时器定时检查
+ */
+void communicationToMCU::download_args()
+{
+    /* 使用串口下发 */
+}
+
+/*
+ * 定时检查当前处于第几节拍
+ *
+ */
+void communicationToMCU::check_stage()
+{
+
+}

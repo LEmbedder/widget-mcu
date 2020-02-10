@@ -6,12 +6,14 @@
 #include <QtSerialPort/QSerialPortInfo>
 #include <QByteArray>
 #include "sys_struct.h"
+#include <QTimer>
 
 class communicationToMCU : public QObject
 {
     Q_OBJECT
     void initSerialPort();
     void writer(const char *data, qint64 len);
+    QTimer *timer;
 public:
     explicit communicationToMCU(QObject *parent = 0);
 
@@ -35,9 +37,12 @@ public:
     void HcpSetPressure(unsigned short range);
     void HcpSetCmdWordMode(unsigned char WorkMode);
     void HcpSetCmdProductMode(unsigned char ProductMode);
+    void start_first();
+    void download_args();
 signals:
 
 public slots:
+    void check_stage();
     void receiveInfo();
     void HcpGetDeviceInfo();
 };
