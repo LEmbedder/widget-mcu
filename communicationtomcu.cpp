@@ -280,6 +280,9 @@ void communicationToMCU::hcpHandleHandShake(void)
     systemData.test_press = pAck->sample1;        //直压采样值
     systemData.press_diff = pAck->currStepSample2;//当前节拍差压采样值
     systemData.set_index = pAck->lastStepNum + 1; //节拍编号
+
+    /* 更新界面 */
+    emit update_window();
     /*
     pAck->timeBase; //测试流程时间基准
     pAck->writePos; //数据缓冲区(差压)当前写入位置

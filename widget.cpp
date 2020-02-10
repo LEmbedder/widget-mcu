@@ -38,11 +38,7 @@ Widget::Widget(QWidget *parent) :
     pb->setFixedSize(700,50);
     pb->setProgressValue(2.6);
 
-    /*
-     * 添加控制主界面显示
-    */
-    formain = new FormMain(this);
-    ui->verticalLayout_target->addWidget(formain);
+
 
     /*
      * 初始化变量
@@ -50,10 +46,16 @@ Widget::Widget(QWidget *parent) :
     process  = 2.6;
 
 
-//    communication = new communicationToMCU;
+    communication = new communicationToMCU;
 //    communication->HcpSetCmdWordMode(systemData.args_config.model);
 //    communication->HcpSetCmdPara(1,1,0,5);
 //    communication->HcpSetCmdProductMode(systemData.args_config.product_model);
+
+    /*
+     * 添加控制主界面显示
+    */
+    formain = new FormMain(this);
+    ui->verticalLayout_target->addWidget(formain);
     /* 更行界面 */
     updateForm();
 }

@@ -27,9 +27,9 @@ public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
     QTimer *timer;
-    void updateForm();
     FormMain *formain;
 private slots:
+    void updateForm();
     void timerOut();
 private:
     Ui::Widget *ui;

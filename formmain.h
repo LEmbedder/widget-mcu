@@ -33,7 +33,7 @@ public:
     explicit FormMain(QWidget *parent = 0);
     ~FormMain();
 
-    void updateForm();
+
     void updateLabelSucess(int next);
     void disp_test_press(double value);
     void disp_test_result(double value);
@@ -55,6 +55,8 @@ private slots:
     void on_lineEdit_up_limit_editingFinished();
 
     void on_lineEdit_down_limit_editingFinished();
+
+    void updateForm();
 
 private:
     Ui::FormMain *ui;

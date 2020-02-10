@@ -149,6 +149,7 @@ FormMain::FormMain(QWidget *parent) :
 
     updateForm();
 
+    connect(communication,SIGNAL(update_window()),this,SLOT(updateForm()));
 }
 
 FormMain::~FormMain()
@@ -290,7 +291,6 @@ void FormMain::updateForm()
         formVolumeTest->hide();
         ui->widget_13->setEnabled(false);
     }
-
 }
 /*
  * 按键切换为主界面

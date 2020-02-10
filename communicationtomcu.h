@@ -46,7 +46,7 @@ public:
     void download_args();
     void DownloadSetPara();
 signals:
-
+    void update_window();
 public slots:
     void check_stage();
     void receiveInfo();
