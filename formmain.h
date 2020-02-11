@@ -40,6 +40,8 @@ public:
     void disp_test_result(double value);
     void updateSeries(int position, double value);
     ProgressBar *progressBar;
+    void loadConfigArgs();
+    void saveConfigArgs();
 public slots:
     void receiveInfo();
     void update_args_config(Args_config *config);
@@ -78,6 +80,7 @@ private:
 
 
     int labelSucess[10];
+    int save_index;
 };
 
 #endif // FORMMAIN_H

@@ -13,6 +13,7 @@ FormMain::FormMain(QWidget *parent) :
     ui(new Ui::FormMain)
 {
     ui->setupUi(this);
+    save_index = 0;
     for(int i = 0; i< 48;i++)
     {
         ui->comboBox_channel_number->addItem(QString::number(i+1));
@@ -150,6 +151,9 @@ FormMain::FormMain(QWidget *parent) :
     updateForm();
 
     connect(communication,SIGNAL(update_window()),this,SLOT(update_mcu()));
+
+    loadConfigArgs();
+    ui->comboBox_channel_number->setCurrentIndex(systemData.channel_number);
 }
 
 FormMain::~FormMain()
@@ -391,13 +395,46 @@ void FormMain::update_args_config(struct Args_config* config)
     ui->comboBox_channel_number->setCurrentText(QString::number(systemData.channel_number));
     updateForm();
 }
+/* 获取参数
+ */
+void FormMain::loadConfigArgs()
+{
+    QString fileName = QApplication::applicationDirPath() + "/settings.ini";
+    QSettings setting(fileName, QSettings::IniFormat);
+
+    QStringList tagList;
+    if (QFile(fileName).exists())
+    {
+        setting.beginGroup("SystemData");
+        tagList = setting.childKeys();
+        if (tagList.indexOf("channel_number") != -1)
+        {
+            systemData.channel_number = setting.value("channel_number").toInt();
+        }
+    }
+}
+/*
+ * 保存参数
+ */
+
+void FormMain::saveConfigArgs()
+{
+    QString fileName = QApplication::applicationDirPath() + "/settings.ini";
+    QSettings setting(fileName, QSettings::IniFormat);
+    if(save_index++ > 0)
+    {
+        setting.beginGroup("SystemData");
+        setting.setValue("channel_number",systemData.channel_number);
+    }
+}
 /*
  * 通道选择变化了
  */
 void FormMain::on_comboBox_channel_number_currentIndexChanged(int index)
 {
-    systemData.channel_number = index-1;
-    printf("systemData.channel_number = %d\n",systemData.channel_number);
+    systemData.channel_number = index;
+    saveConfigArgs();
+    qDebug("systemData.channel_number = %d\n",systemData.channel_number);
 }
 /*
  * 显示测试压
