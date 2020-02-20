@@ -42,7 +42,6 @@
 #define CMD_PACKET              0x01        //命令包类型标记
 #define ACK_PACKET              0x02        //应答包类型标记
 
-#define HCP_PDUOFFSET           4           //应用层包净载荷偏移量
 
 
 //保存/恢复出厂设置控制字
@@ -72,7 +71,7 @@ typedef  struct HCPCMD_tag              //命令包头数据结构定义
     unsigned char   pduOffset;    //通信包净载荷偏移量
     unsigned char   type;         //通信包类型：CMD_PACKET or ACK_PACKET
     unsigned short int  sn;       //通信包序列号 两个字节
-    unsigned char   devAddr;      //RS485地址
+    unsigned char   len;          //报文长度（从报头到报尾，不包括crc两位）
     unsigned char   cmd;          //命令字
 }HCPCMD,*PHCPCMD;
 
@@ -128,7 +127,7 @@ typedef  struct HCPACK_tag              //应答包头数据结构定义
     unsigned char   pduOffset;          //通信包净载荷偏移量
     unsigned char   type;               //通信包类型：CMD_PACKET or ACK_PACKET
     unsigned short int  sn;             //通信包序列号
-    unsigned char   devAddr;            //RS485地址
+    unsigned char   len;                //报文长度（从报头到报尾，不包括crc两位）
     unsigned char   ack;                //应答字
 }HCPACK,*PHCPACK;
 
@@ -137,7 +136,7 @@ typedef struct HCPACK_NACK_tag        //否定应答包头数据结构定义
     unsigned char   pduOffset;          //通信包净载荷偏移量
     unsigned char   type;               //通信包类型：CMD_PACKET or ACK_PACKET
     unsigned short int  sn;             //通信包序列号
-    unsigned char   devAddr;            //RS485地址
+    unsigned char   len;                //报文长度（从报头到报尾，不包括crc两位）
     unsigned char   ack;                //应答字
     unsigned short int  why;            //否定应答原因
 }HCPACK_NACK,*PHCPACK_NACK;

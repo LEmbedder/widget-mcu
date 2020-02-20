@@ -45,11 +45,7 @@ Widget::Widget(QWidget *parent) :
      */
     process  = 2.6;
 
-
     communication = new communicationToMCU;
-//    communication->HcpSetCmdWordMode(systemData.args_config.model);
-//    communication->HcpSetCmdPara(1,1,0,5);
-//    communication->HcpSetCmdProductMode(systemData.args_config.product_model);
 
     /*
      * 添加控制主界面显示
@@ -57,6 +53,8 @@ Widget::Widget(QWidget *parent) :
     formain = new FormMain(this);
     formain->progressBar = pb;
     ui->verticalLayout_target->addWidget(formain);
+    communication->DataInit();
+    communication->start_first();
     /* 更行界面 */
     updateForm();
 }

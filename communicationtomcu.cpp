@@ -1,10 +1,11 @@
+#include <unistd.h>
 #include "sys_struct.h"
 #include "communicationtomcu.h"
 #include "globalvariable.h"
 
 
 
-#define HCP_PDUOFFSET         4     //应用层包净载荷偏移量
+#define HCP_PDUOFFSET         0xaa     //包头标志
 //Do配置参数
 static unsigned int DirectPressureParaDo[BEATS_NUM_MAX] ={0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 static unsigned int FlowTypeParaDo[BEATS_NUM_MAX]       ={0,0,0,0,0,0,0,0,0,0,0,0,0,0};
@@ -46,17 +47,20 @@ unsigned short int HCP_sn = 0;
 communicationToMCU::communicationToMCU(QObject *parent) : QObject(parent)
 {
     initSerialPort();
-    DataInit();
     /* 新建定时器用于定时检查 */
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(check_stage()));
-//    timer->start(1000*10);/* 启动定时器 */
+    timer->start(1000);// 启动定时器ms
+
+    timer_handle_uart = new QTimer(this);
+    connect(timer_handle_uart, SIGNAL(timeout()), this, SLOT( HcpProcessPacket()));
+    timer_handle_uart->start(100);// 启动定时器ms
 
     /* 单次执行,最终节拍结束后执行 */
     timer_over = new QTimer(this);
     timer_over->setSingleShot(true);
     connect(timer_over, SIGNAL(timeout()), this, SLOT(start_again()));
-//    timer->start(1000*10);/* 启动定时器 */
+    //timer_over->start(1000);// 启动定时器ms
 }
 void communicationToMCU::initSerialPort()
 {
@@ -93,13 +97,12 @@ void communicationToMCU::receiveInfo()
     char *tmp = NULL;
     QByteArray info = serialPortToMCU->readAll();
     tmp = info.data();
-    hcp_rxBuf_len = info.length();
     qDebug("hcp_rxBuf_len = %d",hcp_rxBuf_len);
     for(int i = 0; i < info.length(); i++)
         qDebug("tmp[%d] = 0x%02x",i,tmp[i]);
-    memset(hcp_rxBuf,0x00,HCP_TXBUFLEN);
-    memcpy(hcp_rxBuf,tmp,hcp_rxBuf_len);
-    HcpProcessPacket();
+    memset(hcp_rxBuf + hcp_rxBuf_len,0x00,info.length());
+    memcpy(hcp_rxBuf + hcp_rxBuf_len,tmp ,info.length());
+    hcp_rxBuf_len += info.length();
 }
 
 void communicationToMCU::SendToMcu(const char *data, qint64 len)
@@ -182,7 +185,7 @@ void communicationToMCU::HCP_SendACK(void)
     pAck->pduOffset = HCP_PDUOFFSET;
     pAck->type = ACK_PACKET;
     pAck->sn = HCP_sn;
-    pAck->devAddr = 0x00;
+    pAck->len = sizeof(HCPACK);
     pAck->ack = ACK_YESSIR;
     HcpSendPacket(sizeof(HCPACK));
 }
@@ -216,7 +219,7 @@ void communicationToMCU::HCP_SendNACK(unsigned short int why)
     {
         pAck->sn = HCP_sn;
     }
-    pAck->devAddr = 0x00;
+    pAck->len = sizeof(HCPACK_NACK);
     pAck->ack = ACK_NACK;
     pAck->why = why;
     HcpSendPacket(sizeof(HCPACK_NACK));
@@ -258,7 +261,7 @@ void communicationToMCU::HcpCmdHandShake(void)
     pAck.header.pduOffset = HCP_PDUOFFSET;
     pAck.header.type      = ACK_PACKET;
     pAck.header.sn        = HCP_sn;
-    pAck.header.devAddr   = 0l;
+    pAck.header.len   = sizeof(HCPACK_ALIVE_CMD);
     pAck.header.cmd = CMD_HANDSHAKE;
     memcpy(hcp_txBuf,(unsigned char *)&pAck,sizeof(HCPACK_ALIVE_CMD));
     HcpSendPacket(sizeof(HCPACK_ALIVE_CMD));
@@ -267,34 +270,44 @@ void communicationToMCU::HcpCmdHandShake(void)
 //处理应答包
 void communicationToMCU::hcpHandleHandShake(void)
 {
-    PHCPACK_ALIVE pAck;
-    pAck = (PHCPACK_ALIVE)HcpGetTxBuf();
+    unsigned  int      timeBase = 0;       //测试流程时间基准
+    unsigned short int      writePos = 0;       //数据缓冲区(差压)当前写入位置
+    unsigned short int      sample1 = 0;        //直压采样值
+    unsigned short int      currStepSample2 = 0;//当前节拍差压采样值
+    unsigned short int      lastStepSample1 = 0;//上一节拍直压采样值
+    unsigned short int      lastStepSample2 = 0;//上一节拍差压采样值
+    unsigned short int      lastStepNum = 0;    //上一节拍编号
 
-    if( NULL == pAck)
+    timeBase = hcp_rxBuf[6] | hcp_rxBuf[7] << 8 | hcp_rxBuf[8] << 16 | hcp_rxBuf[9] << 24;
+    writePos = hcp_rxBuf[10] | hcp_rxBuf[11] << 8;
+    sample1  = hcp_rxBuf[12] | hcp_rxBuf[13] << 8;
+    currStepSample2 = hcp_rxBuf[14] | hcp_rxBuf[15] << 8;
+    lastStepSample1 = hcp_rxBuf[16] | hcp_rxBuf[17] << 8;
+    lastStepSample2 = hcp_rxBuf[18] | hcp_rxBuf[19] << 8;
+    lastStepNum     = hcp_rxBuf[20] | hcp_rxBuf[21] << 8;
+
+    printf("timeBase =%d\n",timeBase);
+    printf("writePos =%d\n",writePos);
+    printf("sample1 =%d\n",sample1);
+    printf("currStepSample2 =%d\n",currStepSample2);
+    printf("lastStepSample1 =%d\n",lastStepSample1);
+    printf("lastStepSample2 =%d\n",lastStepSample2);
+    printf("lastStepNum =%d\n",lastStepNum);
+
+    systemData.test_press = (double)(sample1 * 0.001);     //直压采样值
+    systemData.press_diff = currStepSample2;               //当前节拍差压采样值
+    systemData.set_index  = lastStepNum + 1;                   //节拍编号
+
+
+    if((BEATS_NUM_MAX - 1) == systemData.set_index)
     {
-        return;
+        systemData.temp_test_result = systemData.press_diff;
+        systemData.BeatState        = BEAT_STATE_STOP;
     }
     else
     {}
-
-    systemData.test_press = pAck->sample1;        //直压采样值
-    systemData.press_diff = pAck->currStepSample2;//当前节拍差压采样值
-    systemData.set_index = pAck->lastStepNum + 1; //节拍编号
-
     /* 更新界面 */
     emit update_window();
-    /*
-    pAck->timeBase; //测试流程时间基准
-    pAck->writePos; //数据缓冲区(差压)当前写入位置
-
-    pAck->sample1;  //直压采样值
-    pAck->currStepSample2; //当前节拍差压采样值
-
-    pAck->lastStepSample1;//上一节拍直压采样值
-    pAck->lastStepSample2;//上一节拍差压采样值
-
-    pAck->lastStepNum; //上一节拍编号
-    */
 }
 
 
@@ -313,7 +326,7 @@ void communicationToMCU::HcpSetPressure(unsigned short int range)
     pAck.header.pduOffset = HCP_PDUOFFSET;
     pAck.header.type      = ACK_PACKET;
     pAck.header.sn        = HCP_sn;
-    pAck.header.devAddr   = 0l;
+    pAck.header.len       = sizeof(HCPCMD_SETPRESSURE);
     pAck.header.cmd = CMD_SET_PRESSURE;
     pAck.range = range;
     memcpy(hcp_txBuf,(unsigned char *)&pAck,sizeof(HCPCMD_SETPRESSURE));
@@ -329,7 +342,7 @@ void communicationToMCU::HcpSetSaveDefault(void)
     header.pduOffset = HCP_PDUOFFSET;
     header.type      = ACK_PACKET;
     header.sn        = HCP_sn;
-    header.devAddr   = 0l;
+    header.len   = sizeof(HCPCMD);
     header.cmd = CMD_SAVEDEFAULT;
     memcpy(hcp_txBuf,(unsigned char *)&header,sizeof(HCPCMD));
     HcpSendPacket(sizeof(HCPCMD));
@@ -343,7 +356,7 @@ void communicationToMCU::HcpSetRestore(void)
     header.pduOffset = HCP_PDUOFFSET;
     header.type      = ACK_PACKET;
     header.sn        = HCP_sn;
-    header.devAddr   = 0l;
+    header.len   = sizeof(HCPCMD);
     header.cmd = CMD_RESTORE;
     memcpy(hcp_txBuf,(unsigned char *)&header,sizeof(HCPCMD));
     HcpSendPacket(sizeof(HCPCMD));
@@ -357,7 +370,7 @@ void communicationToMCU::HcpSetRestore(unsigned char Hversion[10])
     pCmd.header.pduOffset = HCP_PDUOFFSET;
     pCmd.header.type      = ACK_PACKET;
     pCmd.header.sn        = HCP_sn;
-    pCmd.header.devAddr   = 0;
+    pCmd.header.len   = sizeof(HCPCMD_SETHVER);
     pCmd.header.cmd = CMD_SET_HVERSION;
     memcpy(pCmd.hardwareVer,Hversion,10);
     memcpy(hcp_txBuf,(unsigned char *)&pCmd,sizeof(HCPCMD_SETHVER));
@@ -372,7 +385,7 @@ void communicationToMCU::HcpSetProductSn(unsigned char sn[16])
     pCmd.header.pduOffset = HCP_PDUOFFSET;
     pCmd.header.type      = ACK_PACKET;
     pCmd.header.sn        = HCP_sn;
-    pCmd.header.devAddr   = 0l;
+    pCmd.header.len   = sizeof(HCPCMD_SETSN);
     pCmd.header.cmd = CMD_SET_SN;
     memcpy(pCmd.sn,sn,16);
     memcpy(hcp_txBuf,(unsigned char *)&pCmd,sizeof(HCPCMD_SETSN));
@@ -387,7 +400,7 @@ void communicationToMCU::HcpGetDeviceInfo(void)
     head.pduOffset = HCP_PDUOFFSET;
     head.type      = ACK_PACKET;
     head.sn        = HCP_sn;
-    head.devAddr   = 0l;
+    head.len   = sizeof(HCPCMD);
     head.cmd = CMD_SET_SN;
     memcpy(hcp_txBuf,(unsigned char *)&head,sizeof(HCPCMD));
     HcpSendPacket(sizeof(HCPCMD));
@@ -422,6 +435,7 @@ void communicationToMCU::HcpSetCmdWordMode(unsigned char WorkMode)
      SetPara.header.pduOffset = HCP_PDUOFFSET;
      SetPara.header.type = CMD_PACKET;
      SetPara.header.cmd = CMD_SET_WORKMODE;
+     SetPara.header.len = sizeof(HCPCMD_SETWORKMODE);
      SetPara.parmID = WorkMode;
      memcpy(hcp_txBuf,(unsigned char *)&SetPara,sizeof(HCPCMD_SETWORKMODE));
      HcpSendPacket(sizeof(HCPCMD_SETWORKMODE));
@@ -432,8 +446,10 @@ void communicationToMCU::HcpSetCmdProductMode(unsigned char ProductMode)
 {
      HCPCMD_SETPRODUCMODE SetPara;
      memset((unsigned char *)&SetPara,0x00,sizeof(HCPCMD_SETPRODUCMODE));
+     SetPara.header.pduOffset = HCP_PDUOFFSET;
      SetPara.header.type = CMD_PACKET;
      SetPara.header.cmd = CMD_SET_PRODUCTMODE;
+     SetPara.header.len = sizeof(HCPCMD_SETPRODUCMODE);
      SetPara.parmID = ProductMode;
      memcpy(hcp_txBuf,(unsigned char *)&SetPara,sizeof(HCPCMD_SETPRODUCMODE));
      HcpSendPacket(sizeof(HCPCMD_SETPRODUCMODE));
@@ -459,25 +475,33 @@ void communicationToMCU::HcpSetCmdProductMode(unsigned char ProductMode)
 
 void communicationToMCU::HcpSetCmdPara( unsigned int DO,unsigned char PFCtaskNum,unsigned char parmID,unsigned int PFCtaskTime)
 {
-     HCPCMD_SETPARM SetPara;
-     memset((unsigned char *)&SetPara,0x00,sizeof(HCPCMD_SETPARM));
-     SetPara.header.type = CMD_PACKET;
-     SetPara.header.cmd = CMD_SET_PARM;
-     SetPara.DO = DO;             //开关量配置值
-     SetPara.PFCtaskNum = PFCtaskNum;     //测试节拍编号
-     SetPara.parmID = parmID;         //参数配置命令字
-     SetPara.PFCtaskTime = PFCtaskTime;    //测试节拍时间
-     printf("len = %d\n",sizeof(HCPCMD_SETPARM));
-     memcpy(hcp_txBuf,(unsigned char *)&SetPara,sizeof(HCPCMD_SETPARM));
-     HcpSendPacket(sizeof(HCPCMD_SETPARM));
+    HCPCMD_SETPARM SetPara;
+    memset((unsigned char *)&SetPara,0x00,sizeof(HCPCMD_SETPARM));
+    SetPara.header.pduOffset = HCP_PDUOFFSET;
+    SetPara.header.type = CMD_PACKET;
+    SetPara.header.cmd = CMD_SET_PARM;
+    SetPara.header.len = sizeof(HCPCMD_SETPARM);
+    SetPara.DO = DO;             //开关量配置值
+    SetPara.PFCtaskNum = PFCtaskNum;     //测试节拍编号
+    SetPara.parmID = parmID;         //参数配置命令字
+    SetPara.PFCtaskTime = PFCtaskTime;    //测试节拍时间
+    printf("SetPara.header.pduOffset =%d\n",SetPara.header.pduOffset);
+    printf("SetPara.header.type =%d\n",SetPara.header.type);
+    printf("SetPara.header.cmd =%d\n",SetPara.header.cmd);
+    printf("SetPara.DO =%d\n",SetPara.DO);
+    printf("SetPara.PFCtaskNum =%d\n",SetPara.PFCtaskNum);
+    printf("SetPara.parmID =%d\n",SetPara.parmID);
+    printf("SetPara.PFCtaskTime =%d\n",SetPara.PFCtaskTime);
+    memcpy(hcp_txBuf,(unsigned char *)&SetPara,sizeof(HCPCMD_SETPARM));
+    HcpSendPacket(sizeof(HCPCMD_SETPARM));
 }
 
 
-//处理应答包
+//处理按键
 void communicationToMCU::HcpHandleKey(void)
 {
     PHCPCMD_SETK_EY pAck;
-    pAck = (PHCPCMD_SETK_EY)HcpGetTxBuf();
+    pAck = (PHCPCMD_SETK_EY)HcpGetRxBuf();
 
     if( NULL == pAck)
     {
@@ -486,7 +510,7 @@ void communicationToMCU::HcpHandleKey(void)
     else
     {}
     if((0xaa == pAck->parmID)
-        || (0xaa == pAck->parmID))
+        || (0x55 == pAck->parmID))
     {
         systemData.KeyValue = pAck->parmID;
     }
@@ -512,61 +536,69 @@ void communicationToMCU::HcpProcessPacket(void)
     unsigned short int packetLen = 0;
     //获取命令包缓冲区首地址
     packetLen = hcp_rxBuf_len;
-    if( packetLen < sizeof(HCPCMD) + 2)
+    if(((hcp_rxBuf[4] + 2) == packetLen) && (0 != hcp_rxBuf_len))
     {
-        return;
+        if( packetLen < sizeof(HCPCMD) + 2)
+        {
+            return;
+        }
+        else
+        {}
+        pRxPacket = hcp_rxBuf;
+        //从包缓冲区中取出CRC校验码字段
+        tmpU16 = pRxPacket[ packetLen - 2 ];
+        tmpU16 = tmpU16 << 8;
+        tmpU16 |= pRxPacket[ packetLen - 1 ];
+        tmp = crc(pRxPacket, packetLen - 2 );		//计算CRC值
+        if(tmp != tmpU16 )  //CRC校验失败
+        {
+            //HCP_SendNACK(NACK_WHY_BADCRC);
+            return;
+        }
+        else
+        {}
+        pCmd = (PHCPCMD)pRxPacket;
+        switch(pCmd->cmd)   //命令码分析
+        {
+            case CMD_HANDSHAKE:
+                hcpHandleHandShake();
+                printf("***************************************************\n");
+                break;
+            case CMD_SET_PARM:
+                break;
+            case CMD_SET_PRESSURE:
+                break;
+            case CMD_SAVEDEFAULT:
+                break;
+            case CMD_RESTORE:
+                break;
+            case CMD_SET_HVERSION:
+                break;
+            case CMD_SET_SN:
+                break;
+            case CMD_SET_CFGID:
+                break;
+            case CMD_GET_INFO:
+                break;
+            case CMD_ENGMODE:
+                break;
+            case CMD_SET_WORKMODE:
+            case CMD_SET_PRODUCTMODE:
+                //HCP_SendNACK(0);
+                break;
+            case CMD_SET_KEY:
+                HcpHandleKey();
+               break;
+            default:
+                //HCP_SendNACK(NACK_WHY_BADCMD);		 	//无效的命令，否认应答
+                break;
+        }
+        hcp_rxBuf_len = 0;
+        memset(hcp_rxBuf ,0x00,HCP_RXBUFLEN);
     }
     else
     {}
-    pRxPacket = hcp_rxBuf;
-    //从包缓冲区中取出CRC校验码字段
-    tmpU16 = pRxPacket[ packetLen - 2 ];
-    tmpU16 = tmpU16 << 8;
-    tmpU16 |= pRxPacket[ packetLen - 1 ];
-    tmp = crc(pRxPacket, packetLen - 2 );		//计算CRC值
-    if(tmp != tmpU16 )  //CRC校验失败
-    {
-        HCP_SendNACK(NACK_WHY_BADCRC);
-        return;
-    }
-    else
-    {}
-    pCmd = (PHCPCMD)pRxPacket;
-    switch(pCmd->cmd)   //命令码分析
-    {
-        case CMD_HANDSHAKE:
-            hcpHandleHandShake();
-            break;
-        case CMD_SET_PARM:
-            break;
-        case CMD_SET_PRESSURE:
-            break;
-        case CMD_SAVEDEFAULT:
-            break;
-        case CMD_RESTORE:
-            break;
-        case CMD_SET_HVERSION:
-            break;
-        case CMD_SET_SN:
-            break;
-        case CMD_SET_CFGID:
-            break;
-        case CMD_GET_INFO:
-            break;
-        case CMD_ENGMODE:
-            break;
-        case CMD_SET_WORKMODE:
-        case CMD_SET_PRODUCTMODE:
-            HCP_SendNACK(0);
-            break;
-        case CMD_SET_KEY:
-            HcpHandleKey();
-           break;
-        default:
-            HCP_SendNACK(NACK_WHY_BADCMD);		 	//无效的命令，否认应答
-            break;
-    }
-  }
+}
 
 
 void communicationToMCU::DataInit(void)
@@ -580,16 +612,31 @@ void communicationToMCU::DataInit(void)
     {
         for(i = 0; i < BEATS_NUM_MAX; i++)
         {
+            if(i < BEATS_NUM_MAX - 1)
+            {
+                DirectPressurePara[i].PFCtaskTime = sets[m][n].time[i] * 1000;//秒（s）转化毫秒（ms）
+            }
+            else
+            {
+                DirectPressurePara[i].PFCtaskTime = 5 * 1000;//秒（s）转化毫秒（ms）
+            }
             DirectPressurePara[i].DO = DirectPressureParaDo[i];
             DirectPressurePara[i].PFCtaskNum = i;
             DirectPressurePara[i].parmID = 0xFC;
-            DirectPressurePara[i].PFCtaskTime = sets[m][n].time[i] * 1000;//秒（s）转化毫秒（ms）
         }
     }
     else if(FLOW_TYPE_PARA == systemData.args_config.test_mode)
     {
         for(i = 0; i < BEATS_NUM_MAX; i++)
         {
+            if(i < BEATS_NUM_MAX - 1)
+            {
+                FlowTypePara[i].PFCtaskTime = sets[m][n].time[i] * 1000;//秒（s）转化毫秒（ms）
+            }
+            else
+            {
+                FlowTypePara[i].PFCtaskTime = 5 * 1000;//秒（s）转化毫秒（ms）
+            }
             FlowTypePara[i].DO = FlowTypeParaDo[i];
             FlowTypePara[i].PFCtaskNum = i;
             FlowTypePara[i].parmID = 0xFD;
@@ -600,13 +647,20 @@ void communicationToMCU::DataInit(void)
     {
         for(i = 0; i < BEATS_NUM_MAX; i++)
         {
+            if(i < BEATS_NUM_MAX - 1)
+            {
+                DiffPressurePara[i].PFCtaskTime = sets[m][n].time[i] * 1000;//秒（s）转化毫秒（ms）
+            }
+            else
+            {
+                DiffPressurePara[i].PFCtaskTime = 5 * 1000;//秒（s）转化毫秒（ms）
+            }
             DiffPressurePara[i].DO = DiffPressureParaDo[i];
             DiffPressurePara[i].PFCtaskNum = i;
             DiffPressurePara[i].parmID = 0xFE;
             DiffPressurePara[i].PFCtaskTime = sets[m][n].time[i] * 1000;//秒（s）转化毫秒（ms）
         }
     }
-
     systemData.test_press = 0;//测试压
     systemData.press_diff = 0; //差压
     systemData.temp_test_result = 0;
@@ -661,7 +715,8 @@ void communicationToMCU::DownloadSetPara(void)
             PFCtaskNum = DirectPressurePara[i].PFCtaskNum;
             parmID = DirectPressurePara[i].parmID;
             PFCtaskTime = DirectPressurePara[i].PFCtaskTime;
-            communication->HcpSetCmdPara(Do,PFCtaskNum,parmID,PFCtaskTime);
+            HcpSetCmdPara(Do,PFCtaskNum,parmID,PFCtaskTime);
+            usleep(10 * 1000);
         }
     }
     else if(FLOW_TYPE_PARA == systemData.args_config.test_mode)
@@ -672,7 +727,8 @@ void communicationToMCU::DownloadSetPara(void)
             PFCtaskNum = FlowTypePara[i].PFCtaskNum;
             parmID = FlowTypePara[i].parmID;
             PFCtaskTime = FlowTypePara[i].PFCtaskTime;
-            communication->HcpSetCmdPara(Do,PFCtaskNum,parmID,PFCtaskTime);
+            HcpSetCmdPara(Do,PFCtaskNum,parmID,PFCtaskTime);
+            usleep(10 * 1000);
         }
     }
     else if(DIFF_PRESSURE_PARA == systemData.args_config.test_mode)
@@ -680,10 +736,11 @@ void communicationToMCU::DownloadSetPara(void)
         for(i = 0; i < BEATS_NUM_MAX; i++)
         {
             Do = DiffPressurePara[i].DO;
-            PFCtaskNum = DiffPressurePara[i].PFCtaskNum;
+            PFCtaskNum = DiffPressurePara[i].PFCtaskNum ;
             parmID = DiffPressurePara[i].parmID;
             PFCtaskTime = DiffPressurePara[i].PFCtaskTime;
-            communication->HcpSetCmdPara(Do,PFCtaskNum,parmID,PFCtaskTime);
+            HcpSetCmdPara(Do,PFCtaskNum,parmID,PFCtaskTime);
+            usleep(10 * 1000);
         }
     }
 }
@@ -699,47 +756,49 @@ void communicationToMCU::start_first()
 }
 
 /*
- * 第二步执行:
- * 一次下发所有参数,
- * 数据下发完就可以启动定时器定时检查
- */
-void communicationToMCU::download_args()
-{
-    unsigned char flag = 0x55;
-    /* 使用串口下发 */
-    if(0 == systemData.args_config.model) //自动模式
-    {
-        flag = 0xaa;
-    }
-    else if((1 == systemData.args_config.model) //手动模式
-            && (0xaa == systemData.KeyValue))
-    {
-        flag = 0xaa;
-        systemData.KeyValue = 0x00;
-    }
-    else
-    {
-        flag = 0x55;
-    }
-    if(flag == 0xaa)
-    {
-        //0x01: 开关量控制，清空参数列表，等待测试参数，复位差压采样数据更新标记
-        //0x02: 清空参数列表，等待测试参数，立即执行开关量
-        //0x03: 清空参数列表,复位差压采样数据更新标记
-        HcpSetCmdPara(0,0,0x03,0);
-        DownloadSetPara();
-    }
-    else
-    {}
-}
-
-/*
  * 定时检查当前处于第几节拍
  *
  */
 void communicationToMCU::check_stage()
 {
-    HcpCmdHandShake();
+    unsigned char flag = 0x55;
+    if(BEAT_STATE_STOP == systemData.BeatState)
+    {
+        if(0 == systemData.args_config.model) //自动模式
+        {
+            flag = 0xaa;
+        }
+        else if((1 == systemData.args_config.model) //手动模式
+                && (0xaa == systemData.KeyValue))
+        {
+            flag = 0xaa;
+            systemData.KeyValue = 0x00;
+        }
+        else
+        {
+            flag = 0x55;
+        }
+        if(flag == 0xaa)
+        {
+            systemData.BeatState = BEAT_STATE_START;
+            systemData.test_press = 0;//测试压
+            systemData.press_diff = 0; //差压
+            systemData.temp_test_result = 0;
+            systemData.set_index = 0;//节拍序号清0
+
+            //0x01: 开关量控制，清空参数列表，等待测试参数，复位差压采样数据更新标记
+            //0x02: 清空参数列表，等待测试参数，立即执行开关量
+            //0x03: 清空参数列表,复位差压采样数据更新标记
+            HcpSetCmdPara(0,0,0x01,0);
+            timer_over->start(1000);
+        }
+        else
+        {}
+     }
+    else
+    {
+        HcpCmdHandShake();
+    }
 }
 
 /*
@@ -747,5 +806,6 @@ void communicationToMCU::check_stage()
  */
 void communicationToMCU::start_again()
 {
-    download_args();
+    DownloadSetPara();
 }
+

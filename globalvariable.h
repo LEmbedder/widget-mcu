@@ -11,8 +11,8 @@
 #define FLOW_TYPE_PARA           1
 #define DIFF_PRESSURE_PARA       2
 
-#define BEAT_STATE_START    0x55
-#define BEAT_STATE_STOP     0xaa
+#define BEAT_STATE_START    0xaa
+#define BEAT_STATE_STOP     0x55
 
 
 /* 界面参数配置 */

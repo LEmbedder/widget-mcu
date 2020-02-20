@@ -7,15 +7,13 @@
 #include <QByteArray>
 #include "sys_struct.h"
 #include <QTimer>
-#include <QDebug>
 
 class communicationToMCU : public QObject
 {
     Q_OBJECT
     void initSerialPort();
     void writer(const char *data, qint64 len);
-    QTimer *timer,*timer_over;
-    void DataInit();
+    QTimer *timer,*timer_over,*timer_handle_uart;
     void DownloadMode();
     void DownloadProductMode();
     void DownloadTestMode();
@@ -37,15 +35,14 @@ public:
     void HcpSetRestore(unsigned char Hversion[]);
     void HcpSetProductSn(unsigned char sn[]);
     void HcpHandleGetDeviceInfo();
-    void HcpProcessPacket();
     void HcpSetCmdPara( unsigned int DO,unsigned char PFCtaskNum,unsigned char parmID,unsigned int PFCtaskTime);
     void SendToMcu(const char *data, qint64 len);
     void HcpSetPressure(unsigned short range);
     void HcpSetCmdWordMode(unsigned char WorkMode);
     void HcpSetCmdProductMode(unsigned char ProductMode);
     void start_first();
-    void download_args();
     void DownloadSetPara();
+    void DataInit();
 signals:
     void update_window();
 public slots:
@@ -53,6 +50,7 @@ public slots:
     void receiveInfo();
     void HcpGetDeviceInfo();
     void start_again();
+    void HcpProcessPacket();
 };
 
 #endif // COMMUNICATIONTOMCU_H

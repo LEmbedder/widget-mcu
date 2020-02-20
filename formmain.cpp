@@ -14,9 +14,9 @@ FormMain::FormMain(QWidget *parent) :
 {
     ui->setupUi(this);
     save_index = 0;
-    for(int i = 0; i< 48;i++)
+    for(int i = 0; i< 64;i++)
     {
-        ui->comboBox_channel_number->addItem(QString::number(i+1));
+        ui->comboBox_channel_number->addItem(QString::number(i + 1));
     }
 
     /* 容积测试和定标测试模式 */
@@ -259,11 +259,9 @@ void FormMain::updateLabelSucess(int next)
 void FormMain::receiveInfo()
 {
     QByteArray info = serialPort->readAll();
+//    qDebug()<<info;
     ui->textEdit_workpiece_number->setText(info.data());
 }
-/*
- * 更新mcu发来的信息
- */
 void FormMain::update_mcu()
 {
     disp_test_press(systemData.test_press);/* 测试压更新 */
@@ -434,7 +432,6 @@ void FormMain::on_comboBox_channel_number_currentIndexChanged(int index)
 {
     systemData.channel_number = index;
     saveConfigArgs();
-    qDebug("systemData.channel_number = %d\n",systemData.channel_number);
 }
 /*
  * 显示测试压
