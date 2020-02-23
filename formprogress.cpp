@@ -167,7 +167,6 @@ bool FormProgress::setProgressValue(int value)
  */
 void FormProgress::paintEvent(QPaintEvent *event)
 {
-
     int page = systemData.channel_number/16;
     int channel = systemData.channel_number % 16;
 

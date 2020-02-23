@@ -95,14 +95,6 @@ FormMain::FormMain(QWidget *parent) :
      * 图标绘制
      */
     series = new QLineSeries();
-//    series->append(0, 6);
-//    series->append(1, 4);
-//    series->append(2, 8);
-//    series->append(3, 4);
-//    series->append(4, 5);
-//    *series << QPointF(5, 1) << QPointF(6, 3) << QPointF(7, 6) << QPointF(8, 3) << QPointF(9, 2);updateSeries
-
-
     chart = new QChart();
     chart->legend()->hide();
     chart->addSeries(series);
@@ -152,9 +144,10 @@ FormMain::FormMain(QWidget *parent) :
 
     connect(communication,SIGNAL(update_window()),this,SLOT(update_mcu()));
 
+    /* 初始化工号 */
+    memset(systemData.args_config.work_number,0,30);
     loadConfigArgs();
     ui->comboBox_channel_number->setCurrentIndex(systemData.channel_number);
-
 
 }
 
