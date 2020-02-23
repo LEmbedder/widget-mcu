@@ -2,15 +2,17 @@
 
 NavProgress::NavProgress(QWidget *parent) : QWidget(parent)
 {
-    maxStep = 10;
+    maxStep = 13;
     currentStep = 7.9;
     navStyle = NavStyle_JD;
     background = QColor(Qt::gray);
     foreground = QColor(Qt::blue);
-    for(int i = 0; i< maxStep;i++)
-    {
-        topInfo<<QString::number(i);
-    }
+//    for(int i = 0; i< maxStep;i++)
+//    {
+        topInfo<<QString("待机")<<QString("延时(1)")<<QString("延时(2)")<<QString("延时(3)")<<QString("充气")<<QString("泄压")\
+              <<QString("平衡1")<<QString("平衡2")<<QString("测试")<<QString("排气")<<QString("延时(4)")<<QString("延时(5)")\
+             <<QString("延时(6)")<<QString("结束");
+//    }
 }
 
 void NavProgress::paintEvent(QPaintEvent *)
@@ -27,25 +29,25 @@ void NavProgress::paintEvent(QPaintEvent *)
         drawText_JD(&painter);
         //绘制当前背景
         drawCurrentBg_JD(&painter);
-//        //绘制当前文字
+        //绘制当前文字
 //        drawCurrentText_JD(&painter);
     }
-//    else if (navStyle == NavStyle_TB) {
-//        //绘制背景
+    else if (navStyle == NavStyle_TB) {
+        //绘制背景
 //        drawBg_TB(&painter);
-//        //绘制文字
+        //绘制文字
 //        drawText_TB(&painter);
-//        //绘制当前背景
+        //绘制当前背景
 //        drawCurrentBg_TB(&painter);
-//    }
-//    else if (navStyle == NavStyle_ZFB) {
-//        //绘制背景
+    }
+    else if (navStyle == NavStyle_ZFB) {
+        //绘制背景
 //        drawBg_ZFB(&painter);
-//        //绘制文字
+        //绘制文字
 //        drawText_ZFB(&painter);
-//        //绘制当前背景
+        //绘制当前背景
 //        drawCurrentBg_ZFB(&painter);
-//    }
+    }
 
 }
 
@@ -86,18 +88,18 @@ void NavProgress::drawBg_JD(QPainter *painter)
     }
 
     //逐个绘制圆中的数字
-//    initX = width / 2;
-//    QFont font;
-//    font.setPixelSize(radius);
-//    painter->setFont(font);
-//    painter->setPen(foreground);
-//    painter->setBrush(Qt::NoBrush);
+    initX = width / 2;
+    QFont font;
+    font.setPixelSize(radius);
+    painter->setFont(font);
+    painter->setPen(foreground);
+    painter->setBrush(Qt::NoBrush);
 
-//    for (int i = 0; i < maxStep; i++) {
-//        QRect textRect(initX - radius, initY - radius, radius * 2, radius * 2);
-//        painter->drawText(textRect, Qt::AlignCenter, QString::number(i + 1));
-//        initX += width;
-//    }
+    for (int i = 0; i < maxStep; i++) {
+        QRect textRect(initX - radius, initY - radius, radius * 2, radius * 2);
+        painter->drawText(textRect, Qt::AlignCenter, QString::number(i + 1));
+        initX += width;
+    }
 
     painter->restore();
 }
@@ -117,7 +119,7 @@ void NavProgress::drawText_JD(QPainter *painter)
     painter->setBrush(Qt::NoBrush);
 
     for (int i = 0; i < maxStep; i++) {
-        QRect textRect(initX, initY, width, height);
+        QRect textRect(initX, 0, width, 20);
         painter->drawText(textRect, Qt::AlignCenter, topInfo.at(i));
         initX += width;
     }

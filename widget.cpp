@@ -34,16 +34,18 @@ Widget::Widget(QWidget *parent) :
     /*
      * 显示进度条
     */
-    pb = new ProgressBar(ui->widget_6);
-    pb->setFixedSize(700,50);
+//    pb = new ProgressBar(ui->widget_6);
+//    pb->setFixedSize(700,50);
 //    pb->setProgressValue(2.6);
-
+    fp = new FormProgress();
+    ui->widget_6->layout()->addWidget(fp);
+    fp->setFixedSize(700,30);
 
 
     /*
      * 初始化变量
      */
-    process  = 2.6;
+    process  = 2;
 
     communication = new communicationToMCU;
 
@@ -51,7 +53,7 @@ Widget::Widget(QWidget *parent) :
      * 添加控制主界面显示
     */
     formain = new FormMain(this);
-    formain->progressBar = pb;
+    formain->formProgress = fp;
     ui->verticalLayout_target->addWidget(formain);
     communication->DataInit();
     communication->start_first();
@@ -69,7 +71,8 @@ void Widget::updateForm()
     /* 显示版本号 */
     ui->version->setText(VERSION);
     /* 初始化其他显示 */
-    pb->setProgressValue(process);
+    fp->setProgressValue(process);
+
 }
 
 void Widget::timerOut()

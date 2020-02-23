@@ -154,6 +154,8 @@ FormMain::FormMain(QWidget *parent) :
 
     loadConfigArgs();
     ui->comboBox_channel_number->setCurrentIndex(systemData.channel_number);
+
+
 }
 
 FormMain::~FormMain()
@@ -267,7 +269,7 @@ void FormMain::update_mcu()
     disp_test_press(systemData.test_press);/* 测试压更新 */
     disp_test_result(systemData.press_diff);/* 差压更新 */
     updateSeries(systemData.set_index,systemData.press_diff);/* 曲线更新 */
-    progressBar->setProgressValue(systemData.set_index);/* 进度条更新 */
+    formProgress->setProgressValue(systemData.set_index);/* 进度条更新 */
 
 }
 void FormMain::updateForm()
@@ -301,6 +303,7 @@ void FormMain::updateForm()
         formVolumeTest->hide();
         ui->widget_13->setEnabled(false);
     }
+
 }
 /*
  * 按键切换为主界面
@@ -423,6 +426,8 @@ void FormMain::saveConfigArgs()
     {
         setting.beginGroup("SystemData");
         setting.setValue("channel_number",systemData.channel_number);
+        if(formProgress != NULL)
+            formProgress->update();
     }
 }
 /*

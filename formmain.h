@@ -18,6 +18,7 @@
 #include "formvolumetest.h"
 #include "formcalibrationtest.h"
 #include "progressbar.h"
+#include "formprogress.h"
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -39,7 +40,8 @@ public:
     void disp_test_press(double value);
     void disp_test_result(double value);
     void updateSeries(int position, double value);
-    ProgressBar *progressBar;
+//    ProgressBar *progressBar;
+    FormProgress *formProgress;
     void loadConfigArgs();
     void saveConfigArgs();
 public slots:

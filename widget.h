@@ -10,6 +10,8 @@
 #include <communicationtomcu.h>
 #include <QTimeZone>
 #include "formmain.h"
+#include "formprogress.h"
+
 namespace Ui {
 class Widget;
 
@@ -37,8 +39,8 @@ private:
     QString current_date;
     double value;
 
-    ProgressBar *pb;
-
+//    ProgressBar *pb;
+    FormProgress *fp;
     double process;
     void testSql();
 };

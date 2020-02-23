@@ -163,6 +163,9 @@
             <height>0</height>
            </size>
           </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
           <layout class="QVBoxLayout" name="verticalLayout_process">
            <property name="spacing">
             <number>0</number>
