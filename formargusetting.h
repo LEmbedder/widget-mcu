@@ -7,6 +7,7 @@
 #include <formpasswordsetting.h>
 #include "formcalibration.h"
 #include "formextend.h"
+#include "formpassword.h"
 
 namespace Ui {
 class FormArguSetting;
@@ -24,7 +25,7 @@ public:
     FormPasswordSetting *formPasswordSetting;
     FormCalibration *formCalibration;
     FormExtend *formExtend;
-
+    FormPassword *fps;
     struct Args_config args_config;
 private slots:
     void on_pushButton_systemSetting_clicked();

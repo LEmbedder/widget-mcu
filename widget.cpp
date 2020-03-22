@@ -15,13 +15,7 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
-    testSql();
-    QSqlQuery query;
-    query.exec("select * from student");
-    while( query.next() )
-    {
-        qDebug()<<query.value(0).toInt()<<query.value(1).toString();
-    }
+
     /**
      * 设置没有鼠标箭头
     */
@@ -96,19 +90,6 @@ void Widget::testSql()
 //    foreach (QString driver, drivvers) {
 //        qDebug()<<driver;
 //    }
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("my.db");
-    if ( !db.open() )
-    {
-
-    }
-    QSqlQuery query;
-    query.exec("create table student(id int primary key, name varchar(20))");
-    query.exec("insert into student values(0,'LiMing0')");
-    query.exec("insert into student values(1,'LiMing1')");
-    query.exec("insert into student values(2,'LiMing2')");
-    query.exec("insert into student values(3,'LiMing3')");
-
 //    db.close();
 //    db.removeDatabase("QSQLITE");
 

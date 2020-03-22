@@ -19,6 +19,7 @@
 #include "formcalibrationtest.h"
 #include "progressbar.h"
 #include "formprogress.h"
+#include "formpassword.h"
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -44,6 +45,7 @@ public:
     FormProgress *formProgress;
     void loadConfigArgs();
     void saveConfigArgs();
+    FormPassword *fps;
 public slots:
     void receiveInfo();
     void update_args_config(Args_config *config);

@@ -17,7 +17,7 @@ class communicationToMCU : public QObject
     void DownloadMode();
     void DownloadProductMode();
     void DownloadTestMode();
-    void HcpHandleKey();
+    void HcpHandleKey(unsigned char *puf);
 public:
     explicit communicationToMCU(QObject *parent = 0);
 
@@ -25,16 +25,15 @@ public:
     unsigned short crc(unsigned char *pBuf, unsigned short length);
     void HCP_SendACK();
     void HCP_SendNACK(unsigned short why);
-    unsigned char *HcpGetRxBuf();
     unsigned char *HcpGetTxBuf(void);
     void HcpSendPacket(int length);
     void HcpCmdHandShake();
-    void hcpHandleHandShake();
+    void hcpHandleHandShake(unsigned char *puf);
     void HcpSetSaveDefault();
     void HcpSetRestore();
     void HcpSetRestore(unsigned char Hversion[]);
     void HcpSetProductSn(unsigned char sn[]);
-    void HcpHandleGetDeviceInfo();
+    void HcpHandleGetDeviceInfo(unsigned char *puf);
     void HcpSetCmdPara( unsigned int DO,unsigned char PFCtaskNum,unsigned char parmID,unsigned int PFCtaskTime);
     void SendToMcu(const char *data, qint64 len);
     void HcpSetPressure(unsigned short range);
@@ -43,6 +42,11 @@ public:
     void start_first();
     void DownloadSetPara();
     void DataInit();
+    unsigned int BeatTimerAccm(unsigned int beat_num);
+    void beat_do_flag_clear(void);
+    int uart_fifo_push(unsigned char data);
+    int uart_fifo_pop(unsigned char *data);
+    void HandlePacket(unsigned char *puf);
 signals:
     void update_window();
 public slots:

@@ -194,8 +194,8 @@
             <widget class="QPushButton" name="pushButton_4">
              <property name="geometry">
               <rect>
-               <x>100</x>
-               <y>330</y>
+               <x>120</x>
+               <y>250</y>
                <width>89</width>
                <height>25</height>
               </rect>
@@ -286,7 +286,25 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QWidget" name="widget_5" native="true"/>
+              <widget class="QWidget" name="widget_5" native="true">
+               <layout class="QVBoxLayout" name="verticalLayout_8">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+               </layout>
+              </widget>
              </item>
              <item>
               <widget class="QWidget" name="widget_6" native="true">
@@ -316,12 +334,12 @@
                  <widget class="QPushButton" name="pushButton_5">
                   <property name="maximumSize">
                    <size>
-                    <width>50</width>
+                    <width>80</width>
                     <height>16777215</height>
                    </size>
                   </property>
                   <property name="text">
-                   <string>PushButton</string>
+                   <string>打印条码</string>
                   </property>
                  </widget>
                 </item>
@@ -339,32 +357,6 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="pushButton_6">
-                  <property name="maximumSize">
-                   <size>
-                    <width>50</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>PushButton</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="pushButton_7">
-                  <property name="maximumSize">
-                   <size>
-                    <width>50</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>PushButton</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
                  <widget class="QPushButton" name="pushButton_8">
                   <property name="maximumSize">
                    <size>
@@ -373,7 +365,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>PushButton</string>
+                   <string>|&lt;</string>
                   </property>
                  </widget>
                 </item>
@@ -386,7 +378,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>PushButton</string>
+                   <string>&lt;</string>
                   </property>
                  </widget>
                 </item>
@@ -415,7 +407,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>PushButton</string>
+                   <string>&gt;</string>
                   </property>
                  </widget>
                 </item>
@@ -428,7 +420,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>PushButton</string>
+                   <string>&gt;|</string>
                   </property>
                  </widget>
                 </item>

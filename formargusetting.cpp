@@ -30,6 +30,13 @@ FormArguSetting::FormArguSetting(QWidget *parent) :
     formExtend = new FormExtend;
     formExtend->close();
     formSystemSetting->loadConfigArgs();
+
+    fps = new FormPassword;
+    connect(fps,SIGNAL(emitIsTrue_2()),this,SLOT(on_pushButton_systemSetting_clicked()));
+    connect(fps,SIGNAL(emitIsTrue_3()),this,SLOT(on_pushButton_timeSetting_clicked()));
+    connect(fps,SIGNAL(emitIsTrue_4()),this,SLOT(on_pushButton_passWord_clicked()));
+    connect(fps,SIGNAL(emitIsTrue_5()),this,SLOT(on_pushButton_12_clicked()));
+    connect(fps,SIGNAL(emitIsTrue_6()),this,SLOT(on_pushButton_10_clicked()));
 }
 
 FormArguSetting::~FormArguSetting()
@@ -39,28 +46,90 @@ FormArguSetting::~FormArguSetting()
 
 void FormArguSetting::on_pushButton_systemSetting_clicked()
 {
-    formSystemSetting->show();
-    formSystemSetting->update_system_setting();
+    fps->show();
+    fps->clearText();
+    fps->type = 1;
+    qDebug()<<fps->type<<fps->isTrue;
+    if (fps->isTrue == true && fps->type == 1)
+    {
+        if (passWord.sysOrUser == 1 ||passWord.sysOrUser == 2)
+        {
+            formSystemSetting->show();
+            formSystemSetting->update_system_setting();
+        }
+    }
+    fps->isTrue = false;
 }
 
 void FormArguSetting::on_pushButton_timeSetting_clicked()
 {
-    formTimeSetting->show();
+    fps->show();
+    fps->clearText();
+    fps->type = 2;
+    qDebug()<<fps->type<<fps->isTrue;
+    if (fps->isTrue == true && fps->type == 2)
+    {
+        if (passWord.sysOrUser == 1 || passWord.sysOrUser == 2)
+        {
+            formTimeSetting->show();
+        }
+        else{
+        }
+    }
+    fps->isTrue = false;
 }
 
 void FormArguSetting::on_pushButton_passWord_clicked()
 {
-    formPasswordSetting->show();
+    fps->show();
+    fps->clearText();
+    fps->type = 3;
+    qDebug()<<fps->type<<fps->isTrue;
+    if (fps->isTrue == true && fps->type == 3)
+    {
+        if (passWord.sysOrUser == 1 || passWord.sysOrUser == 0)
+        {
+            formPasswordSetting->init();
+            formPasswordSetting->show();
+        }
+        else if(passWord.sysOrUser == 2)
+        {
+            fps->passWordReset();
+        }
+    }
+    fps->isTrue = false;
 }
 
 void FormArguSetting::on_pushButton_12_clicked()
 {
-    formCalibration->show();
+    fps->show();
+    fps->clearText();
+    fps->type = 4;
+    qDebug()<<fps->type<<fps->isTrue;
+    if (fps->isTrue == true && fps->type == 4)
+    {
+        if (passWord.sysOrUser == 1 || passWord.sysOrUser == 2)
+        {
+            formCalibration->show();
+        }
+    }
+    fps->isTrue = false;
 }
 
 void FormArguSetting::on_pushButton_10_clicked()
 {
-    formExtend->show();
+    fps->show();
+    fps->clearText();
+    fps->type = 5;
+    qDebug()<<fps->type<<fps->isTrue;
+    if (fps->isTrue == true && fps->type == 5)
+    {
+        if (passWord.sysOrUser == 1 || passWord.sysOrUser == 2)
+        {
+            formExtend->show();
+        }
+    }
+    fps->isTrue = false;
 }
 
 /* 更新界面参数 */

@@ -13,6 +13,6 @@ struct HcpSetsPara DiffPressurePara[BEATS_NUM_MAX];
 
 /* 粘贴参数,保存地址使用 */
 struct CopyPaste copyPaste;
-
+struct PassWord passWord;
 
 communicationToMCU *communication;

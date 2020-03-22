@@ -13,12 +13,16 @@ FormMain::FormMain(QWidget *parent) :
     ui(new Ui::FormMain)
 {
     ui->setupUi(this);
+    /* 密码初始化 */
+    fps = new FormPassword;
+    fps->close();
+    connect(fps,SIGNAL(emitIsTrue()),this,SLOT(on_pushButton_4_clicked()));
+
     save_index = 0;
     for(int i = 0; i< 64;i++)
     {
         ui->comboBox_channel_number->addItem(QString::number(i + 1));
     }
-
     /* 容积测试和定标测试模式 */
     formVolumeTest = new FormVolumeTest();
     formVolumeTest->hide();
@@ -67,7 +71,7 @@ FormMain::FormMain(QWidget *parent) :
     foreach(const QSerialPortInfo &info,QSerialPortInfo::availablePorts())
     {
         m_serialPortName << info.portName();
-        qDebug()<<"serialPortName:"<<info.portName();
+        //qDebug()<<"serialPortName:"<<info.portName();
     }
     serialPort = new QSerialPort();
 
@@ -329,6 +333,7 @@ void FormMain::on_pushButton_2_clicked()
     ui->widget_target->close();
     formViewData->close();
     formArguSetting->show();
+
 }
 
 /*
@@ -351,15 +356,25 @@ void FormMain::on_pushButton_3_clicked()
 */
 void FormMain::on_pushButton_4_clicked()
 {
-    witchButtonChecked(ui->pushButton);
-    witchButtonChecked(ui->pushButton_2);
-    witchButtonChecked(ui->pushButton_3);
-    witchButtonChecked(ui->pushButton_4);
+    fps->show();
+    fps->clearText();
+    fps->type = 0;
+    if (fps->isTrue == true && fps->type == 0)
+    {
+        if (passWord.sysOrUser == 1 || passWord.sysOrUser == 0 || passWord.sysOrUser == 2)
+        {
+            witchButtonChecked(ui->pushButton);
+            witchButtonChecked(ui->pushButton_2);
+            witchButtonChecked(ui->pushButton_3);
+            witchButtonChecked(ui->pushButton_4);
 
-    formArguSetting->close();
-    ui->widget_target->close();
-    formViewData->close();
-    formChannleSettings->show();
+            formArguSetting->close();
+            ui->widget_target->close();
+            formViewData->close();
+            formChannleSettings->show();
+        }
+    }
+    fps->isTrue = false;
 }
 
 /*
@@ -482,3 +497,5 @@ void FormMain::updateSeries(int position, double value)
         chart->update();
     }
 }
+
+
