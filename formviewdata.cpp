@@ -14,26 +14,6 @@ FormViewData::FormViewData(QWidget *parent) :
     total_number = 0;
 
     initDatabase();
-//    insertDatabase("127","1451122","2020-19-19",1651,684,"1353pa","true","1234kpa",13);
-    model = new QSqlTableModel(this);
-    model->setTable("testdata");
-    model->select();
-    model->setHeaderData(0,Qt::Horizontal,tr("序号"));
-    model->setHeaderData(1,Qt::Horizontal,tr("工号"));
-    model->setHeaderData(2,Qt::Horizontal,tr("工件号"));
-    model->setHeaderData(3,Qt::Horizontal,tr("测试时间"));
-    model->setHeaderData(4,Qt::Horizontal,tr("泄露标准上限"));
-    model->setHeaderData(5,Qt::Horizontal,tr("泄露标准下限"));
-    model->setHeaderData(6,Qt::Horizontal,tr("测试漏率及单位"));
-    model->setHeaderData(7,Qt::Horizontal,tr("结果"));
-    model->setHeaderData(8,Qt::Horizontal,tr("测试压及单位"));
-    model->setHeaderData(9,Qt::Horizontal,tr("测试节拍"));
-    view = new QTableView(this);
-    view->setModel(model);
-    view->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->widget_5->layout()->addWidget(view);
-
-
     page_value();
     update_args();
 }
@@ -68,6 +48,25 @@ bool FormViewData::initDatabase()
                "test_press_unit varchar,"
                "meter_number int)"
                );
+
+//    insertDatabase("127","1451122","2020-19-19",1651,684,"1353pa","true","1234kpa",13);
+    model = new QSqlTableModel(this);
+    model->setTable("testdata");
+    model->select();
+    model->setHeaderData(0,Qt::Horizontal,tr("序号"));
+    model->setHeaderData(1,Qt::Horizontal,tr("工号"));
+    model->setHeaderData(2,Qt::Horizontal,tr("工件号"));
+    model->setHeaderData(3,Qt::Horizontal,tr("测试时间"));
+    model->setHeaderData(4,Qt::Horizontal,tr("泄露标准上限"));
+    model->setHeaderData(5,Qt::Horizontal,tr("泄露标准下限"));
+    model->setHeaderData(6,Qt::Horizontal,tr("测试漏率及单位"));
+    model->setHeaderData(7,Qt::Horizontal,tr("结果"));
+    model->setHeaderData(8,Qt::Horizontal,tr("测试压及单位"));
+    model->setHeaderData(9,Qt::Horizontal,tr("测试节拍"));
+    view = new QTableView(this);
+    view->setModel(model);
+    view->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->widget_5->layout()->addWidget(view);
     return true;
 }
 /*
@@ -184,6 +183,7 @@ void FormViewData::on_pushButton_top_clicked()
 {
     view->verticalScrollBar()->setSliderPosition(0);
     page_value();
+    page_value();
 }
 
 void FormViewData::on_pushButton_up_clicked()
@@ -224,9 +224,14 @@ void FormViewData::on_pushButton_bottom_clicked()
 
 void FormViewData::page_value()
 {
-    int value = view->verticalScrollBar()->value();
-    int max_page = view->verticalScrollBar()->maximum();
+    int value = view->verticalScrollBar()->value()+1;
+    int max_page = model->rowCount()-6;
 
+    if (max_page <= 0)
+    {
+        max_page = 1;
+    }
+    if (value > max_page) value = max_page;
     qDebug()<<value << max_page;
     ui->label_value->setText(QString::number(value)+"/"+
                              QString::number(max_page));
