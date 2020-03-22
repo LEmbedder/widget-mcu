@@ -22,7 +22,7 @@ public:
     ~FormViewData();
     QSqlDatabase db;
 
-    QSqlQueryModel *model;
+    QSqlTableModel *model;
     QTableView *view;
     bool initDatabase();
     void insertDatabase(QString worker_number,
@@ -34,8 +34,25 @@ public:
                         QString result,
                         QString test_press_unit,
                         int meter_number);
+private slots:
+    void on_pushButton_search_clicked();
+
+    void on_pushButton_top_clicked();
+
+    void on_pushButton_up_clicked();
+
+    void on_pushButton_down_clicked();
+
+    void on_pushButton_bottom_clicked();
+
 private:
     Ui::FormViewData *ui;
+    void page_value();
+    unsigned total_number;
+    unsigned pass;
+    double percent_pass;
+
+    void update_args();
 };
 
 #endif // FORMVIEWDATA_H

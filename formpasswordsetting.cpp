@@ -32,7 +32,7 @@ void FormPasswordSetting::on_lineEdit_2_textChanged(const QString &arg1)
 }
 
 /*
- * ±£´æÃÜÂë
+ * ä¿å­˜å¯†ç 
  */
 void FormPasswordSetting::on_pushButton_clicked()
 {
