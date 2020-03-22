@@ -44,7 +44,8 @@ SOURCES += main.cpp\
     globalvariable.cpp \
     formvolumetest.cpp \
     formcalibrationtest.cpp \
-    formprogress.cpp
+    formprogress.cpp \
+    formpassword.cpp
 
 HEADERS  += widget.h \
     navprogress.h \
@@ -66,7 +67,8 @@ HEADERS  += widget.h \
     sys_struct.h \
     formvolumetest.h \
     formcalibrationtest.h \
-    formprogress.h
+    formprogress.h \
+    formpassword.h
 
 FORMS    += widget.ui \
     formmain.ui \
@@ -82,7 +84,8 @@ FORMS    += widget.ui \
     formviewdata.ui \
     formvolumetest.ui \
     formcalibrationtest.ui \
-    formprogress.ui
+    formprogress.ui \
+    formpassword.ui
 
 
 RESOURCES += \
