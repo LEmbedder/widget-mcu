@@ -39,8 +39,6 @@ Widget::Widget(QWidget *parent) :
     /*
      * 初始化变量
      */
-    process  = 2;
-
     communication = new communicationToMCU;
 
     /*
@@ -48,6 +46,7 @@ Widget::Widget(QWidget *parent) :
     */
     formain = new FormMain(this);
     formain->formProgress = fp;
+    formain->commtoMcu = communication;
     ui->verticalLayout_target->addWidget(formain);
     communication->DataInit();
     communication->start_first();

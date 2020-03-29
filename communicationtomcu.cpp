@@ -89,6 +89,7 @@ communicationToMCU::communicationToMCU(QObject *parent) : QObject(parent)
     memset(hcp_txBuf,0x00,HCP_TXBUFLEN);
     memset(buf_rxd,0x00,BUF_RXD_SIZE);
     //timer_over->start(1000);// 启动定时器ms
+
 }
 void communicationToMCU::initSerialPort()
 {

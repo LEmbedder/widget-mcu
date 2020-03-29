@@ -6,7 +6,7 @@
 
 QT       += core gui sql serialport charts
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets axcontainer
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 target.path = /app_qt5
 INSTALLS += target
 

@@ -4,7 +4,7 @@
 #include <QScrollBar>
 #include <QSqlRecord>
 #include <QFileDialog>
-#include <QAxObject>
+//#include <QAxObject>
 
 FormViewData::FormViewData(QWidget *parent) :
     QWidget(parent),
@@ -244,8 +244,10 @@ void FormViewData::update_args()
 {
     QSqlQuery *query = new QSqlQuery(db);
     query->exec("select * from testdata");
-    query->last();
-    total_number = query->at() + 1;
+    if (query->last())
+        total_number = query->at() + 1;
+    else
+        total_number = 0;
 
     query->exec("select * from testdata");
     for (int i = 0; query->seek(i);i++)
@@ -259,8 +261,18 @@ void FormViewData::update_args()
     }
     ui->label_total->setText(QString::number(total_number));
     ui->label_pass->setText(QString::number(pass));
-    percent_pass = pass*100.0/total_number;
-    ui->label_percent_pass->setText(QString::number(percent_pass,'f',2)+"%");
+    if (total_number != 0)
+    {
+        percent_pass = pass*100.0/total_number;
+        ui->label_percent_pass->setText(QString::number(percent_pass,'f',2)+"%");
+    }
+    else
+    {
+        percent_pass = 0;
+        ui->label_percent_pass->setText(QString::number(percent_pass,'f',2)+"%");
+    }
+
+
 }
 
 void FormViewData::on_pushButton_print_clicked()

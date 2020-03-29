@@ -20,6 +20,7 @@
 #include "progressbar.h"
 #include "formprogress.h"
 #include "formpassword.h"
+#include "communicationtomcu.h"
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -36,7 +37,7 @@ public:
     explicit FormMain(QWidget *parent = 0);
     ~FormMain();
 
-
+    communicationToMCU *commtoMcu;
     void updateLabelSucess(int next);
     void disp_test_press(double value);
     void disp_test_result(double value);

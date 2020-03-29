@@ -55,6 +55,7 @@ FormMain::FormMain(QWidget *parent) :
     formViewData = new FormViewData;
     ui->verticalLayout_2->addWidget(formViewData);
     formViewData->close();
+    communication->formViewData = formViewData;
 
 
 

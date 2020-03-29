@@ -7,10 +7,12 @@
 #include <QByteArray>
 #include "sys_struct.h"
 #include <QTimer>
+#include "formviewdata.h"
 
 class communicationToMCU : public QObject
 {
     Q_OBJECT
+
     void initSerialPort();
     void writer(const char *data, qint64 len);
     QTimer *timer,*timer_over,*timer_handle_uart;
@@ -20,7 +22,7 @@ class communicationToMCU : public QObject
     void HcpHandleKey(unsigned char *puf);
 public:
     explicit communicationToMCU(QObject *parent = 0);
-
+    FormViewData *formViewData;
     QSerialPort *serialPortToMCU;
     unsigned short crc(unsigned char *pBuf, unsigned short length);
     void HCP_SendACK();
