@@ -331,7 +331,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QPushButton" name="pushButton_5">
+                 <widget class="QPushButton" name="pushButton_print">
                   <property name="maximumSize">
                    <size>
                     <width>80</width>

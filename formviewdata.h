@@ -45,6 +45,8 @@ private slots:
 
     void on_pushButton_bottom_clicked();
 
+    void on_pushButton_print_clicked();
+
 private:
     Ui::FormViewData *ui;
     void page_value();

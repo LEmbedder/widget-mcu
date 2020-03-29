@@ -3,6 +3,8 @@
 #include <QAbstractItemView>
 #include <QScrollBar>
 #include <QSqlRecord>
+#include <QFileDialog>
+#include <QAxObject>
 
 FormViewData::FormViewData(QWidget *parent) :
     QWidget(parent),
@@ -259,4 +261,9 @@ void FormViewData::update_args()
     ui->label_pass->setText(QString::number(pass));
     percent_pass = pass*100.0/total_number;
     ui->label_percent_pass->setText(QString::number(percent_pass,'f',2)+"%");
+}
+
+void FormViewData::on_pushButton_print_clicked()
+{
+
 }
