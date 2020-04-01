@@ -67,6 +67,7 @@ bool FormViewData::initDatabase()
     model->setHeaderData(9,Qt::Horizontal,tr("测试节拍"));
     view = new QTableView(this);
     view->setModel(model);
+    view->setSelectionBehavior(QAbstractItemView::SelectRows);
     view->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->widget_5->layout()->addWidget(view);
     return true;
@@ -275,7 +276,38 @@ void FormViewData::update_args()
 
 }
 
+/*
+ * 打印选择信息
+ *  QString worker_number,
+    QString workpiece_number,
+    QString test_time,
+    int revealStandardUpLimit,
+    int revealStandardDownLimit,
+    QString temp_test_result_unit,
+    QString result,
+    QString test_press_unit,
+    int meter_number)
+ */
 void FormViewData::on_pushButton_print_clicked()
 {
+    int row;
+    Print print;
+    row = view->currentIndex().row();
+    QSqlQuery *query = new QSqlQuery(db);
+    query->exec("select * from testdata");
+    query->seek(row);
+    QSqlRecord record = query->record();
+    print.workpiece_number = record.value("workpiece_number").toString();
+    print.worker_number = record.value("worker_number").toString();
+    print.device_number = QString(systemData.args_config.device_number);
+    print.result = record.value("result").toString()+record.value("test_press_unit").toString();
+    print.timer = record.value("test_time").toString();
+    qDebug()<<print;
+//    print.workpiece_number = "CC000110";
+//    print.worker_number = "L1111";
+//    print.device_number = "D01";
+//    print.result = "OK(3.8Pa/s)";
+//    print.timer = "2020/03/30 12:20:20";
 
+//    printInformation->print(&print);
 }

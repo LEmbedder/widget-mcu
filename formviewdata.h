@@ -9,6 +9,9 @@
 #include <QTableView>
 #include <QSqlError>
 #include "config.h"
+#include "printinformation.h"
+#include "globalvariable.h"
+
 namespace Ui {
 class FormViewData;
 }
@@ -21,7 +24,7 @@ public:
     explicit FormViewData(QWidget *parent = 0);
     ~FormViewData();
     QSqlDatabase db;
-
+    PrintInformation *printInformation;
     QSqlTableModel *model;
     QTableView *view;
     bool initDatabase();

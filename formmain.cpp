@@ -57,8 +57,9 @@ FormMain::FormMain(QWidget *parent) :
     formViewData->close();
     communication->formViewData = formViewData;
 
-
-
+    /* 打印 */
+    printInformation = new PrintInformation;
+    formViewData->printInformation = printInformation;
     /* 创建界面结束 */
 
     /* 初始化变量 */

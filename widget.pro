@@ -9,6 +9,7 @@ QT       += core gui sql serialport charts
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 target.path = /app_qt5
 INSTALLS += target
+LIBS += /work/335x/qt5.8.0_proj/widget/libautoreplyprint.a -lpthread
 
 TARGET = widget
 TEMPLATE = app
@@ -45,7 +46,8 @@ SOURCES += main.cpp\
     formvolumetest.cpp \
     formcalibrationtest.cpp \
     formprogress.cpp \
-    formpassword.cpp
+    formpassword.cpp \
+    printinformation.cpp
 
 HEADERS  += widget.h \
     navprogress.h \
@@ -68,7 +70,9 @@ HEADERS  += widget.h \
     formvolumetest.h \
     formcalibrationtest.h \
     formprogress.h \
-    formpassword.h
+    formpassword.h \
+    printinformation.h \
+    autoreplyprint.h
 
 FORMS    += widget.ui \
     formmain.ui \

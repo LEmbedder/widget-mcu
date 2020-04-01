@@ -34,6 +34,7 @@ struct Args_config {
     double demarcate_coefficient;//标定系数
     /* "容积测试","定标测试" end*/
     char work_number[30] ;//工号
+    char device_number[20];//设备号
 };
 
 /* 全局变量 */

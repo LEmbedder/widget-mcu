@@ -199,3 +199,11 @@ void FormSystemSetting::on_comboBox_test_mode_currentIndexChanged(int index)
 {
     args_config_temp.test_mode = index;
 }
+
+
+
+void FormSystemSetting::on_lineEdit_device_number_textChanged(const QString &arg1)
+{
+    strcpy(args_config_temp.device_number,arg1.toStdString().c_str());
+    args_config_temp.device_number[20] = '\0';
+}

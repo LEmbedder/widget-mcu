@@ -21,6 +21,7 @@
 #include "formprogress.h"
 #include "formpassword.h"
 #include "communicationtomcu.h"
+#include "printinformation.h"
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -47,6 +48,7 @@ public:
     void loadConfigArgs();
     void saveConfigArgs();
     FormPassword *fps;
+    PrintInformation *printInformation;
 public slots:
     void receiveInfo();
     void update_args_config(Args_config *config);
