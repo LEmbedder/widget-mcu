@@ -46,7 +46,8 @@ Widget::Widget(QWidget *parent) :
     */
     formain = new FormMain(this);
     formain->formProgress = fp;
-    formain->commtoMcu = communication;
+    formain->communication = communication;
+    formain->setViewData();
     ui->verticalLayout_target->addWidget(formain);
     communication->DataInit();
     communication->start_first();

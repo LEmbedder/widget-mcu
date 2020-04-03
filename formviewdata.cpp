@@ -4,7 +4,6 @@
 #include <QScrollBar>
 #include <QSqlRecord>
 #include <QFileDialog>
-//#include <QAxObject>
 
 FormViewData::FormViewData(QWidget *parent) :
     QWidget(parent),
@@ -292,6 +291,7 @@ void FormViewData::on_pushButton_print_clicked()
 {
     int row;
     Print print;
+
     row = view->currentIndex().row();
     QSqlQuery *query = new QSqlQuery(db);
     query->exec("select * from testdata");
@@ -300,14 +300,9 @@ void FormViewData::on_pushButton_print_clicked()
     print.workpiece_number = record.value("workpiece_number").toString();
     print.worker_number = record.value("worker_number").toString();
     print.device_number = QString(systemData.args_config.device_number);
-    print.result = record.value("result").toString()+record.value("test_press_unit").toString();
+    print.result = record.value("result").toString()+"("+record.value("test_press_unit").toString()+")";
     print.timer = record.value("test_time").toString();
-    qDebug()<<print;
-//    print.workpiece_number = "CC000110";
-//    print.worker_number = "L1111";
-//    print.device_number = "D01";
-//    print.result = "OK(3.8Pa/s)";
-//    print.timer = "2020/03/30 12:20:20";
+    qDebug()<<print.workpiece_number<<print.worker_number<<print.result<<print.timer;
 
-//    printInformation->print(&print);
+    printInformation->print(&print);
 }

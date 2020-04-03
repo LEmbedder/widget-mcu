@@ -55,7 +55,6 @@ FormMain::FormMain(QWidget *parent) :
     formViewData = new FormViewData;
     ui->verticalLayout_2->addWidget(formViewData);
     formViewData->close();
-    communication->formViewData = formViewData;
 
     /* 打印 */
     printInformation = new PrintInformation;
@@ -146,15 +145,13 @@ FormMain::FormMain(QWidget *parent) :
     ui->lineEdit_up_limit->setText("1000");
     ui->lineEdit_down_limit->setText("-1000");
 
-    updateForm();
-
     connect(communication,SIGNAL(update_window()),this,SLOT(update_mcu()));
 
     /* 初始化工号 */
     memset(systemData.args_config.work_number,0,30);
     loadConfigArgs();
     ui->comboBox_channel_number->setCurrentIndex(systemData.channel_number);
-
+    updateForm();
 }
 
 FormMain::~FormMain()
@@ -500,4 +497,7 @@ void FormMain::updateSeries(int position, double value)
     }
 }
 
-
+void FormMain::setViewData(void)
+{
+    communication->formViewData = formViewData;
+}

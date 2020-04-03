@@ -38,7 +38,7 @@ public:
     explicit FormMain(QWidget *parent = 0);
     ~FormMain();
 
-    communicationToMCU *commtoMcu;
+    communicationToMCU *communication;
     void updateLabelSucess(int next);
     void disp_test_press(double value);
     void disp_test_result(double value);
@@ -49,6 +49,7 @@ public:
     void saveConfigArgs();
     FormPassword *fps;
     PrintInformation *printInformation;
+    void setViewData();
 public slots:
     void receiveInfo();
     void update_args_config(Args_config *config);

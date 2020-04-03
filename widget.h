@@ -30,6 +30,7 @@ public:
     ~Widget();
     QTimer *timer;
     FormMain *formain;
+    communicationToMCU *communication;
 private slots:
     void updateForm();
     void timerOut();

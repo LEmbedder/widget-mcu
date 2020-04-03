@@ -2,7 +2,6 @@
 #define GLOBALVARIABLE_H
 
 #include <QString>
-#include "communicationtomcu.h"
 
 #define BUTTON_NUMBER    16
 #define BEATS_NUM_MAX    13
@@ -115,6 +114,5 @@ extern HcpSetsPara DiffPressurePara[BEATS_NUM_MAX];
 extern SystemData systemData;
 extern SetsPara sets[4][BUTTON_NUMBER];
 extern CopyPaste copyPaste;
-extern communicationToMCU *communication;
 extern PassWord passWord;
 #endif // GLOBALVARIABLE_H

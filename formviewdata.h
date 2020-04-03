@@ -58,6 +58,7 @@ private:
     double percent_pass;
 
     void update_args();
+
 };
 
 #endif // FORMVIEWDATA_H

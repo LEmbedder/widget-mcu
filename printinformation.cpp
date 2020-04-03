@@ -28,16 +28,16 @@ void PrintInformation::print(Print_t *print)
 
     CP_Label_DrawTextInGBK(h, 10, 40+height, 24, 0, L"工序 :气密性检查");
     CP_Label_DrawTextInGBK(h, 10, 70+height, 24, 0, L"工号 :");
-    CP_Label_DrawTextInBytes(h, 100, 70+height, 24, 0, print->worker_number.toStdString().c_str(),print->worker_number.length());
+    CP_Label_DrawTextInBytes(h, 80, 70+height, 24, 0, print->worker_number.toStdString().c_str(),print->worker_number.length());
 
     CP_Label_DrawTextInGBK(h, 10, 100+height, 24, 0, L"设备号:");
     CP_Label_DrawTextInBytes(h, 100, 100+height, 24, 0, print->device_number.toStdString().c_str(),print->device_number.length());
 
     CP_Label_DrawTextInGBK(h, 10, 130+height, 24, 0, L"结果:");
-    CP_Label_DrawTextInBytes(h, 100, 130+height, 24, 0, print->result.toStdString().c_str(),print->result.length());
+    CP_Label_DrawTextInBytes(h, 80, 130+height, 24, 0, print->result.toStdString().c_str(),print->result.length());
 
     CP_Label_DrawTextInGBK(h, 10, 160+height, 24, 0, L"时间:");
-    CP_Label_DrawTextInBytes(h, 100, 160+height, 24, 0, print->timer.toStdString().c_str(),print->timer.length());
+    CP_Label_DrawTextInBytes(h, 80, 160+height, 24, 0, print->timer.toStdString().c_str(),print->timer.length());
     barCode = print->workpiece_number+print->worker_number+print->device_number+print->result+print->timer;
     CP_Label_DrawQRCode(h, 240, 10+height, 4, CP_QRCodeECC_L, 4, CP_Label_Rotation_0, barCode.toStdString().c_str());
     CP_Label_PagePrint(h, 1);

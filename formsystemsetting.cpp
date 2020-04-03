@@ -33,6 +33,8 @@ FormSystemSetting::FormSystemSetting(QWidget *parent) :
     ui->comboBox_test_mode->addItems(test_mode);
     ui->lineEdit_work_number->setMaxLength(20);
     ui->lineEdit_work_number->setValidator(new QRegExpValidator(QRegExp("^[A-Za-z0-9]+$"), this));
+    ui->lineEdit_device_number->setMaxLength(20);
+    ui->lineEdit_device_number->setValidator(new QRegExpValidator(QRegExp("^[A-Za-z0-9]+$"), this));
 
 }
 
@@ -70,6 +72,7 @@ void FormSystemSetting::update_system_setting()
     ui->comboBox_decimal_test_press->setCurrentIndex(systemData.args_config.test_press_decimal_bit);
     ui->comboBox_test_mode->setCurrentIndex(systemData.args_config.test_mode);
     ui->lineEdit_work_number->setText(QString(systemData.args_config.work_number));
+    ui->lineEdit_device_number->setText(QString(systemData.args_config.device_number));
 
 }
 /*
@@ -123,6 +126,11 @@ void FormSystemSetting::loadConfigArgs()
         {
             systemData.args_config.test_mode = setting.value("test_mode").toInt();
         }
+        if (tagList.indexOf("device_number") != -1)
+        {
+            QString string = setting.value("device_number").toString();
+            strcpy(systemData.args_config.device_number,string.toStdString().c_str());
+        }
     }
 }
 void FormSystemSetting::saveConfigArgs()
@@ -140,6 +148,7 @@ void FormSystemSetting::saveConfigArgs()
     setting.setValue("test_press_decimal",systemData.args_config.test_press_decimal_bit);
     setting.setValue("work_number",systemData.args_config.work_number);
     setting.setValue("test_mode",systemData.args_config.test_mode);
+    setting.setValue("device_number",systemData.args_config.device_number);
 }
 void FormSystemSetting::on_pushButton_return_clicked()
 {

@@ -15,4 +15,4 @@ struct HcpSetsPara DiffPressurePara[BEATS_NUM_MAX];
 struct CopyPaste copyPaste;
 struct PassWord passWord;
 
-communicationToMCU *communication;
+//communicationToMCU *communication;
