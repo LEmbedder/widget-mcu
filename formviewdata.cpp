@@ -234,7 +234,6 @@ void FormViewData::page_value()
         max_page = 1;
     }
     if (value > max_page) value = max_page;
-    qDebug()<<value << max_page;
     ui->label_value->setText(QString::number(value)+"/"+
                              QString::number(max_page));
     update();

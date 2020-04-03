@@ -11,7 +11,7 @@ PrintInformation::PrintInformation(QObject *parent) : QObject(parent)
  */
 void PrintInformation::print(Print_t *print)
 {
-    const char *port_name = "/dev/usb/lp0";
+    const char *port_name = PRINTF_DEVIDE;
     void *h = 0;
     int nPageWidth = 48 * 8;
     int nPageHeight = 25 * 8;

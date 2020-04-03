@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "autoreplyprint.h"
+#include "config.h"
 
 typedef struct Print{
     QString workpiece_number;

@@ -85,7 +85,7 @@ FormMain::FormMain(QWidget *parent) :
     serialPort->setPortName( "/dev/ttyUSB0" );
     if( !serialPort->open(QIODevice::ReadOnly) )//用ReadWrite 的模式尝试打开串口
     {
-        qDebug("error");
+        qDebug("error can't open device /dev/ttyUSB0");
     }
     serialPort->setBaudRate(QSerialPort::Baud115200,QSerialPort::AllDirections);//设置波特率和读写方向
     serialPort->setDataBits(QSerialPort::Data8);		//数据位为8位
@@ -145,7 +145,7 @@ FormMain::FormMain(QWidget *parent) :
     ui->lineEdit_up_limit->setText("1000");
     ui->lineEdit_down_limit->setText("-1000");
 
-    connect(communication,SIGNAL(update_window()),this,SLOT(update_mcu()));
+
 
     /* 初始化工号 */
     memset(systemData.args_config.work_number,0,30);
@@ -500,4 +500,5 @@ void FormMain::updateSeries(int position, double value)
 void FormMain::setViewData(void)
 {
     communication->formViewData = formViewData;
+    connect(communication,SIGNAL(update_window()),this,SLOT(update_mcu()));
 }
