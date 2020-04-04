@@ -123,6 +123,7 @@ void FormViewData::insertDatabase(QString worker_number,
 
     model->select();
     view->viewport()->update();
+    update_args();
 }
 
 /*
@@ -251,17 +252,17 @@ void FormViewData::page_value()
 
 void FormViewData::update_args()
 {
-    QSqlQuery *query = new QSqlQuery(db);
-    query->exec("select * from testdata");
-    if (query->last())
-        total_number = query->at() + 1;
+    QSqlQuery query = QSqlQuery(db);
+    query.exec("select * from testdata");
+    if (query.last())
+        total_number = query.at() + 1;
     else
         total_number = 0;
 
-    query->exec("select * from testdata");
-    for (int i = 0; query->seek(i);i++)
+    query.exec("select * from testdata");
+    for (int i = 0; query.seek(i);i++)
     {
-        QSqlRecord record = query->record();
+        QSqlRecord record = query.record();
         QString ok = record.value("result").toString();
         if (ok == "true")
         {
@@ -280,8 +281,6 @@ void FormViewData::update_args()
         percent_pass = 0;
         ui->label_percent_pass->setText(QString::number(percent_pass,'f',2)+"%");
     }
-
-
 }
 
 /*
@@ -306,11 +305,11 @@ void FormViewData::on_pushButton_print_clicked()
     query->exec("select * from testdata");
     query->seek(row);
     QSqlRecord record = query->record();
-    print.workpiece_number = record.value("workpiece_number").toString();
-    print.worker_number = record.value("worker_number").toString();
-    print.device_number = QString(systemData.args_config.device_number);
-    print.result = record.value("result").toString()+"("+record.value("test_press_unit").toString()+")";
-    print.timer = record.value("test_time").toString();
+    print.workpiece_number = record.value("workpiece_number").toString()+";";
+    print.worker_number = record.value("worker_number").toString()+";";
+    print.device_number = QString(systemData.args_config.device_number)+";";
+    print.result = record.value("result").toString()+"("+record.value("test_press_unit").toString()+");";
+    print.timer = record.value("test_time").toString()+";";
     qDebug()<<print.workpiece_number<<print.worker_number<<print.result<<print.timer;
 
     printInformation->print(&print);
