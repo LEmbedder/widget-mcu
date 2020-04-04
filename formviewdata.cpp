@@ -24,6 +24,7 @@ FormViewData::~FormViewData()
     delete ui;
 }
 
+
 /*
  * 打开数据库设置名字添加数据
 */
@@ -67,6 +68,7 @@ bool FormViewData::initDatabase()
     view = new QTableView(this);
     view->setModel(model);
     view->setSelectionBehavior(QAbstractItemView::SelectRows);
+    view->setSelectionMode(QAbstractItemView::SingleSelection);
     view->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->widget_5->layout()->addWidget(view);
     return true;
@@ -94,15 +96,20 @@ void FormViewData::insertDatabase(QString worker_number,
                                   int meter_number)
 {
     int next = 1;
-    QSqlQuery *query = new QSqlQuery(db);
+    QSqlQuery query = QSqlQuery(db);
 
-    query->exec("select * from testdata");
-    if (query->last())
+    query.exec("select * from testdata");
+    if (query.last())
     {
-        next = query->at() + 2;
+        next = query.at() + 2;
+        if (next > MAX_DB_RECORD)
+        {
+            DEBUG_LOG("data base is full,can't store");
+            return;
+        }
     }
 
-    query->exec("insert into testdata values("+
+    query.exec("insert into testdata values("+
                 QString::number(next)+",'"+
                 worker_number+"','"+
                 workpiece_number+"','"+
@@ -113,6 +120,9 @@ void FormViewData::insertDatabase(QString worker_number,
                 result+"','"+
                 test_press_unit+"',"+
                 QString::number(meter_number)+")");
+
+    model->select();
+    view->viewport()->update();
 }
 
 /*
@@ -305,3 +315,4 @@ void FormViewData::on_pushButton_print_clicked()
 
     printInformation->print(&print);
 }
+

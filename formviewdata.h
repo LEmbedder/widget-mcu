@@ -11,6 +11,8 @@
 #include "config.h"
 #include "printinformation.h"
 #include "globalvariable.h"
+#include "QTimer"
+#include "QDateTime"
 
 namespace Ui {
 class FormViewData;
@@ -27,6 +29,7 @@ public:
     PrintInformation *printInformation;
     QSqlTableModel *model;
     QTableView *view;
+
     bool initDatabase();
     void insertDatabase(QString worker_number,
                         QString workpiece_number,
@@ -56,9 +59,11 @@ private:
     unsigned total_number;
     unsigned pass;
     double percent_pass;
-
+    unsigned int currentTotalRecord;
     void update_args();
 
+    /*test use*/
+    QTimer *timer;
 };
 
 #endif // FORMVIEWDATA_H

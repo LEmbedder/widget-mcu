@@ -17,4 +17,5 @@
 /* which print machine to use */
 #define PRINTF_DEVIDE  "/dev/usb/lp0"
 
+#define MAX_DB_RECORD  100000
 #endif // CONFIG_H
