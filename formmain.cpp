@@ -5,6 +5,7 @@
 #include "formmain.h"
 #include "ui_formmain.h"
 #include <QDebug>
+#include <QScrollBar>
 
 #define TEST_FAILED      "background-color:rgb(255,0,0)"
 #define TEST_SUCESS      "background-color:rgb(0,255,0)"
@@ -151,6 +152,8 @@ FormMain::FormMain(QWidget *parent) :
     memset(systemData.args_config.work_number,0,30);
     loadConfigArgs();
     ui->comboBox_channel_number->setCurrentIndex(systemData.channel_number);
+    ui->comboBox_channel_number->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    ui->comboBox_channel_number->view()->verticalScrollBar()->setStyleSheet("QScrollBar{width:30px;}");
     updateForm();
 }
 

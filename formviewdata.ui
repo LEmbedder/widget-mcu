@@ -62,6 +62,12 @@
          </size>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <spacer name="horizontalSpacer">
            <property name="orientation">

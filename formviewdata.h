@@ -53,6 +53,8 @@ private slots:
 
     void on_pushButton_print_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::FormViewData *ui;
     void page_value();
@@ -64,6 +66,7 @@ private:
 
     /*test use*/
     QTimer *timer;
+    void ReadDataFromSqlWriteToCSV(const QString &tableName, const QString &csvFileName);
 };
 
 #endif // FORMVIEWDATA_H

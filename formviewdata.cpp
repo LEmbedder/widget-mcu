@@ -314,4 +314,36 @@ void FormViewData::on_pushButton_print_clicked()
 
     printInformation->print(&print);
 }
+/*
+ * 导出数据库信息为csv文件
+ */
+void FormViewData::ReadDataFromSqlWriteToCSV(const QString &tableName,const QString &csvFileName)
+{
+    QStringList strList;
+    QString strString;
+    const QString FILE_PATH(csvFileName);
+    QFile csvFile(FILE_PATH);
 
+    model->setTable(tableName);
+    model->select();
+    if (csvFile.open(QIODevice::ReadWrite))
+    {
+        for (int i=0;i<model->rowCount();i++)
+        {
+            for(int j=0; j < model->columnCount();j++)
+            {
+                strList.insert(j,model->data(model->index(i,j)).toString());//把每一行的每一列数据读取到strList中
+            }
+            strString = strList.join(", ")+"\n";//给两个列数据之前加“,”号，一行数据末尾加回车
+            strList.clear();//记录一行数据后清空，再记下一行数据
+            csvFile.write(strString.toUtf8());//使用方法：转换为Utf8格式后在windows下的excel打开是乱码,可先用notepad++打开并转码为unicode，再次用excel打开即可。
+            qDebug()<<strString.toUtf8();
+        }
+        csvFile.close();
+    }
+}
+
+void FormViewData::on_pushButton_clicked()
+{
+    ReadDataFromSqlWriteToCSV("testdata","testdata.csv");
+}

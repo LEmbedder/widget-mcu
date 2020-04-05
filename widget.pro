@@ -9,7 +9,7 @@ QT       += core gui sql serialport charts
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 target.path = /app_qt5
 INSTALLS += target
-LIBS += /work/335x/qt5.8.0_proj/widget/libautoreplyprint.a -lpthread
+LIBS += -lpthread
 
 TARGET = widget
 TEMPLATE = app
@@ -98,3 +98,16 @@ RESOURCES += \
 DISTFILES += \
     image/factory.jpg \
     image/label.png
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/./release/ -lautoreplyprint
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/./debug/ -lautoreplyprint
+else:unix: LIBS += -L$$PWD/./ -lautoreplyprint
+
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/./release/libautoreplyprint.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/./debug/libautoreplyprint.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/./release/autoreplyprint.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/./debug/autoreplyprint.lib
+else:unix: PRE_TARGETDEPS += $$PWD/./libautoreplyprint.a
