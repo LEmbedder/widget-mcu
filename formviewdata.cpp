@@ -326,6 +326,16 @@ void FormViewData::ReadDataFromSqlWriteToCSV(const QString &tableName,const QStr
 
     model->setTable(tableName);
     model->select();
+    model->setHeaderData(0,Qt::Horizontal,tr("序号"));
+    model->setHeaderData(1,Qt::Horizontal,tr("工号"));
+    model->setHeaderData(2,Qt::Horizontal,tr("工件号"));
+    model->setHeaderData(3,Qt::Horizontal,tr("测试时间"));
+    model->setHeaderData(4,Qt::Horizontal,tr("泄露标准上限"));
+    model->setHeaderData(5,Qt::Horizontal,tr("泄露标准下限"));
+    model->setHeaderData(6,Qt::Horizontal,tr("测试漏率及单位"));
+    model->setHeaderData(7,Qt::Horizontal,tr("结果"));
+    model->setHeaderData(8,Qt::Horizontal,tr("测试压及单位"));
+    model->setHeaderData(9,Qt::Horizontal,tr("测试节拍"));
     if (csvFile.open(QIODevice::ReadWrite))
     {
         for (int i=0;i<model->rowCount();i++)
@@ -337,10 +347,18 @@ void FormViewData::ReadDataFromSqlWriteToCSV(const QString &tableName,const QStr
             strString = strList.join(", ")+"\n";//给两个列数据之前加“,”号，一行数据末尾加回车
             strList.clear();//记录一行数据后清空，再记下一行数据
             csvFile.write(strString.toUtf8());//使用方法：转换为Utf8格式后在windows下的excel打开是乱码,可先用notepad++打开并转码为unicode，再次用excel打开即可。
-            qDebug()<<strString.toUtf8();
         }
         csvFile.close();
     }
+    if (!system("ls /mnt/usb"))
+    {
+        system("cp /testdata.csv /mnt/usb");
+        /* 说明拷贝完成 */
+        dial.showMessage(2000,"拷贝完成");
+
+    }
+    else
+        dial.showMessage(2000,"请插入存储设备");
 }
 
 void FormViewData::on_pushButton_clicked()

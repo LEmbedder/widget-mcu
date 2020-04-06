@@ -13,6 +13,7 @@
 #include "globalvariable.h"
 #include "QTimer"
 #include "QDateTime"
+#include "dialogmessage.h"
 
 namespace Ui {
 class FormViewData;
@@ -63,6 +64,7 @@ private:
     double percent_pass;
     unsigned int currentTotalRecord;
     void update_args();
+    DialogMessage dial;
 
     /*test use*/
     QTimer *timer;

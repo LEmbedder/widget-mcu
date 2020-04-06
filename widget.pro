@@ -47,7 +47,8 @@ SOURCES += main.cpp\
     formcalibrationtest.cpp \
     formprogress.cpp \
     formpassword.cpp \
-    printinformation.cpp
+    printinformation.cpp \
+    dialogmessage.cpp
 
 HEADERS  += widget.h \
     navprogress.h \
@@ -72,7 +73,8 @@ HEADERS  += widget.h \
     formprogress.h \
     formpassword.h \
     printinformation.h \
-    autoreplyprint.h
+    autoreplyprint.h \
+    dialogmessage.h
 
 FORMS    += widget.ui \
     formmain.ui \
@@ -89,7 +91,8 @@ FORMS    += widget.ui \
     formvolumetest.ui \
     formcalibrationtest.ui \
     formprogress.ui \
-    formpassword.ui
+    formpassword.ui \
+    dialogmessage.ui
 
 
 RESOURCES += \
