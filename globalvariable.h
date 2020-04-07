@@ -51,6 +51,7 @@ struct SystemData{
     unsigned char beat_do_flag[BEATS_NUM_MAX];
     struct Args_config args_config;
     unsigned int channel_number;//通道号 1-48
+    unsigned int channel_number_B;//通道号 1-48
     /* 绘图的上下限 */
     struct Up_down_limit{
         int up_limit;

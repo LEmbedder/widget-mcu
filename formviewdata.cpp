@@ -14,6 +14,9 @@ FormViewData::FormViewData(QWidget *parent) :
     percent_pass = 0;
     total_number = 0;
 
+    viewFPS = new FormPassword;
+    connect(viewFPS,SIGNAL(emitIsTrue_2()),this,SLOT(on_pushButton_clicked()));
+    connect(viewFPS,SIGNAL(emitIsTrue_3()),this,SLOT(on_pushButton_2_clicked()));
     initDatabase();
     page_value();
     update_args();
@@ -350,7 +353,7 @@ void FormViewData::ReadDataFromSqlWriteToCSV(const QString &tableName,const QStr
         }
         csvFile.close();
     }
-    if (!system("ls /mnt/usb"))
+    if (!system("ls /mnt/usb > /dev/null"))
     {
         system("cp /testdata.csv /mnt/usb");
         /* 说明拷贝完成 */
@@ -363,5 +366,40 @@ void FormViewData::ReadDataFromSqlWriteToCSV(const QString &tableName,const QStr
 
 void FormViewData::on_pushButton_clicked()
 {
-    ReadDataFromSqlWriteToCSV("testdata","testdata.csv");
+    if (viewFPS->isTrue != true)
+    {
+        viewFPS->show();
+        viewFPS->type = 1;
+    }
+    viewFPS->clearText();
+    qDebug()<<viewFPS->isTrue<<viewFPS->type;
+    if (viewFPS->isTrue == true && viewFPS->type == 1)
+    {
+        if (passWord.sysOrUser == 1 || passWord.sysOrUser == 2)
+        {
+            /* 复制数据 */
+            ReadDataFromSqlWriteToCSV("testdata","testdata.csv");
+        }
+    }
+    viewFPS->isTrue = false;
+}
+
+void FormViewData::on_pushButton_2_clicked()
+{
+    if (viewFPS->isTrue != true)
+    {
+        viewFPS->show();
+        viewFPS->type = 2;
+    }
+    viewFPS->clearText();
+    qDebug()<<viewFPS->isTrue<<viewFPS->type;
+    if (viewFPS->isTrue == true && viewFPS->type == 2)
+    {
+        if (passWord.sysOrUser == 1 || passWord.sysOrUser == 2)
+        {
+            /* 删除数据库内容 */
+            qDebug()<<"111111111111111111111111";
+        }
+    }
+    viewFPS->isTrue = false;
 }

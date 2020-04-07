@@ -71,6 +71,8 @@ private slots:
 
     void updateForm();
 
+    void on_comboBox_channel_number2_currentIndexChanged(int index);
+
 private:
     Ui::FormMain *ui;
     void witchButtonChecked(QPushButton *button);

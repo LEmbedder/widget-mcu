@@ -4,15 +4,19 @@
 #include <QDebug>
 #include <stdio.h>
 
-#define __DEBUG__
+//#define __DEBUG__
 
 #ifdef __DEBUG__
 
 #define DEBUG_LOG(fmt, ...)  do{printf("[%s],<%s>,(%d):",__FILE__,__FUNCTION__,__LINE__);\
                                 printf(fmt,##__VA_ARGS__);\
                                 fflush(stdout);}while(0);
-
+#define printf(fmt, ...) do{printf(fmt,##__VA_ARGS__)}while(0)
+#else
+#define printf(fmt, ...)
+#define DEBUG_LOG(fmt, ...)
 #endif
+
 
 /* which print machine to use */
 #define PRINTF_DEVIDE  "/dev/usb/lp0"

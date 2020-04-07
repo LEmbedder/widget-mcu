@@ -382,7 +382,7 @@ p, li { white-space: pre-wrap; }
                   <enum>QFrame::Box</enum>
                  </property>
                  <property name="text">
-                  <string>TextLabel</string>
+                  <string>A工位</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -705,6 +705,15 @@ p, li { white-space: pre-wrap; }
                 <widget class="QComboBox" name="comboBox_channel_number2">
                  <property name="enabled">
                   <bool>true</bool>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>80</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maxVisibleItems">
+                  <number>100</number>
                  </property>
                 </widget>
                </item>

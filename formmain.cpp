@@ -23,6 +23,7 @@ FormMain::FormMain(QWidget *parent) :
     for(int i = 0; i< 64;i++)
     {
         ui->comboBox_channel_number->addItem(QString::number(i + 1));
+        ui->comboBox_channel_number2->addItem(QString::number(i + 1));
     }
     /* 容积测试和定标测试模式 */
     formVolumeTest = new FormVolumeTest();
@@ -61,13 +62,6 @@ FormMain::FormMain(QWidget *parent) :
     printInformation = new PrintInformation;
     formViewData->printInformation = printInformation;
     /* 创建界面结束 */
-
-    /* 初始化变量 */
-//    main_Form_Infor.mode             = Mode::AUTO;
-//    main_Form_Infor.test_pressure    = 12.5445;
-//    main_Form_Infor.worker_number    = "123456789";
-//    main_Form_Infor.workpiece_number = "123123123";
-//    updateForm();
 
     QStringList m_serialPortName;
     foreach(const QSerialPortInfo &info,QSerialPortInfo::availablePorts())
@@ -150,10 +144,11 @@ FormMain::FormMain(QWidget *parent) :
 
     /* 初始化工号 */
     memset(systemData.args_config.work_number,0,30);
-    loadConfigArgs();
     ui->comboBox_channel_number->setCurrentIndex(systemData.channel_number);
     ui->comboBox_channel_number->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     ui->comboBox_channel_number->view()->verticalScrollBar()->setStyleSheet("QScrollBar{width:30px;}");
+    ui->comboBox_channel_number2->view()->verticalScrollBar()->setStyleSheet("QScrollBar{width:30px;}");
+    loadConfigArgs();
     updateForm();
 }
 
@@ -400,9 +395,31 @@ void FormMain::update_args_config(struct Args_config* config)
     ui->label_select_display->setText(
                 formArguSetting->formSystemSetting->return_model()
                 );
-    ui->label_workspace_1->setText(
-                formArguSetting->formSystemSetting->return_worker_space()
-                );
+    /* 工位显示控制 */
+    switch (systemData.args_config.worker_space)
+    {
+    case 0:
+        ui->label_workspace_1->setEnabled(true);
+        ui->comboBox_channel_number->setEditable(true);
+        ui->label_workspace_2->setEnabled(false);
+        ui->comboBox_channel_number2->setEditable(false);
+        break;
+    case 1:
+        ui->label_workspace_1->setEnabled(false);
+        ui->comboBox_channel_number->setEditable(false);
+        ui->label_workspace_2->setEnabled(true);
+        ui->comboBox_channel_number2->setEditable(true);
+        break;
+    case 2:
+    case 3:
+        ui->label_workspace_1->setEnabled(true);
+        ui->comboBox_channel_number->setEditable(true);
+        ui->label_workspace_2->setEnabled(true);
+        ui->comboBox_channel_number2->setEditable(true);
+        break;
+    default:
+        break;
+    }
     ui->comboBox_channel_number->setCurrentText(QString::number(systemData.channel_number));
     updateForm();
 }
@@ -422,6 +439,11 @@ void FormMain::loadConfigArgs()
         {
             systemData.channel_number = setting.value("channel_number").toInt();
         }
+        if (tagList.indexOf("channel_number_B") != -1)
+        {
+            systemData.channel_number_B = setting.value("channel_number_B").toInt();
+        }
+        qDebug()<<systemData.channel_number<<systemData.channel_number_B;
     }
 }
 /*
@@ -436,8 +458,10 @@ void FormMain::saveConfigArgs()
     {
         setting.beginGroup("SystemData");
         setting.setValue("channel_number",systemData.channel_number);
+        setting.setValue("channel_number_B",systemData.channel_number_B);
         if(formProgress != NULL)
             formProgress->update();
+
     }
 }
 /*
@@ -446,6 +470,11 @@ void FormMain::saveConfigArgs()
 void FormMain::on_comboBox_channel_number_currentIndexChanged(int index)
 {
     systemData.channel_number = index;
+    saveConfigArgs();
+}
+void FormMain::on_comboBox_channel_number2_currentIndexChanged(int index)
+{
+    systemData.channel_number_B = index;
     saveConfigArgs();
 }
 /*
@@ -505,3 +534,5 @@ void FormMain::setViewData(void)
     communication->formViewData = formViewData;
     connect(communication,SIGNAL(update_window()),this,SLOT(update_mcu()));
 }
+
+

@@ -14,6 +14,8 @@
 #include "QTimer"
 #include "QDateTime"
 #include "dialogmessage.h"
+#include "dialogpassword.h"
+#include "formpassword.h"
 
 namespace Ui {
 class FormViewData;
@@ -56,6 +58,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::FormViewData *ui;
     void page_value();
@@ -65,6 +69,7 @@ private:
     unsigned int currentTotalRecord;
     void update_args();
     DialogMessage dial;
+    FormPassword *viewFPS;
 
     /*test use*/
     QTimer *timer;
