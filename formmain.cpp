@@ -20,11 +20,6 @@ FormMain::FormMain(QWidget *parent) :
     connect(fps,SIGNAL(emitIsTrue()),this,SLOT(on_pushButton_4_clicked()));
 
     save_index = 0;
-    for(int i = 0; i< 64;i++)
-    {
-        ui->comboBox_channel_number->addItem(QString::number(i + 1));
-        ui->comboBox_channel_number2->addItem(QString::number(i + 1));
-    }
     /* 容积测试和定标测试模式 */
     formVolumeTest = new FormVolumeTest();
     formVolumeTest->hide();
@@ -144,11 +139,9 @@ FormMain::FormMain(QWidget *parent) :
 
     /* 初始化工号 */
     memset(systemData.args_config.work_number,0,30);
-    ui->comboBox_channel_number->setCurrentIndex(systemData.channel_number);
-    ui->comboBox_channel_number->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    ui->comboBox_channel_number->view()->verticalScrollBar()->setStyleSheet("QScrollBar{width:30px;}");
-    ui->comboBox_channel_number2->view()->verticalScrollBar()->setStyleSheet("QScrollBar{width:30px;}");
     loadConfigArgs();
+    ui->lineEdit_channle_number_A->setText(QString::number(systemData.channel_number));
+    ui->lineEdit_channle_number_B->setText(QString::number(systemData.channel_number_B));
     updateForm();
 }
 
@@ -400,27 +393,26 @@ void FormMain::update_args_config(struct Args_config* config)
     {
     case 0:
         ui->label_workspace_1->setEnabled(true);
-        ui->comboBox_channel_number->setEditable(true);
+        ui->lineEdit_channle_number_A->setEnabled(true);
         ui->label_workspace_2->setEnabled(false);
-        ui->comboBox_channel_number2->setEditable(false);
+        ui->lineEdit_channle_number_B->setEnabled(false);
         break;
     case 1:
         ui->label_workspace_1->setEnabled(false);
-        ui->comboBox_channel_number->setEditable(false);
+        ui->lineEdit_channle_number_A->setEnabled(false);
         ui->label_workspace_2->setEnabled(true);
-        ui->comboBox_channel_number2->setEditable(true);
+        ui->lineEdit_channle_number_B->setEnabled(true);
         break;
     case 2:
     case 3:
         ui->label_workspace_1->setEnabled(true);
-        ui->comboBox_channel_number->setEditable(true);
+        ui->lineEdit_channle_number_A->setEnabled(true);
         ui->label_workspace_2->setEnabled(true);
-        ui->comboBox_channel_number2->setEditable(true);
+        ui->lineEdit_channle_number_B->setEnabled(true);
         break;
     default:
         break;
     }
-    ui->comboBox_channel_number->setCurrentText(QString::number(systemData.channel_number));
     updateForm();
 }
 /* 获取参数
@@ -464,19 +456,7 @@ void FormMain::saveConfigArgs()
 
     }
 }
-/*
- * 通道选择变化了
- */
-void FormMain::on_comboBox_channel_number_currentIndexChanged(int index)
-{
-    systemData.channel_number = index;
-    saveConfigArgs();
-}
-void FormMain::on_comboBox_channel_number2_currentIndexChanged(int index)
-{
-    systemData.channel_number_B = index;
-    saveConfigArgs();
-}
+
 /*
  * 显示测试压
  */
@@ -536,3 +516,16 @@ void FormMain::setViewData(void)
 }
 
 
+
+void FormMain::on_pushButton_set_channel_number_clicked()
+{
+    if (ui->lineEdit_channle_number_A->isEnabled())
+    {
+        systemData.channel_number = ui->lineEdit_channle_number_A->text().toInt();
+    }
+    if (ui->lineEdit_channle_number_B->isEnabled())
+    {
+        systemData.channel_number_B = ui->lineEdit_channle_number_B->text().toInt();
+    }
+    saveConfigArgs();
+}

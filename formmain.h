@@ -63,15 +63,13 @@ private slots:
 
     void on_pushButton_4_clicked();
 
-    void on_comboBox_channel_number_currentIndexChanged(int index);
-
     void on_lineEdit_up_limit_editingFinished();
 
     void on_lineEdit_down_limit_editingFinished();
 
     void updateForm();
 
-    void on_comboBox_channel_number2_currentIndexChanged(int index);
+    void on_pushButton_set_channel_number_clicked();
 
 private:
     Ui::FormMain *ui;

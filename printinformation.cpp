@@ -38,7 +38,7 @@ void PrintInformation::print(Print_t *print)
 
     CP_Label_DrawTextInGBK(h, 10, 160+height, 24, 0, L"时间:");
     CP_Label_DrawTextInBytes(h, 80, 160+height, 24, 0, print->timer.toStdString().c_str(),print->timer.length());
-    barCode = print->workpiece_number+print->worker_number+print->device_number+print->result+print->timer;
+    barCode = print->workpiece_number+";"+print->worker_number+";"+print->device_number+";"+print->result+";"+print->timer;
     CP_Label_DrawQRCode(h, 240, 10+height, 4, CP_QRCodeECC_L, 4, CP_Label_Rotation_0, barCode.toStdString().c_str());
     CP_Label_PagePrint(h, 1);
     CP_Port_Close(h);

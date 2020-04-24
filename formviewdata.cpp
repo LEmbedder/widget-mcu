@@ -20,6 +20,7 @@ FormViewData::FormViewData(QWidget *parent) :
     initDatabase();
     page_value();
     update_args();
+//    insertDatabase("127","1451122","2020-19-19",1651,684,"1353pa","true","1234kpa",13);
 }
 
 FormViewData::~FormViewData()
@@ -54,7 +55,7 @@ bool FormViewData::initDatabase()
                "meter_number int)"
                );
 
-//    insertDatabase("127","1451122","2020-19-19",1651,684,"1353pa","true","1234kpa",13);
+
     model = new QSqlTableModel(this);
     model->setTable("testdata");
     model->select();
@@ -308,11 +309,11 @@ void FormViewData::on_pushButton_print_clicked()
     query->exec("select * from testdata");
     query->seek(row);
     QSqlRecord record = query->record();
-    print.workpiece_number = record.value("workpiece_number").toString()+";";
-    print.worker_number = record.value("worker_number").toString()+";";
-    print.device_number = QString(systemData.args_config.device_number)+";";
-    print.result = record.value("result").toString()+"("+record.value("test_press_unit").toString()+");";
-    print.timer = record.value("test_time").toString()+";";
+    print.workpiece_number = record.value("workpiece_number").toString();
+    print.worker_number = record.value("worker_number").toString();
+    print.device_number = QString(systemData.args_config.device_number);
+    print.result = record.value("result").toString()+"("+record.value("test_press_unit").toString()+")";
+    print.timer = record.value("test_time").toString();
     qDebug()<<print.workpiece_number<<print.worker_number<<print.result<<print.timer;
 
     printInformation->print(&print);
