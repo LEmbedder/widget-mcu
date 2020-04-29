@@ -55,6 +55,7 @@ public slots:
     void receiveInfo();
     void update_args_config(Args_config *config);
     void update_mcu();
+    void updateLabelSucessOrFailed(bool value);
 private slots:
     void on_pushButton_clicked();
 

@@ -129,7 +129,7 @@ FormMain::FormMain(QWidget *parent) :
     updateLabelSucess(1);
     updateLabelSucess(1);
     updateLabelSucess(1);
-    updateLabelSucess(0);
+    updateLabelSucess(1);
     updateLabelSucess(1);
     updateLabelSucess(1);
     updateLabelSucess(1);
@@ -267,6 +267,13 @@ void FormMain::update_mcu()
     formProgress->setProgressValue(systemData.set_index);/* 进度条更新 */
 
 }
+
+void FormMain::updateLabelSucessOrFailed(bool value)
+{
+    if ((value == true) || (value == false))
+        updateLabelSucess(value);
+}
+
 void FormMain::updateForm()
 {
     disp_test_press(systemData.test_press);/* 测试压更新 */

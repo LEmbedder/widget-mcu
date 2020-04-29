@@ -45,6 +45,7 @@ Widget::Widget(QWidget *parent) :
     formain = new FormMain(this);
     formain->formProgress = fp;
     formain->communication = communication;
+    connect(communication,SIGNAL(update_label(bool)),formain,SLOT(updateLabelSucessOrFailed(bool)));
     formain->setViewData();
     ui->verticalLayout_target->addWidget(formain);
     communication->DataInit();

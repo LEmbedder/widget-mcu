@@ -61,6 +61,7 @@ public:
     int hcpHandleProccess(unsigned char beat_index,double press_diff);
 signals:
     void update_window();
+    void update_label(bool);
 public slots:
     void check_stage();
     void receiveInfo();
