@@ -141,7 +141,9 @@ FormMain::FormMain(QWidget *parent) :
     memset(systemData.args_config.work_number,0,30);
     loadConfigArgs();
     ui->lineEdit_channle_number_A->setText(QString::number(systemData.channel_number));
+    ui->lineEdit_channle_number_A->setValidator(new QRegExpValidator(QRegExp("([0-9]{2})"), this));
     ui->lineEdit_channle_number_B->setText(QString::number(systemData.channel_number_B));
+    ui->lineEdit_channle_number_B->setValidator(new QRegExpValidator(QRegExp("([0-9]{2})"), this));
     updateForm();
 }
 
@@ -521,10 +523,26 @@ void FormMain::on_pushButton_set_channel_number_clicked()
 {
     if (ui->lineEdit_channle_number_A->isEnabled())
     {
+        if (ui->lineEdit_channle_number_A->text().toInt() < 1)
+        {
+            ui->lineEdit_channle_number_A->setText(QString::number(1));
+        }
+        if (ui->lineEdit_channle_number_A->text().toInt() > 64)
+        {
+            ui->lineEdit_channle_number_A->setText(QString::number(64));
+        }
         systemData.channel_number = ui->lineEdit_channle_number_A->text().toInt();
     }
     if (ui->lineEdit_channle_number_B->isEnabled())
     {
+        if (ui->lineEdit_channle_number_B->text().toInt() < 1)
+        {
+            ui->lineEdit_channle_number_B->setText(QString::number(1));
+        }
+        if (ui->lineEdit_channle_number_B->text().toInt() > 64)
+        {
+            ui->lineEdit_channle_number_B->setText(QString::number(64));
+        }
         systemData.channel_number_B = ui->lineEdit_channle_number_B->text().toInt();
     }
     saveConfigArgs();
