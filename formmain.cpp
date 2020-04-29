@@ -2,6 +2,14 @@
  * 主界面的控制
  * 2020年01月01日14:46:46
  */
+
+#include <QtCore/qmath.h>
+#include <QtXml/QtXml>
+#include <QtXml/QDomDocument>
+#include <QtXml/qdom.h>
+#include <QtXml/QDomNode>
+#include <QtXml/QDomComment>
+#include <QtXml/QDomElement>
 #include "formmain.h"
 #include "ui_formmain.h"
 #include <QDebug>
@@ -18,7 +26,7 @@ FormMain::FormMain(QWidget *parent) :
     fps = new FormPassword;
     fps->close();
     connect(fps,SIGNAL(emitIsTrue()),this,SLOT(on_pushButton_4_clicked()));
-
+    loadXmlFile();
     save_index = 0;
     /* 容积测试和定标测试模式 */
     formVolumeTest = new FormVolumeTest();
@@ -57,7 +65,6 @@ FormMain::FormMain(QWidget *parent) :
     printInformation = new PrintInformation;
     formViewData->printInformation = printInformation;
     /* 创建界面结束 */
-
     QStringList m_serialPortName;
     foreach(const QSerialPortInfo &info,QSerialPortInfo::availablePorts())
     {
@@ -82,7 +89,6 @@ FormMain::FormMain(QWidget *parent) :
     serialPort->setFlowControl(QSerialPort::NoFlowControl);//无流控制
     serialPort->setParity(QSerialPort::NoParity);	//无校验位
     serialPort->setStopBits(QSerialPort::OneStop); //一位停止位
-
     //连接信号槽 当下位机发送数据QSerialPortInfo 会发送个 readyRead 信号,我们定义个槽void receiveInfo()解析数据
     connect(serialPort,SIGNAL(readyRead()),this,SLOT(receiveInfo()));
 
@@ -547,3 +553,282 @@ void FormMain::on_pushButton_set_channel_number_clicked()
     }
     saveConfigArgs();
 }
+
+
+bool FormMain::loadXmlFile(void)
+{
+    // 新建QDomDocument类对象，它代表一个XML文档
+       fileName = QApplication::applicationDirPath() + "/config.xml";
+       QDomDocument doc;
+       QFile file(fileName);
+       if (!file.exists(fileName))
+       {
+           return false;
+       }
+       if (!file.open(QFile::ReadOnly))
+       {
+           return false;
+       }
+       QString errStr = "";
+       int errLine = 0;
+       int errCol = 0;
+       if (!doc.setContent(&file, false, &errStr, &errLine, &errCol))
+       {
+           file.close();
+           return false;
+       }
+       else
+       {}
+       QDomElement root;
+       QDomNode subNode;
+       QDomNode subNode2;
+       root = doc.documentElement();
+       if (root.tagName().trimmed().toUpper() != "ROOT")
+       {
+           file.close();
+           return false;
+       }
+       else
+       {}
+       // 关闭文件
+       file.close();
+       // 获得doc的第一个结点，即XML说明
+      QDomNode firstNode = root.firstChild();
+      while (!firstNode.isNull())
+      {
+          if(firstNode.isElement())
+          {
+              if(firstNode.nodeName().trimmed().toStdString()  == "flow_type")
+              {
+                  int cnt_ptr = 0;
+                  QDomNodeList list = firstNode.childNodes();
+                  do_action.flow_type.action_num = list.count();
+                  do_action.flow_type.action = (uint32_t *)malloc(list.count() * sizeof(uint32_t));
+                  if(NULL == do_action.flow_type.action)
+                  {
+                       printf("flow_type,do动作配置出错\n");
+                  }
+                  else
+                  {}
+                  subNode2 = firstNode.firstChildElement();
+                  while (!subNode2.isNull())
+                  {
+                     if(subNode2.isElement())
+                     {
+                         for(int i= 0; i < subNode2.attributes().count(); i++)
+                         {
+                             QDomNode tmp_node = subNode2.attributes().item(i);
+                             QString valueQString = tmp_node.nodeValue();
+                             if(tmp_node.nodeName().trimmed().toStdString() == "action")
+                             {
+                                  do_action.flow_type.action[cnt_ptr] = strtoul((char *)valueQString.toStdString().c_str(), NULL, 16);
+                                  //printf("do_action.flow_type.action[%d] = 0x%08x\n",cnt_ptr,do_action.flow_type.action[cnt_ptr]);
+                             }
+                             else
+                             {}
+                         }
+                         cnt_ptr ++;
+                     }
+                     else
+                     {}
+                     subNode2 = subNode2.nextSiblingElement();
+                  }
+              }
+              else if(firstNode.nodeName().trimmed().toStdString()  == "direct_pressure_type")
+              {
+                  int cnt_ptr = 0;
+                  QDomNodeList list = firstNode.childNodes();
+                  do_action.direct_type.action_num = list.count();
+                  do_action.direct_type.action = (uint32_t *)malloc(list.count() * sizeof(uint32_t));
+                  if(NULL == do_action.direct_type.action)
+                  {
+                       printf("direct_pressure_type,do动作配置出错\n");
+                  }
+                  else
+                  {}
+                  subNode2 = firstNode.firstChildElement();
+                  while (!subNode2.isNull())
+                  {
+                     if(subNode2.isElement())
+                     {
+                         for(int i= 0; i < subNode2.attributes().count(); i++)
+                         {
+                             QDomNode tmp_node = subNode2.attributes().item(i);
+                             QString valueQString = tmp_node.nodeValue();
+                             if(tmp_node.nodeName().trimmed().toStdString() == "action")
+                             {
+                                   do_action.direct_type.action[cnt_ptr] = strtoul((char *)valueQString.toStdString().c_str(), NULL, 16);
+                             }
+                             else
+                             {}
+                         }
+                         cnt_ptr ++;
+                     }
+                     else
+                     {}
+                     subNode2 = subNode2.nextSiblingElement();
+                  }
+              }
+              else if(firstNode.nodeName().trimmed().toStdString()  == "diff_pressure_type")
+              {
+                   subNode = firstNode.firstChildElement();
+                   while (!subNode.isNull())
+                   {
+                      if(subNode.isElement())
+                      {
+                          if(subNode.nodeName().trimmed().toStdString() == "p_pressure")
+                          {
+                               int cnt_ptr = 0;
+                               QDomNodeList list = subNode.childNodes();
+                               do_action.diff_type[0].action_num = list.count();
+                               do_action.diff_type[0].action = (uint32_t *)malloc(list.count() * sizeof(uint32_t));
+                               if(NULL == do_action.diff_type[0].action)
+                               {
+                                   printf("差压，正压DO动作错误\n");
+                               }
+                               else
+                               {}
+                               subNode2 = subNode.firstChildElement();
+                               while (!subNode2.isNull())
+                               {
+                                  if(subNode2.isElement())
+                                  {
+                                      for(int i= 0; i < subNode2.attributes().count(); i++)
+                                      {
+                                          QDomNode tmp_node = subNode2.attributes().item(i);
+                                          QString valueQString = tmp_node.nodeValue();
+                                          if(tmp_node.nodeName().trimmed().toStdString() == "action")
+                                          {
+                                                do_action.diff_type[0].action[cnt_ptr] = strtoul((char *)valueQString.toStdString().c_str(), NULL, 16);
+                                          }
+                                          else
+                                          {}
+                                      }
+                                      cnt_ptr ++;
+                                  }
+                                  else
+                                  {}
+                                  subNode2 = subNode2.nextSiblingElement();
+                               }
+                          }
+                          else if(subNode.nodeName().trimmed().toStdString() == "n_pressure")
+                          {
+                               int cnt_ptr = 0;
+                               QDomNodeList list = subNode.childNodes();
+                               do_action.diff_type[1].action_num = list.count();
+                               do_action.diff_type[1].action = (uint32_t *)malloc(list.count() * sizeof(uint32_t));
+                               if(NULL == do_action.diff_type[1].action)
+                               {
+                                   printf("差压，负压DO动作错误\n");
+                               }
+                               else
+                               {}
+                              subNode2 = subNode.firstChildElement();
+                              while (!subNode2.isNull())
+                              {
+                                  if(subNode2.isElement())
+                                  {
+                                      for(int i= 0; i < subNode2.attributes().count(); i++)
+                                      {
+                                          QDomNode tmp_node = subNode2.attributes().item(i);
+                                          QString valueQString = tmp_node.nodeValue();
+                                          if(tmp_node.nodeName().trimmed().toStdString() == "action")
+                                          {
+                                               do_action.diff_type[1].action[cnt_ptr] = strtoul((char *)valueQString.toStdString().c_str(), NULL, 16);
+                                          }
+                                          else
+                                          {}
+                                      }
+                                      cnt_ptr ++;
+                                  }
+                                  else
+                                  {}
+                                  subNode2 = subNode2.nextSiblingElement();
+                              }
+                          }
+                          else if(subNode.nodeName().trimmed().toStdString() == "p_n_pressure")
+                          {
+                              int cnt_ptr = 0;
+                              QDomNodeList list = subNode.childNodes();
+                              do_action.diff_type[2].action_num = list.count();
+                              do_action.diff_type[2].action = (uint32_t *)malloc(list.count() * sizeof(uint32_t));
+                              if(NULL == do_action.diff_type[2].action)
+                              {
+                                  printf("差压，正负压DO动作错误\n");
+                              }
+                              else
+                              {}
+                              subNode2 = subNode.firstChildElement();
+                              while (!subNode2.isNull())
+                              {
+                                  if(subNode2.isElement())
+                                  {
+                                      for(int i= 0; i < subNode2.attributes().count(); i++)
+                                      {
+                                          QDomNode tmp_node = subNode2.attributes().item(i);
+                                          QString valueQString = tmp_node.nodeValue();
+                                          if(tmp_node.nodeName().trimmed().toStdString() == "action")
+                                          {
+                                                do_action.diff_type[2].action[cnt_ptr] = strtoul((char *)valueQString.toStdString().c_str(), NULL, 16);
+
+                                          }
+                                          else
+                                          {
+                                          }
+                                      }
+                                      cnt_ptr ++;
+                                  }
+                                  else
+                                  {}
+                                  subNode2 = subNode2.nextSiblingElement();
+                              }
+                          }
+                          else if(subNode.nodeName().trimmed().toStdString() == "n_p_pressure")
+                          {
+                              int cnt_ptr = 0;
+                              QDomNodeList list = subNode.childNodes();
+                              do_action.diff_type[3].action_num = list.count();
+                              do_action.diff_type[3].action = (uint32_t *)malloc(list.count() * sizeof(uint32_t));
+                              subNode2 = subNode.firstChildElement();
+                              while (!subNode2.isNull())
+                              {
+                                  if(subNode2.isElement())
+                                  {
+                                      for(int i= 0; i < subNode2.attributes().count(); i++)
+                                      {
+                                          QDomNode tmp_node = subNode2.attributes().item(i);
+                                          QString valueQString = tmp_node.nodeValue();
+                                          if(tmp_node.nodeName().trimmed().toStdString() == "action")
+                                          {
+                                               do_action.diff_type[3].action[cnt_ptr] = strtoul((char *)valueQString.toStdString().c_str(), NULL, 16);
+                                          }
+                                          else
+                                          {
+                                          }
+                                      }
+                                      cnt_ptr ++;
+                                  }
+                                  else
+                                  {}
+                                  subNode2 = subNode2.nextSiblingElement();
+                              }
+                          }
+                          else
+                          {}
+                      }
+                      else
+                      {}
+                      subNode = subNode.nextSiblingElement();
+                   }
+              }
+              else
+              {}
+          }
+          else
+          {}
+          firstNode = firstNode.nextSiblingElement();
+      }
+      return true;
+}
+
+

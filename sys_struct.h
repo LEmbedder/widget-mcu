@@ -11,6 +11,7 @@
 #define CMD_SET_WORKMODE        0x12
 #define CMD_SET_PRODUCTMODE     0x13
 #define CMD_SET_KEY             0x14
+#define CMD_SET_COMMON          0x15
 
 #define CMD_RESTORE             0x21
 #define CMD_SAVEDEFAULT         0x2F
@@ -22,6 +23,9 @@
 #define CMD_SET_CFGID           0xE2
 #define CMD_GET_INFO            0xF0
 #define CMD_ENGMODE             0xF1
+
+#define CMD_COMMOM_SET_BUZZ   0xFF
+#define CMD_COMMOM_SET_EVENT  0xFE
 
 //基本应答字定义
 #define ACK_DATA                0x01        //数据应答包字
@@ -195,5 +199,15 @@ typedef struct HCPCMD_SET_KEY_tag
 {
     HCPCMD              header;
     unsigned char       parmID;
-}HCPCMD_SET_KEY,*PHCPCMD_SETK_EY;
+}HCPCMD_SET_KEY,*PHCPCMD_SET_KEY;
+
+
+typedef struct HCPCMD_SET_CMD_tag
+{
+    HCPCMD              header;
+    unsigned char       parmID;
+        unsigned char       data;
+}HCPCMD_SET_COMMON,*PHCPCMD_SET_COMMON;
+
+
 #endif

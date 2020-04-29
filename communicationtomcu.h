@@ -1,4 +1,4 @@
-#ifndef COMMUNICATIONTOMCU_H
+﻿#ifndef COMMUNICATIONTOMCU_H
 #define COMMUNICATIONTOMCU_H
 
 #include <QObject>
@@ -20,6 +20,15 @@ class communicationToMCU : public QObject
     void DownloadProductMode();
     void DownloadTestMode();
     void HcpHandleKey(unsigned char *puf);
+    void FindSetPara(HcpSetsPara *SetPara);
+    void WriteTestResultToDb(unsigned int revealStandardUpLimit,unsigned int revealStandardDownLimit,\
+                                                 QString revealUnit,unsigned char testResult,\
+                                                 QString testPressureBigRevealUint,\
+                                                 unsigned int  PFCtaskTime);
+    void CalcTimeTotal();
+    void DataInitMode(unsigned int channel_number, int model,unsigned char parmID);
+    void DataInitPara(unsigned int channel_number, unsigned char parmID, unsigned char num, unsigned char start_index);
+    void HcpHandleEvent(unsigned char *puf);
 public:
     explicit communicationToMCU(QObject *parent = 0);
     FormViewData *formViewData;
@@ -49,6 +58,7 @@ public:
     int uart_fifo_push(unsigned char data);
     int uart_fifo_pop(unsigned char *data);
     void HandlePacket(unsigned char *puf);
+    int hcpHandleProccess(unsigned char beat_index,double press_diff);
 signals:
     void update_window();
 public slots:

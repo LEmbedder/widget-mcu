@@ -15,7 +15,6 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
-
     /**
      * 设置没有鼠标箭头
     */
@@ -24,7 +23,6 @@ Widget::Widget(QWidget *parent) :
     timer  = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(timerOut()));
     timer->start(500);
-
     /*
      * 显示进度条
     */

@@ -37,7 +37,7 @@ class FormMain : public QWidget
 public:
     explicit FormMain(QWidget *parent = 0);
     ~FormMain();
-
+    QString fileName;
     communicationToMCU *communication;
     void updateLabelSucess(int next);
     void disp_test_press(double value);
@@ -50,6 +50,7 @@ public:
     FormPassword *fps;
     PrintInformation *printInformation;
     void setViewData();
+    bool loadXmlFile(void);
 public slots:
     void receiveInfo();
     void update_args_config(Args_config *config);

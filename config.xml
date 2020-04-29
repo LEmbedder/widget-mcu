@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!--流量型-->
+	<flow_type>
+		<table id = "0" action="0x00000000"/>
+		<table id = "1" action="0x00000000"/>
+		<table id = "2" action="0x00000000"/>
+		<table id = "3" action="0x00000000"/>
+		<table id = "4" action="0x00000300"/>
+		<table id = "5" action="0x00000300"/>
+		<table id = "6" action="0x00000100"/>
+		<table id = "7" action="0x00000100"/>
+		<table id = "8" action="0x00000100"/>
+		<table id = "9" action="0x00000200"/>
+		<table id = "10" action="0x00000000"/>
+		<table id = "11" action="0x00000000"/>
+		<table id = "12" action="0x00000000"/>
+	</flow_type>
+	<!--直压型-->
+	<direct_pressure_type>
+		<table id = "0" action="0x00000000"/>
+		<table id = "1" action="0x00000000"/>
+		<table id = "2" action="0x00000000"/>
+		<table id = "3" action="0x00000000"/>
+		<table id = "4" action="0x00000300"/>
+		<table id = "5" action="0x00000300"/>
+		<table id = "6" action="0x00000100"/>
+		<table id = "7" action="0x00000100"/>
+		<table id = "8" action="0x00000100"/>
+		<table id = "9" action="0x00000200"/>
+		<table id = "10" action="0x00000000"/>
+		<table id = "11" action="0x00000000"/>
+		<table id = "12" action="0x00000000"/>
+	</direct_pressure_type>
+	<!--差压型-->
+	<diff_pressure_type>
+		<!--正压型-->
+		<p_pressure>
+			<table id = "0" action="0x00000000"/>
+			<table id = "1" action="0x00000000"/>
+			<table id = "2" action="0x00000000"/>
+			<table id = "3" action="0x00000000"/>
+			<table id = "4" action="0x00000300"/>
+			<table id = "5" action="0x00000300"/>
+			<table id = "6" action="0x00000100"/>
+			<table id = "7" action="0x00000100"/>
+			<table id = "8" action="0x00000100"/>
+			<table id = "9" action="0x00000200"/>
+			<table id = "10" action="0x00000000"/>
+			<table id = "11" action="0x00000000"/>
+			<table id = "12" action="0x00000000"/>
+		</p_pressure>
+		<!--负压型-->
+		<n_pressure>
+			<table id = "0" action="0x00000000"/>
+			<table id = "1" action="0x00000000"/>
+			<table id = "2" action="0x00000000"/>
+			<table id = "3" action="0x00000000"/>
+			<table id = "4" action="0x00000300"/>
+			<table id = "5" action="0x00000300"/>
+			<table id = "6" action="0x00000100"/>
+			<table id = "7" action="0x00000100"/>
+			<table id = "8" action="0x00000100"/>
+			<table id = "9" action="0x00000200"/>
+			<table id = "10" action="0x00000000"/>
+			<table id = "11" action="0x00000000"/>
+			<table id = "12" action="0x00000000"/>
+		</n_pressure>
+		<!--正负压型-->
+		<p_n_pressure>
+			<table id = "0" action="0x00000000"/>
+			<table id = "1" action="0x00000000"/>
+			<table id = "2" action="0x00000000"/>
+			<table id = "3" action="0x00000000"/>
+			<table id = "4" action="0x00000300"/>
+			<table id = "5" action="0x00000300"/>
+			<table id = "6" action="0x00000100"/>
+			<table id = "7" action="0x00000100"/>
+			<table id = "8" action="0x00000100"/>
+			<table id = "9" action="0x00000200"/>
+			<table id = "10" action="0x00000000"/>
+			<table id = "11" action="0x00000000"/>
+			<table id = "12" action="0x00000000"/>
+		</p_n_pressure>
+		<!--负正压型-->
+		<n_p_pressure>
+			<table id = "0" action="0x00000000"/>
+			<table id = "1" action="0x00000000"/>
+			<table id = "2" action="0x00000000"/>
+			<table id = "3" action="0x00000000"/>
+			<table id = "4" action="0x00000300"/>
+			<table id = "5" action="0x00000300"/>
+			<table id = "6" action="0x00000100"/>
+			<table id = "7" action="0x00000100"/>
+			<table id = "8" action="0x00000100"/>
+			<table id = "9" action="0x00000200"/>
+			<table id = "10" action="0x00000000"/>
+			<table id = "11" action="0x00000000"/>
+			<table id = "12" action="0x00000000"/>
+		</n_p_pressure>
+	</diff_pressure_type>
+</root>
+

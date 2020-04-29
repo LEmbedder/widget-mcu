@@ -20,7 +20,6 @@ FormViewData::FormViewData(QWidget *parent) :
     initDatabase();
     page_value();
     update_args();
-//    insertDatabase("127","1451122","2020-19-19",1651,684,"1353pa","true","1234kpa",13);
 }
 
 FormViewData::~FormViewData()
