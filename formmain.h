@@ -39,6 +39,7 @@ public:
     ~FormMain();
     QString fileName;
     communicationToMCU *communication;
+    QSerialPort *serialPort;
     void updateLabelSucess(int next);
     void disp_test_press(double value);
     void disp_test_result(double value);
@@ -82,7 +83,7 @@ private:
     FormVolumeTest *formVolumeTest;
     FormCalibrationTest *formCalibrationTest;
 
-    QSerialPort *serialPort;
+
 
     QLineSeries *series ;
     QChart *chart;

@@ -1290,3 +1290,9 @@ void communicationToMCU::start_again()
     systemData.set_para_end_flag = 0x55;
 }
 
+void communicationToMCU::receiveInfoScanner()
+{
+    QByteArray info = serialPort->readAll();
+
+}
+

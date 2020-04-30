@@ -8,6 +8,8 @@
 #include "sys_struct.h"
 #include <QTimer>
 #include "formviewdata.h"
+#include <QtSerialPort/QSerialPort>
+#include <QtSerialPort/QSerialPortInfo>
 
 class communicationToMCU : public QObject
 {
@@ -33,6 +35,7 @@ public:
     explicit communicationToMCU(QObject *parent = 0);
     FormViewData *formViewData;
     QSerialPort *serialPortToMCU;
+    QSerialPort *serialPort;
     unsigned short crc(unsigned char *pBuf, unsigned short length);
     void HCP_SendACK();
     void HCP_SendNACK(unsigned short why);
@@ -68,6 +71,7 @@ public slots:
     void HcpGetDeviceInfo();
     void start_again();
     void HcpProcessPacket();
+    void receiveInfoScanner();
 };
 
 #endif // COMMUNICATIONTOMCU_H
