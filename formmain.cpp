@@ -601,7 +601,6 @@ void FormMain::channel_update()
 void FormMain::on_textEdit_workpiece_number_textChanged()
 {
     unsigned int len = 0;
-    //len = ui->textEdit_workpiece_number->size()::;
     if(len > INPUT_STRING_LEN)
     {
         len = INPUT_STRING_LEN;
@@ -609,7 +608,8 @@ void FormMain::on_textEdit_workpiece_number_textChanged()
     else
     {
     }
-    //memcpy(systemData.args_config.work_piece, ui->textEdit_workpiece_number->text().toStdString().c_str(),len);
+    memcpy(systemData.args_config.work_piece, ui->textEdit_workpiece_number->toPlainText().toStdString().c_str(),len);
+    qDebug()<<ui->textEdit_workpiece_number->toPlainText();
 }
 
 void FormMain::channel_update_start_timer()
