@@ -11,6 +11,8 @@
 #define BEAT_DO_FLAG_START    0xaa  
 #define BEAT_DO_FLAG_STOP     0x55  
 
+
+
 /*
 bit4  LED（合格）对应开关量输出通道掩码
 bit5  LED（测试端不合格）对应开关量输出通道掩码
@@ -121,10 +123,10 @@ void communicationToMCU::receiveInfo()
     tmp = info.data();
     for(int i = 0; i < info.length(); i++)
     {
-        printf("0x%02x  ",tmp[i]);
+        //printf("0x%02x  ",tmp[i]);
         uart_fifo_push(tmp[i]) ;
     }
-    printf("\n");
+    //printf("\n");
 }
 
 void communicationToMCU::SendToMcu(const char *data, qint64 len)
@@ -251,11 +253,11 @@ void communicationToMCU::HcpSendPacket(int length)
     pTxBuf[length++] = tmp & 0xFF;
     hcp_txBuf_len = length;
 
-    printf("send--------------------------------------------------------------\n");
-    printf("hcp_txBuf_len =%d\n",hcp_txBuf_len);
-    for(int i = 0; i < hcp_txBuf_len; i++)
-        printf("0x%02x  ",pTxBuf[i]);
-    printf("\n");
+//    printf("send--------------------------------------------------------------\n");
+//    printf("hcp_txBuf_len =%d\n",hcp_txBuf_len);
+//    for(int i = 0; i < hcp_txBuf_len; i++)
+//        printf("0x%02x  ",pTxBuf[i]);
+//    printf("\n");
     SendToMcu((char *)pTxBuf,hcp_txBuf_len);
 }
 
@@ -277,12 +279,13 @@ void communicationToMCU::HcpCmdHandShake(void)
 //测试结果写入数据库
 //beat_index 节拍序号
 void communicationToMCU::WriteTestResultToDb(unsigned int revealStandardUpLimit,unsigned int revealStandardDownLimit,\
-                                             QString revealUnit,unsigned char testResult,\
+                                             QString revealUnit,QString testResult,\
                                              QString testPressureBigRevealUint,\
                                              unsigned int  PFCtaskTime)
 {
     struct tm ptm;
     time_t tNow =time ( NULL);
+    //printf("revealUnit =%s\n",revealUnit.toStdString().c_str());
     memset((struct tm*)&ptm,0x00,sizeof(struct tm));
     localtime_r ( &tNow, &ptm );
     char buff[128] = {0};
@@ -293,32 +296,98 @@ void communicationToMCU::WriteTestResultToDb(unsigned int revealStandardUpLimit,
                                  revealStandardUpLimit,\
                                  revealStandardDownLimit,\
                                  revealUnit,\
-                                 QString::number(testResult),\
+                                 testResult,\
                                  testPressureBigRevealUint,\
                                  PFCtaskTime);
+}
+
+
+
+//7  A工位达标信号
+//8  B工位达标信号
+
+//9  A工位合格信号输出
+//10 A工位+NG信号输出
+//11 A工位-NG信号输出
+
+//12 B工位合格信号输出
+//13 B工位+NG信号输出
+//14 B工位-NG信号输出
+
+void communicationToMCU::handle_event_do(unsigned int do_value,QString testResult)
+{
+    unsigned int Do = 0;
+    Do = do_value;
+    if(WORKPLACE_A == systemData.args_config.model)
+    {
+        if(TEST_PASS == testResult)
+        {
+            Do += (1 << 6) + (1 << 8);
+        }
+        else if(TEST_FAILURE_NG_PLUS == testResult)
+        {
+             Do += (1 << 6) + (1 << 9);
+        }
+        else if(TEST_FAILURE_NG_MINUS == testResult)
+        {
+            Do += (1 << 6) + (1 << 10);
+        }
+        else
+        {}
+    }
+    else if(WORKPLACE_B == systemData.args_config.model)
+    {
+        if(TEST_PASS == testResult)
+        {
+             Do += (1 << 7) + (1 << 11);
+        }
+        else if(TEST_FAILURE_NG_PLUS == testResult)
+        {
+             Do += (1 << 7) + (1 << 12);
+        }
+        else if(TEST_FAILURE_NG_MINUS == testResult)
+        {
+            Do += (1 << 7) + (1 << 13);
+        }
+        else
+        {}
+
+    }
+    HcpSetCmdPara(Do,0,0x02,0);
 }
 
 int communicationToMCU::hcpHandleProccess(unsigned char beat_index,double press_diff)
 {
     int ret = 0;
+    Print print;
+    struct tm ptm;
+    unsigned int do_value = 0;
+    time_t tNow =time ( NULL);
+    char buff[128] = {0};
+    QString print_result = " ";
     unsigned int j = 0;
     unsigned char is_write_to_db = 0x55;
-    unsigned int  PFCtaskTime;
-    unsigned int revealStandardUpLimit;//泄露标准上限
-    unsigned int revealStandardDownLimit;//泄露标准下限
+    int revealStandardUpLimit;//泄露标准上限
+    int revealStandardDownLimit;//泄露标准下限
     QString revealUnit;   //泄露单位unsigned int  PFCtaskTime
     QString testPressureBigRevealUint;//测试压单位
-    unsigned int bigRevealStandardValue;//大泄露标准值
-    unsigned int testPressureUpLimit;//测试压上限
-    unsigned int testPressureDownLimit;//测试压下限
-    unsigned char testResult = 0;
+    int bigRevealStandardValue;//大泄露标准值
+    int testPressureUpLimit;//测试压上限
+    int testPressureDownLimit;//测试压下限
+    unsigned int  PFCtaskTime;
     if(beat_index > 0)
     {
         for(j = 0; j < HCP_PARA_SET_NUM; j++)
         {
             if(HCP_SET_PARA_SEND_FLAG_ING == HcpSetPara[j].send_flag)
             {
-                PFCtaskTime = HcpSetPara[j].ParaSet[beat_index - 1].PFCtaskTime;
+                if(beat_index < BEATS_NUM_MAX)
+                {
+                    PFCtaskTime = (int)(HcpSetPara[j].ParaSet[beat_index].PFCtaskTime * 0.001);
+                    do_value    = HcpSetPara[j].ParaSet[beat_index].DO;
+                }
+                else
+                {}
                 revealStandardUpLimit   = HcpSetPara[j].ParaSet[beat_index - 1].revealStandardUpLimit ;
                 revealStandardDownLimit = HcpSetPara[j].ParaSet[beat_index - 1].revealStandardDownLimit;
                 revealUnit = HcpSetPara[j].ParaSet[beat_index - 1].revealUnit;
@@ -349,22 +418,24 @@ int communicationToMCU::hcpHandleProccess(unsigned char beat_index,double press_
             break;
         case BEAT_INFLATABLE://充气
             systemData.press_diff = 0;
-//            if( systemData.test_press > testPressureUpLimit)//超过上限\报警、写数据库、(直接排气流程)
-//            {
-//                is_write_to_db = 0xaa;
-//                testResult = TEST_FAILURE_UPPER_RANGE;
-//                ret = -1;
-//            }
-//            else
-//            {
-//            }
+            if( systemData.test_press > testPressureUpLimit)//超过上限\报警、写数据库、(直接排气流程)
+            {
+                is_write_to_db = 0xaa;
+                systemData.label_result = false;
+                print_result = TEST_FAILURE_BIG_LEAK;
+                ret = -1;
+            }
+            else
+            {
+            }
             break;
         case BEAT_PRESSURE_RELIEF:
             systemData.press_diff = 0;
             if( systemData.test_press < testPressureDownLimit)//超过下限\报警、写数据库、(直接排气流程)
             {
                 is_write_to_db = 0xaa;
-                testResult = TEST_FAILURE_PRESS_UPPER_LIMIT;
+                systemData.label_result = false;
+                print_result = TEST_FAILURE_PRESS_UNDER_LIMIT;
                 ret = -1;
             }
             else
@@ -377,7 +448,8 @@ int communicationToMCU::hcpHandleProccess(unsigned char beat_index,double press_
              if( systemData.test_press > bigRevealStandardValue)//大漏\报警、写数据库、(直接排气流程)
              {
                  is_write_to_db = 0xaa;
-                 testResult = TEST_FAILURE_BIG_LEAK;
+                 systemData.label_result = false;
+                 print_result = TEST_FAILURE_PRESS_UPPER_LIMIT;
                  ret = -1;
              }
              else
@@ -392,21 +464,37 @@ int communicationToMCU::hcpHandleProccess(unsigned char beat_index,double press_
             if((systemData.press_diff < revealStandardUpLimit)
                 && (systemData.press_diff > revealStandardDownLimit))
             {
-                is_write_to_db = 0xaa;
-                testResult = TEST_PASS;
+                print_result = TEST_PASS;
+                systemData.db_time = PFCtaskTime ;
+                systemData.label_result = true;
             }
             else if(systemData.press_diff >= revealStandardUpLimit)
             {
                 is_write_to_db = 0xaa;
-                testResult = TEST_FAILURE_NG_PLUS;
+                systemData.label_result = false;
+                print_result = TEST_FAILURE_NG_PLUS;
+                ret = -1;
+            }
+            else if(systemData.press_diff < revealStandardDownLimit)
+            {
+                is_write_to_db = 0xaa;
+                systemData.label_result = false;
+                print_result = TEST_FAILURE_NG_MINUS;
                 ret = -1;
             }
             else
             {
-                is_write_to_db = 0xaa;
-                testResult = TEST_FAILURE_NG_MINUS;
-                ret = -1;
             }
+            break;
+        case BEAT_EXHAUST:
+            break;
+        case BEAT_DELAY_FOUR:
+        case BEAT_DELAY_FIVE:
+        case BEAT_DELAY_SIX:
+            ret = -1;
+            is_write_to_db = 0xaa;
+            break;
+        case BEAT_DELAY_END:
             break;
         default:
             //测试完之后，一直保持测试结果，不做数据更新。
@@ -416,8 +504,31 @@ int communicationToMCU::hcpHandleProccess(unsigned char beat_index,double press_
 
     if(0xaa == is_write_to_db)
     {
-        WriteTestResultToDb(revealStandardUpLimit,revealStandardDownLimit,revealUnit,\
-                            testResult,testPressureBigRevealUint,PFCtaskTime);
+        if((BEAT_DELAY_FOUR == beat_index)
+            || (BEAT_DELAY_FIVE == beat_index)
+                ||(BEAT_DELAY_SIX == beat_index))
+        {
+            PFCtaskTime = systemData.db_time;
+            systemData.db_time = 0;
+        }
+        else
+        {}
+        //写入数据库
+        WriteTestResultToDb(revealStandardUpLimit,revealStandardDownLimit,QString::number((int)systemData.press_diff) + revealUnit,\
+                            print_result,QString::number((int)systemData.test_press) + testPressureBigRevealUint,PFCtaskTime);
+        memset((struct tm*)&ptm,0x00,sizeof(struct tm));
+        localtime_r ( &tNow, &ptm );
+        sprintf (buff,"%d.%d.%d-%d:%d:%d\n",ptm.tm_year+1900,ptm.tm_mon+1,ptm.tm_mday,ptm.tm_hour,ptm.tm_min,ptm.tm_sec);
+        print.workpiece_number = QString(QLatin1String(systemData.args_config.work_piece));
+        print.worker_number = QString(QLatin1String(systemData.args_config.work_number));
+        print.device_number = QString(QLatin1String(systemData.args_config.device_number));
+        print.result = print_result;
+        print.timer =  QString(QLatin1String(buff));
+        formViewData->printInformation->print(&print);//结果打印
+        emit update_label(systemData.label_result);
+        systemData.label_result = false;
+
+        handle_event_do(do_value,print_result);
     }
     else
     {
@@ -433,27 +544,17 @@ void communicationToMCU::hcpHandleHandShake(unsigned char *puf)
     unsigned int flag = 0;
     unsigned int beat_time = 0;
     unsigned  int      timeBase = 0;       //测试流程时间基准
-    unsigned short int      writePos = 0;       //数据缓冲区(差压)当前写入位置
     unsigned short int      sample1 = 0;        //直压采样值
     unsigned short int      currStepSample2 = 0;//当前节拍差压采样值
-    unsigned short int      lastStepSample1 = 0;//上一节拍直压采样值
-    unsigned short int      lastStepSample2 = 0;//上一节拍差压采样值
+
     unsigned short int      lastStepNum = 0;    //上一节拍编号
     double  press_diff = 0;
     timeBase = puf[6] | puf[7] << 8 | puf[8] << 16 | puf[9] << 24;
-    writePos = puf[10] | puf[11] << 8;
     sample1  = puf[12] | puf[13] << 8;
     currStepSample2 = puf[14] | puf[15] << 8;
-    lastStepSample1 = puf[16] | puf[17] << 8;
-    lastStepSample2 = puf[18] | puf[19] << 8;
     lastStepNum     = puf[20] | puf[21] << 8;
 
     printf("timeBase =%d\n",timeBase);
-    printf("writePos =%d\n",writePos);
-    printf("sample1 =%d\n",sample1);
-    printf("currStepSample2 =%d\n",currStepSample2);
-    printf("lastStepSample1 =%d\n",lastStepSample1);
-    printf("lastStepSample2 =%d\n",lastStepSample2);
     printf("lastStepNum =%d\n",lastStepNum);
 
     systemData.test_press = 4.11 * sample1 / 65536 * 180.5485 - 142.0543;     //直压采样值
@@ -735,14 +836,15 @@ void communicationToMCU::HcpHandleKey(unsigned char *puf)
 }
 
 
-//处理按键
+
 void communicationToMCU::HcpHandleEvent(unsigned char *puf)
 {
     unsigned int data = 0;
+    unsigned char stop = 0;
     unsigned int mode_a_start = 0;
     unsigned int mode_b_start = 0;
-    unsigned char mode_a_hold = 0;
-    unsigned char mode_b_hold = 0;
+//    unsigned char mode_a_hold = 0;
+//    unsigned char mode_b_hold = 0;
     unsigned char code_select = 0;
     unsigned char code = 0;
     PHCPCMD_SET_COMMON pAck;
@@ -757,22 +859,24 @@ void communicationToMCU::HcpHandleEvent(unsigned char *puf)
     if(CMD_COMMOM_SET_EVENT == pAck->parmID)
     {
         data = ~(pAck->data) & 0x0000FFFF;
-        mode_a_start = (data >> 1) & 0x00000001;
-        mode_b_start = (data >> 0) & 0x00000001;
-        mode_a_hold  = (data >> 3) & 0x00000001;
-        mode_b_hold  = (data >> 4) & 0x00000001;
-        code_select = (data >> 5) & 0x00000001;\
-        code = ((data >> 5) & 0x00000001) + ((data >> 10) & 0x00000002) \
-                + ((data >> 9) & 0x00000004) + ((data >> 8) & 0x00000008) \
-                + ((data >> 7) & 0x00000010) + ((data >> 6) & 0x00000020);
-        if(1 == (data >> 11) & 0x00000001)
+        mode_a_start = (data >> 0) & 0x00000001;
+        mode_b_start = (data >> 1) & 0x00000001;
+        stop         = (data >> 2) & 0x00000001;
+//        mode_a_hold  = (data >> 3) & 0x00000001;
+//        mode_b_hold  = (data >> 4) & 0x00000001;
+        code_select = (data >> 5) & 0x00000001;
+        code =  ((data >> 11) & 0x00000001) + ((data >> 9) & 0x00000002)\
+                + ((data >> 7) & 0x00000004) + ((data >> 5) & 0x00000008)\
+                + ((data >> 3) & 0x00000010) + ((data >> 1) & 0x00000020);
+        if(1 == stop)
         {
             systemData.KeyValue = 0x55;
         }
         else
         {
             if((BEAT_STATE_STOP == systemData.BeatState)
-                && (1 == systemData.args_config.model))
+                && ((WORKPLACE_A == systemData.args_config.model)
+                     || (WORKPLACE_B == systemData.args_config.model)))
             {
                 if((1 == mode_a_start) && (0 == mode_b_start))
                 {
@@ -780,10 +884,11 @@ void communicationToMCU::HcpHandleEvent(unsigned char *puf)
                     if(1 == code_select)
                     {
                         systemData.channel_number = code;
+                        emit update_channel();
                     }
                     else
                     {}
-                    DataInit();
+                    DataInit(0xaa,systemData.KeyValue);
                 }
                 else if((0 == mode_a_start) && (1 == mode_b_start))
                 {
@@ -791,16 +896,18 @@ void communicationToMCU::HcpHandleEvent(unsigned char *puf)
                     if(1 == code_select)
                     {
                         systemData.channel_number_B = code;
+                        emit update_channel();
                     }
                     else
                     {}
-                    DataInit();
+                    DataInit(0xaa,systemData.KeyValue);
                 }
             }
             else
             {
             }
         }
+
     }
     else
     {}
@@ -871,6 +978,7 @@ void communicationToMCU::HandlePacket(unsigned char *puf)
             HcpHandleKey(puf);
            break;
         case CMD_SET_COMMON:
+            HcpHandleEvent(puf);
             break;
         default:
             //HCP_SendNACK(NACK_WHY_BADCMD);         //无效的命令，否认应答
@@ -939,7 +1047,8 @@ void communicationToMCU::HcpProcessPacket(void)
     {}
 }
 
-void communicationToMCU::DataInitPara(unsigned int channel_number,unsigned char parmID,unsigned char num,unsigned char start_index)
+void communicationToMCU::DataInitPara(unsigned int channel_number,unsigned char parmID,unsigned char num,\
+                                      unsigned char start_index,unsigned char flag)
 {
     unsigned int i = 0;
     unsigned int j = 0;
@@ -957,7 +1066,7 @@ void communicationToMCU::DataInitPara(unsigned int channel_number,unsigned char 
             }
             else
             {
-                HcpSetPara[start_index + j].ParaSet[i].PFCtaskTime = 100;
+                HcpSetPara[start_index + j].ParaSet[i].PFCtaskTime = 200;
             }
             if(DIRECT_PRESSURE_PARA == systemData.args_config.test_mode)
             {
@@ -967,6 +1076,8 @@ void communicationToMCU::DataInitPara(unsigned int channel_number,unsigned char 
             {
                 HcpSetPara[start_index + j].ParaSet[i].DO = do_action.flow_type.action[i];
             }
+            //printf("sets[m][n].revealUnit = %s\n",sets[m][n].revealUnit.toStdString().c_str());
+            //printf("sets[m][n].testPressureBigRevealUint = %s\n",sets[m][n].testPressureBigRevealUint.toStdString().c_str());
 
             HcpSetPara[start_index + j].ParaSet[i].revealStandardUpLimit = sets[m][n].revealStandardUpLimit;//泄露标准上限
             HcpSetPara[start_index + j].ParaSet[i].revealStandardDownLimit = sets[m][n].revealStandardDownLimit;//泄露标准下限
@@ -983,30 +1094,34 @@ void communicationToMCU::DataInitPara(unsigned int channel_number,unsigned char 
             HcpSetPara[start_index + j].ParaSet[i].PFCtaskNum = i + 1;
             HcpSetPara[start_index + j].ParaSet[i].parmID = parmID;
         }
-        HcpSetPara[start_index + j].flag      = HCP_SET_PARA_FLAG_ON;
-        HcpSetPara[start_index + j].send_flag = HCP_SET_PARA_SEND_FLAG_ON;
+        if(0xaa == flag)
+        {
+            HcpSetPara[start_index + j].flag      = HCP_SET_PARA_FLAG_ON;
+            HcpSetPara[start_index + j].send_flag = HCP_SET_PARA_SEND_FLAG_ON;
+        }
+        else
+        {}
     }   
 }
 
-void communicationToMCU::DataInitMode(unsigned int channel_number,int model,unsigned char parmID)
+void communicationToMCU::DataInitMode(unsigned int channel_number,int model,unsigned char parmID,unsigned char flag)
 {
-   
     switch(systemData.args_config.test_mode)
     {
       case DIRECT_PRESSURE_PARA:
       case FLOW_TYPE_PARA:
-        DataInitPara(channel_number,parmID,1,0);
+        DataInitPara(channel_number,parmID,1,0,flag);
         break;
       default:
         switch(model)
         {
             case WORKPLACE_MODE_P:
             case WORKPLACE_MODE_N:
-              DataInitPara(channel_number,parmID,1,0);
+              DataInitPara(channel_number,parmID,1,0,flag);
               break;
             case WORKPLACE_MODE_P_N:
             case WORKPLACE_MODE_N_P:
-               DataInitPara(channel_number,parmID,2,0);
+               DataInitPara(channel_number,parmID,2,0,flag);
               break;
             default:
               break;
@@ -1016,7 +1131,7 @@ void communicationToMCU::DataInitMode(unsigned int channel_number,int model,unsi
 }
 
 
-void communicationToMCU::DataInit(void)
+void communicationToMCU::DataInit(unsigned char flag,unsigned char KeyValue)
 {
     unsigned char parmID = 0;
     switch(systemData.args_config.test_mode)
@@ -1033,11 +1148,11 @@ void communicationToMCU::DataInit(void)
     }
     if(WORKPLACE_A == systemData.args_config.model) //工位A
     {
-        DataInitMode(systemData.channel_number,WORKPLACE_A,parmID);
+        DataInitMode(systemData.channel_number,WORKPLACE_A,parmID,flag);
     }
     else if(WORKPLACE_B == systemData.args_config.model) //工位B
     {
-         DataInitMode(systemData.channel_number_B,WORKPLACE_B,parmID);
+         DataInitMode(systemData.channel_number_B,WORKPLACE_B,parmID,flag);
     }
     else if(WORKPLACE_A_AND_B == systemData.args_config.model)//工位A-B
     {
@@ -1051,27 +1166,27 @@ void communicationToMCU::DataInit(void)
                             && (WORKPLACE_MODE_N == systemData.args_config.B_model)))
         {
 
-          DataInitPara(systemData.channel_number,parmID,1,0);
-          DataInitPara(systemData.channel_number_B,parmID,1,2);
+          DataInitPara(systemData.channel_number,parmID,1,0,flag);
+          DataInitPara(systemData.channel_number_B,parmID,1,2,flag);
         }
         else if((((WORKPLACE_MODE_P == systemData.args_config.A_model) || (WORKPLACE_MODE_N == systemData.args_config.A_model))
                 && ((WORKPLACE_MODE_P_N == systemData.args_config.B_model)
                     ||(WORKPLACE_MODE_N_P == systemData.args_config.B_model))))
         {
-            DataInitPara(systemData.channel_number,parmID,1,0);
-            DataInitPara(systemData.channel_number_B,parmID,2,2);           
+            DataInitPara(systemData.channel_number,parmID,1,0,flag);
+            DataInitPara(systemData.channel_number_B,parmID,2,2,flag);
         }
         else if((((WORKPLACE_MODE_P == systemData.args_config.B_model) || (WORKPLACE_MODE_N == systemData.args_config.B_model))
                 && ((WORKPLACE_MODE_P_N == systemData.args_config.A_model)
                     ||(WORKPLACE_MODE_N_P == systemData.args_config.A_model))))
         {
-            DataInitPara(systemData.channel_number,parmID,1,2);
-            DataInitPara(systemData.channel_number_B,parmID,2,1);
+            DataInitPara(systemData.channel_number,parmID,1,2,flag);
+            DataInitPara(systemData.channel_number_B,parmID,2,1,flag);
         }
         else
         {
-            DataInitPara(systemData.channel_number,parmID,1,2);
-            DataInitPara(systemData.channel_number_B,parmID,2,2);    
+            DataInitPara(systemData.channel_number,parmID,1,2,flag);
+            DataInitPara(systemData.channel_number_B,parmID,2,2,flag);
         }
     }
     else//工位A/B
@@ -1081,8 +1196,10 @@ void communicationToMCU::DataInit(void)
     systemData.press_diff = 0; //差压
     systemData.temp_test_result = 0;
     systemData.set_index = 0;//节拍序号清0
-    systemData.KeyValue = 0x00; //手动模式按键值  0xaa开始，0x55停止、0x00初始化
+    systemData.KeyValue = KeyValue; //手动模式按键值  0xaa开始，0x55停止、0x00初始化
     systemData.BeatState = BEAT_STATE_STOP;
+    systemData.label_result = 0;
+    systemData.db_time = 0;
 }
 
 unsigned int communicationToMCU::BeatTimerAccm(unsigned int beat_num)
@@ -1221,7 +1338,6 @@ void communicationToMCU::start_first()
 void communicationToMCU::check_stage()
 {
     unsigned char flag = 0x55;
-    printf("systemData.BeatState =%d\n",systemData.BeatState);
     if(BEAT_STATE_STOP == systemData.BeatState)
     {
         if(0 == systemData.args_config.model) //自动模式
@@ -1240,6 +1356,7 @@ void communicationToMCU::check_stage()
         }
         if(flag == 0xaa)
         {
+            DataInit(0x55,0x00);
             systemData.BeatState = BEAT_STATE_START;
             systemData.test_press = 0;//测试压
             systemData.press_diff = 0; //差压
@@ -1250,7 +1367,7 @@ void communicationToMCU::check_stage()
             //0x03: 清空参数列表,复位差压采样数据更新标记
             HcpSetCmdPara(0,0,0x01,0);
             systemData.set_para_end_flag = 0xaa; 
-            timer_over->start(1000);
+            timer_over->start(100);
         }
         else
         {}
@@ -1265,6 +1382,7 @@ void communicationToMCU::check_stage()
         {}
         if(0x55 == systemData.KeyValue)//按下停止键
         {
+            DataInit(0xaa,0x00);
             systemData.KeyValue = 0;
             systemData.BeatState = BEAT_STATE_STOP;
             systemData.test_press = 0;//测试压

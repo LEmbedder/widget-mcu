@@ -132,10 +132,10 @@ void FormChannleSettings2::initSets(int page_val)
         }
         sets[page_val][i].revealStandardUpLimit = 0;
         sets[page_val][i].revealStandardDownLimit = 0;
-        sets[page_val][i].revealUnit = "";
+        sets[page_val][i].revealUnit = REVEAL_UNIT_DEFAULT;
         sets[page_val][i].bigRevealStandardValue = 0;
         sets[page_val][i].testPressure = 0;
-        sets[page_val][i].testPressureBigRevealUint = "";
+        sets[page_val][i].testPressureBigRevealUint = BIG_REVEAL_UNIT_DEFAULT;
         sets[page_val][i].testPressureUpLimit = 0;
         sets[page_val][i].testPressureDownLimit = 0;
         sets[page_val][i].measuredVolume = 0.0;
@@ -318,7 +318,7 @@ void FormChannleSettings2::loadParam(QString number)
             }
             if (tagList.indexOf("set_"+QString::number(i)+"_revealUnit") != -1)
             {
-                sets[page_int][i].revealUnit = setting.value("set_"+QString::number(i)+"_revealUnit").toString();
+               sets[page_int][i].revealUnit = setting.value("set_"+QString::number(i)+"_revealUnit").toString();
             }
 
             if (tagList.indexOf("set_"+QString::number(i)+"_bigRevealStandardValue") != -1)
@@ -399,6 +399,7 @@ void FormChannleSettings2::savePara()
 //        if (tagList.indexOf("set_"+QString::number(i)+"_revealUnit") != -1)
         {
 //            sets[i].revealUnit = setting.value("set_"+QString::number(i)+"_revealUnit").toString();
+            printf("1111sets[%d][%d].revealUnit = %s\n",page_int,i,sets[page_int][i].revealUnit.toStdString().c_str());
             setting.setValue("set_"+QString::number(i)+"_revealUnit",(sets[page_int][i].revealUnit));
         }
 
@@ -415,6 +416,7 @@ void FormChannleSettings2::savePara()
 //        if (tagList.indexOf("set_"+QString::number(i)+"_testPressureBigRevealUint") != -1)
         {
 //            sets[i].testPressureBigRevealUint = setting.value("set_"+QString::number(i)+"_testPressureBigRevealUint").toString();
+            printf("111sets[%d][%d].testPressureBigRevealUint = %s\n",page_int,i,sets[page_int][i].testPressureBigRevealUint.toStdString().c_str());
             setting.setValue("set_"+QString::number(i)+"_testPressureBigRevealUint",(sets[page_int][i].testPressureBigRevealUint));
         }
 

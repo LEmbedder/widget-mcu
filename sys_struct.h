@@ -206,7 +206,7 @@ typedef struct HCPCMD_SET_CMD_tag
 {
     HCPCMD              header;
     unsigned char       parmID;
-        unsigned char       data;
+    unsigned int       data;
 }HCPCMD_SET_COMMON,*PHCPCMD_SET_COMMON;
 
 

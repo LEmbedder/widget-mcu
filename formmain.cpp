@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 主界面的控制
  * 2020年01月01日14:46:46
  */
@@ -124,16 +124,7 @@ FormMain::FormMain(QWidget *parent) :
     {
         labelSucess[i] = 2;
     }
-    updateLabelSucess(1);
-    updateLabelSucess(1);
-    updateLabelSucess(1);
-    updateLabelSucess(1);
-    updateLabelSucess(1);
-    updateLabelSucess(1);
-    updateLabelSucess(1);
-    updateLabelSucess(1);
-    updateLabelSucess(1);
-    updateLabelSucess(1);
+
 
     /* 上下限更新 */
     systemData.up_down_limit.down_limit = -1000;
@@ -141,16 +132,19 @@ FormMain::FormMain(QWidget *parent) :
     ui->lineEdit_up_limit->setText("1000");
     ui->lineEdit_down_limit->setText("-1000");
 
-
-
-    /* 初始化工号 */
-    memset(systemData.args_config.work_number,0,30);
     loadConfigArgs();
-    ui->lineEdit_channle_number_A->setText(QString::number(systemData.channel_number));
+    ui->lineEdit_channle_number_A->setText(QString::number(systemData.channel_number + 1));
     ui->lineEdit_channle_number_A->setValidator(new QRegExpValidator(QRegExp("([0-9]{2})"), this));
-    ui->lineEdit_channle_number_B->setText(QString::number(systemData.channel_number_B));
+    ui->lineEdit_channle_number_B->setText(QString::number(systemData.channel_number_B + 1));
     ui->lineEdit_channle_number_B->setValidator(new QRegExpValidator(QRegExp("([0-9]{2})"), this));
+
     updateForm();
+
+    /* update channel number */
+    timer = new QTimer(this);
+    timer->setSingleShot(true);
+    connect(timer, SIGNAL(timeout()), this, SLOT(channel_update()));
+
 }
 
 FormMain::~FormMain()
@@ -255,10 +249,20 @@ void FormMain::updateLabelSucess(int next)
 
 void FormMain::receiveInfo()
 {
+    unsigned int len = 0;
     QByteArray info = serialPort->readAll();
-//    qDebug()<<info;
+    if(info.length() > INPUT_STRING_LEN)
+    {
+        len = INPUT_STRING_LEN;
+    }
+    else
+    {
+         len = info.length();
+    }
+    memcpy(systemData.args_config.work_piece,info.data(),len);
     ui->textEdit_workpiece_number->setText(info.data());
 }
+
 void FormMain::update_mcu()
 {
     disp_test_press(systemData.test_press);/* 测试压更新 */
@@ -338,7 +342,6 @@ void FormMain::on_pushButton_2_clicked()
     ui->widget_target->close();
     formViewData->close();
     formArguSetting->show();
-
 }
 
 /*
@@ -446,9 +449,15 @@ void FormMain::loadConfigArgs()
         {
             systemData.channel_number = setting.value("channel_number").toInt();
         }
+        else
+        {
+        }
         if (tagList.indexOf("channel_number_B") != -1)
         {
             systemData.channel_number_B = setting.value("channel_number_B").toInt();
+        }
+        else
+        {
         }
         qDebug()<<systemData.channel_number<<systemData.channel_number_B;
     }
@@ -463,6 +472,18 @@ void FormMain::saveConfigArgs()
     QSettings setting(fileName, QSettings::IniFormat);
     if(save_index++ > 0)
     {
+        if(systemData.channel_number > 0)
+        {
+            systemData.channel_number = systemData.channel_number - 1;
+        }
+        else
+        {}
+        if(systemData.channel_number_B > 0)
+        {
+            systemData.channel_number_B = systemData.channel_number_B - 1;
+        }
+        else
+        {}
         setting.beginGroup("SystemData");
         setting.setValue("channel_number",systemData.channel_number);
         setting.setValue("channel_number_B",systemData.channel_number_B);
@@ -470,6 +491,7 @@ void FormMain::saveConfigArgs()
             formProgress->update();
 
     }
+    communication->DataInit(0xaa,0x00);
 }
 
 /*
@@ -561,6 +583,39 @@ void FormMain::on_pushButton_set_channel_number_clicked()
     saveConfigArgs();
 }
 
+void FormMain::channel_update()
+{
+    if (ui->lineEdit_channle_number_A->isEnabled())
+    {
+        ui->lineEdit_channle_number_A->setText(QString::number(systemData.channel_number + 1));
+
+    }
+    if (ui->lineEdit_channle_number_B->isEnabled())
+    {
+        ui->lineEdit_channle_number_B->setText(QString::number(systemData.channel_number_B + 1));
+    }
+}
+
+
+
+void FormMain::on_textEdit_workpiece_number_textChanged()
+{
+    unsigned int len = 0;
+    //len = ui->textEdit_workpiece_number->size()::;
+    if(len > INPUT_STRING_LEN)
+    {
+        len = INPUT_STRING_LEN;
+    }
+    else
+    {
+    }
+    //memcpy(systemData.args_config.work_piece, ui->textEdit_workpiece_number->text().toStdString().c_str(),len);
+}
+
+void FormMain::channel_update_start_timer()
+{
+    timer->start(2 * 1000);// 启动定时器2000 ms
+}
 
 bool FormMain::loadXmlFile(void)
 {

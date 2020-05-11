@@ -84,6 +84,8 @@ void FormSystemSetting::loadConfigArgs()
     QSettings setting(fileName, QSettings::IniFormat);
 
     QStringList tagList;
+    /* 初始化工号 */
+    memset(systemData.args_config.work_number,0,30);
     if (QFile(fileName).exists())
     {
         setting.beginGroup("Config Args");
@@ -122,6 +124,9 @@ void FormSystemSetting::loadConfigArgs()
             QString string = setting.value("work_number").toString();
             strcpy(systemData.args_config.work_number,string.toStdString().c_str());
         }
+        else
+        {
+        }
         if (tagList.indexOf("test_mode") != -1)
         {
             systemData.args_config.test_mode = setting.value("test_mode").toInt();
@@ -137,7 +142,6 @@ void FormSystemSetting::saveConfigArgs()
 {
     QString fileName = QApplication::applicationDirPath() + "/settings.ini";
     QSettings setting(fileName, QSettings::IniFormat);
-
     setting.beginGroup("Config Args");
     setting.setValue("model_select",systemData.args_config.model);
     setting.setValue("work_space",systemData.args_config.worker_space);

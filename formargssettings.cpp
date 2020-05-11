@@ -8,7 +8,7 @@ static QString revealUint[][11] = {
     {"Pa", "Pa/s",   "kPa",  "kPa/s","kPa/min", "mL/s",  "mL/min","mL/min","mL/h","L/h","Sccm"},
     {"mL/s","mL/min","L/min","L/h","m^3/h","mL/h","Pa/min","g/h","Sccm"}
 };
-static const QString testPressureBigRevealUint[] = {
+static const QString testPressureBigRevealUint[10] = {
     "kPa","kg/cm^2","psi","bar","mbar","Torr","mmH2o","mmHg","MPa",""
 };
 FormArgsSettings::FormArgsSettings(QDialog *parent) :
@@ -108,7 +108,23 @@ void FormArgsSettings::saveParameter()
     sets->time[12] = ui->lineEditTab13->text().toInt();
     sets->revealStandardUpLimit = ui->lineEdit_revealStandardUpLimit->text().toInt();
     sets->revealStandardDownLimit = ui->lineEdit_revealStandardDownLimit->text().toInt();
+    if(sets->revealUnit == "")
+    {
+        sets->revealUnit = revealUint[modelSelect][0];
+    }
+    else
+    {
+        sets->revealUnit = ui->comboBox_revealUnit->currentText();
+    }
     sets->bigRevealStandardValue = ui->lineEdit_bigRevealStandardValue->text().toInt();
+    if(sets->testPressureBigRevealUint == "")
+    {
+        sets->testPressureBigRevealUint =  testPressureBigRevealUint[0];
+    }
+    else
+    {
+        sets->testPressureBigRevealUint = ui->comboBox_testPressureBigRevealUint->currentText();
+    }
     sets->testPressure = ui->lineEdit_testPressure->text().toInt();
     sets->testPressureUpLimit = ui->lineEdit_testPressureUpLimit->text().toInt();
     sets->testPressureDownLimit = ui->lineEdit_testPressureDownLimit->text().toInt();

@@ -40,6 +40,9 @@ bool FormViewData::initDatabase()
         qDebug()<<"can't open db";
         return false;
     }
+    else
+    {
+    }
     QSqlQuery query;
     query.exec("create table testdata("
                "id int primary key, "
@@ -54,7 +57,7 @@ bool FormViewData::initDatabase()
                "meter_number int)"
                );
 
-
+//    insertDatabase("127","1451122","2020-19-19",1651,684,"1353pa","true","1234kpa",13);
     model = new QSqlTableModel(this);
     model->setTable("testdata");
     model->select();
@@ -101,29 +104,54 @@ void FormViewData::insertDatabase(QString worker_number,
     int next = 1;
     QSqlQuery query = QSqlQuery(db);
 
-    query.exec("select * from testdata");
+    bool buscess = query.exec("select * from testdata");
+    printf("***************************************************\n");
+    if(buscess == true)
+    {
+        printf("select from testdata success\n");
+    }
     if (query.last())
     {
         next = query.at() + 2;
         if (next > MAX_DB_RECORD)
         {
-            DEBUG_LOG("data base is full,can't store");
+            printf("data base is full,can't store");
             return;
         }
     }
 
-    query.exec("insert into testdata values("+
-                QString::number(next)+",'"+
-                worker_number+"','"+
-                workpiece_number+"','"+
-                test_time+"',"+
-                QString::number(revealStandardUpLimit)+","+
-                QString::number(revealStandardDownLimit)+",'"+
-                temp_test_result_unit+"','"+
-                result+"','"+
-                test_press_unit+"',"+
-                QString::number(meter_number)+")");
+//    buscess = query.exec("insert into testdata values("+
+//                QString::number(next)+",'"+
+//                worker_number+"','"+
+//                workpiece_number+"','"+
+//                test_time+"',"+
+//                QString::number(revealStandardUpLimit)+","+
+//                QString::number(revealStandardDownLimit)+",'"+
+//                temp_test_result_unit+"','"+
+//                result+"','"+
+//                test_press_unit+"',"+
+//                QString::number(meter_number) + "s" +")");
+//    if(buscess == true)
+//    {
+//        printf("insert into testdata values");
+//    }
+   buscess = query.exec("insert into testdata values("+
+                   QString::number(next)+",'"+
+                   worker_number+"','"+
+                   workpiece_number+"','"+
+                   test_time+"',"+
+                   QString::number(revealStandardUpLimit)+","+
+                   QString::number(revealStandardDownLimit)+",'"+
+                   temp_test_result_unit+"','"+
+                   result+"','"+
+                   test_press_unit+"',"+
+                   QString::number(meter_number)+")");
 
+
+    if(buscess == true)
+    {
+        printf("insert into testdata values");
+    }
     model->select();
     view->viewport()->update();
     update_args();

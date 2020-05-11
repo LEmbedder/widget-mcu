@@ -1,4 +1,4 @@
-#include "widget.h"
+﻿#include "widget.h"
 #include "ui_widget.h"
 #include "navprogress.h"
 #include "progressbar.h"
@@ -46,11 +46,12 @@ Widget::Widget(QWidget *parent) :
     formain->formProgress = fp;
     formain->communication = communication;
     connect(communication,SIGNAL(update_label(bool)),formain,SLOT(updateLabelSucessOrFailed(bool)));
+    connect(communication,SIGNAL(update_channel()),formain,SLOT(channel_update_start_timer()));
     communication->serialPort = formain->serialPort;
     connect(communication->serialPort,SIGNAL(readyRead()),formain,SLOT(receiveInfo()));
     formain->setViewData();
     ui->verticalLayout_target->addWidget(formain);
-    communication->DataInit();
+    communication->DataInit(0xaa,0x00);
     communication->start_first();
     /* 更行界面 */
     updateForm();

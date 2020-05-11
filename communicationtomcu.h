@@ -24,13 +24,14 @@ class communicationToMCU : public QObject
     void HcpHandleKey(unsigned char *puf);
     void FindSetPara(HcpSetsPara *SetPara);
     void WriteTestResultToDb(unsigned int revealStandardUpLimit,unsigned int revealStandardDownLimit,\
-                                                 QString revealUnit,unsigned char testResult,\
+                                                 QString revealUnit,QString testResult,\
                                                  QString testPressureBigRevealUint,\
                                                  unsigned int  PFCtaskTime);
     void CalcTimeTotal();
-    void DataInitMode(unsigned int channel_number, int model,unsigned char parmID);
-    void DataInitPara(unsigned int channel_number, unsigned char parmID, unsigned char num, unsigned char start_index);
+    void DataInitMode(unsigned int channel_number, int model,unsigned char parmID,unsigned char flag);
+    void DataInitPara(unsigned int channel_number, unsigned char parmID, unsigned char num, unsigned char start_index,unsigned char flag);
     void HcpHandleEvent(unsigned char *puf);
+    void handle_event_do(unsigned int do_value, QString testResult);
 public:
     explicit communicationToMCU(QObject *parent = 0);
     FormViewData *formViewData;
@@ -55,7 +56,7 @@ public:
     void HcpSetCmdProductMode(unsigned char ProductMode);
     void start_first();
     void DownloadSetPara();
-    void DataInit();
+    void DataInit(unsigned char flag,unsigned char KeyValue);
     unsigned int BeatTimerAccm(unsigned int beat_num);
     void beat_do_flag_clear(void);
     int uart_fifo_push(unsigned char data);
@@ -65,6 +66,7 @@ public:
 signals:
     void update_window();
     void update_label(bool);
+    void update_channel();
 public slots:
     void check_stage();
     void receiveInfo();

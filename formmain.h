@@ -1,4 +1,4 @@
-#ifndef FORMMAIN_H
+﻿#ifndef FORMMAIN_H
 #define FORMMAIN_H
 
 #include <QWidget>
@@ -39,7 +39,6 @@ public:
     ~FormMain();
     QString fileName;
     communicationToMCU *communication;
-    QSerialPort *serialPort;
     void updateLabelSucess(int next);
     void disp_test_press(double value);
     void disp_test_result(double value);
@@ -52,11 +51,14 @@ public:
     PrintInformation *printInformation;
     void setViewData();
     bool loadXmlFile(void);
+    QSerialPort *serialPort;
+    QTimer *timer;
 public slots:
     void receiveInfo();
     void update_args_config(Args_config *config);
     void update_mcu();
     void updateLabelSucessOrFailed(bool value);
+    void channel_update_start_timer();
 private slots:
     void on_pushButton_clicked();
 
@@ -73,6 +75,10 @@ private slots:
     void updateForm();
 
     void on_pushButton_set_channel_number_clicked();
+
+    void channel_update();
+
+    void on_textEdit_workpiece_number_textChanged();
 
 private:
     Ui::FormMain *ui;

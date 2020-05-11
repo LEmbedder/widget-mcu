@@ -43,14 +43,14 @@
 #define HCP_SET_PARA_SEND_FLAG_ING     0xff
 
 //测试结果
-#define  TEST_PASS 			                 0 //测试通过
-#define  TEST_FAILURE_NG_PLUS                1 //NG+
-#define  TEST_FAILURE_NG_MINUS               2 //NG-
-#define  TEST_FAILURE_BIG_LEAK               3 //大漏
-#define  TEST_FAILURE_UPPER_RANGE            4 //超量程上限
-#define  TEST_FAILURE_UNDER_RANGE            5 //低量程下限
-#define  TEST_FAILURE_PRESS_UPPER_LIMIT      6 //测试压超上限
-#define  TEST_FAILURE_PRESS_UNDER_LIMIT      7 //测试压超下限
+#define  TEST_PASS 			                 "PASS" //测试通过
+#define  TEST_FAILURE_NG_PLUS                "NG+" //NG+
+#define  TEST_FAILURE_NG_MINUS               "NG-" //NG-
+#define  TEST_FAILURE_BIG_LEAK               "大漏" //大漏
+#define  TEST_FAILURE_UPPER_RANGE            "超量程上限" //超量程上限
+#define  TEST_FAILURE_UNDER_RANGE            "低量程下限" //低量程下限
+#define  TEST_FAILURE_PRESS_UPPER_LIMIT      "测试压超上限" //测试压超上限
+#define  TEST_FAILURE_PRESS_UNDER_LIMIT      "测试压超下限" //测试压超下限
 
 //测试节拍
 //待机
@@ -71,7 +71,22 @@
 #define  BEAT_BALANCE_TWO        7
 //测试
 #define  BEAT_TEST               8
+//排气
+#define  BEAT_EXHAUST            9
+//延时4
+#define  BEAT_DELAY_FOUR         10
+//延时5
+#define  BEAT_DELAY_FIVE         11
+//延时6
+#define  BEAT_DELAY_SIX          12
+//结束
+#define  BEAT_DELAY_END          13
 
+#define  REVEAL_UNIT_DEFAULT        "Pa"
+#define  BIG_REVEAL_UNIT_DEFAULT    "kPa"
+
+
+#define  INPUT_STRING_LEN   32
 
 /* 界面参数配置 */
 struct Args_config {
@@ -93,6 +108,7 @@ struct Args_config {
     /* "容积测试","定标测试" end*/
     char work_number[30] ;//工号
     char device_number[20];//设备号
+    char work_piece[INPUT_STRING_LEN];   //工件号
 };
 
 /* 全局变量 */
@@ -118,22 +134,24 @@ struct SystemData{
     }up_down_limit;
     unsigned char KeyValue;//手动模式按键值  0xaa开始，0x55停止、0x00初始化
     unsigned char BeatState;
+    bool label_result;
+    unsigned int db_time;
 };
 
 
 struct SetsPara{
     unsigned int time[BEATS_NUM_MAX];//测试节拍 单位 s
 
-    unsigned int revealStandardUpLimit;//泄露标准上限
-    unsigned int revealStandardDownLimit;//泄露标准下限
+    int revealStandardUpLimit;//泄露标准上限
+    int revealStandardDownLimit;//泄露标准下限
     QString revealUnit;   //泄露单位
 
-    unsigned int bigRevealStandardValue;//大泄露标准值
-    unsigned int testPressure;//测试压
+    int bigRevealStandardValue;//大泄露标准值
+    int testPressure;//测试压
     QString testPressureBigRevealUint;//测试压单位
 
-    unsigned int testPressureUpLimit;//测试压上限
-    unsigned int testPressureDownLimit;//测试压下限
+    int testPressureUpLimit;//测试压上限
+    int testPressureDownLimit;//测试压下限
     double measuredVolume;//被测试容积/* mL */
 
     double standerVolume;//标准物容积/*mL*/
@@ -155,16 +173,16 @@ struct HcpSetsPara{
     unsigned char parmID;
     unsigned int  PFCtaskTime;
 
-    unsigned int revealStandardUpLimit;//泄露标准上限
-    unsigned int revealStandardDownLimit;//泄露标准下限
+    int revealStandardUpLimit;//泄露标准上限
+    int revealStandardDownLimit;//泄露标准下限
     QString revealUnit;   //泄露单位
 
-    unsigned int bigRevealStandardValue;//大泄露标准值
-    unsigned int testPressure;//测试压
+    int bigRevealStandardValue;//大泄露标准值
+    int testPressure;//测试压
     QString testPressureBigRevealUint;//测试压单位
 
-    unsigned int testPressureUpLimit;//测试压上限
-    unsigned int testPressureDownLimit;//测试压下限
+    int testPressureUpLimit;//测试压上限
+    int testPressureDownLimit;//测试压下限
     double measuredVolume;//被测试容积/* mL */
 
     double standerVolume;//标准物容积/*mL*/

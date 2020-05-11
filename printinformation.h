@@ -6,9 +6,9 @@
 #include "config.h"
 
 typedef struct Print{
-    QString workpiece_number;
-    QString worker_number;
-    QString device_number;
+    QString workpiece_number;//工件号
+    QString worker_number;   //工号
+    QString device_number;   //设备号
     QString result;
     QString timer;
 }Print_t;
