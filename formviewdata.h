@@ -18,7 +18,7 @@
 #include "formpassword.h"
 
 
-struct updata_statistic_view{
+struct statistic_args{
     unsigned total_number;
     unsigned big_leak;/* 大漏 */
     unsigned add_NG_nubmer; /* +NG */
@@ -74,19 +74,15 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void on_pushButton_total_clicked();
+    void on_pushButton_select_clicked();
+
+    void on_pushButton_3_clicked();
+
 private:
     Ui::FormViewData *ui;
     void page_value();
-    unsigned total_number;
-    unsigned big_leak;/* 大漏 */
-    unsigned add_NG_nubmer; /* +NG */
-    unsigned lose_NG_number;/* -NG */
-    unsigned up_range_upperlimit_number ;/* 超量程上限 */
-    unsigned down_range_downerlimit_number;/* 低量程下限 */
-    unsigned test_press_upperlimit_number ;/* 测试压超上限 */
-    unsigned test_press_downerlimit_number;/* 测试压低下限 */
-    unsigned pass; /* 好的 */
-    double percent_pass;
+    struct statistic_args data_view_all, data_view_select;
     unsigned int currentTotalRecord;
     void update_args();
     DialogMessage dial;
@@ -96,7 +92,7 @@ private:
     QTimer *timer;
     void ReadDataFromSqlWriteToCSV(const QString &tableName, const QString &csvFileName);
     void update_statistics_args();
-    void update_statistics_view();
+    void update_statistics_view(statistic_args args);
 };
 
 #endif // FORMVIEWDATA_H

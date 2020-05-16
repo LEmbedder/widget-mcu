@@ -10,23 +10,17 @@ FormViewData::FormViewData(QWidget *parent) :
     ui(new Ui::FormViewData)
 {
     ui->setupUi(this);
-    pass = 0;
-    percent_pass = 0;
-    total_number = 0;
-    big_leak = 0;/* 大漏 */
-    add_NG_nubmer = 0; /* +NG */
-    lose_NG_number = 0;/* -NG */
-    up_range_upperlimit_number    = 0;/* 超量程上限 */
-    down_range_downerlimit_number = 0;/* 低量程下限 */
-    test_press_upperlimit_number  = 0;/* 测试压超上限 */
-    test_press_downerlimit_number = 0;/* 测试压低下限 */
+    memset(&data_view_all, 0 ,sizeof(struct statistic_args));
 
     viewFPS = new FormPassword;
     connect(viewFPS,SIGNAL(emitIsTrue_2()),this,SLOT(on_pushButton_clicked()));
     connect(viewFPS,SIGNAL(emitIsTrue_3()),this,SLOT(on_pushButton_2_clicked()));
+    connect(viewFPS,SIGNAL(emitIsTrue_4()),this,SLOT(on_pushButton_3_clicked()));
     initDatabase();
     page_value();
     update_args();
+//    insertDatabase("127","1451122","2020-19-19",1651,684,"1353pa","true","1234kpa",13);
+
 }
 
 FormViewData::~FormViewData()
@@ -220,86 +214,79 @@ void FormViewData::on_pushButton_search_clicked()
  */
 void FormViewData::update_statistics_args()
 {
-    total_number = 0;
-    pass = 0;
-    big_leak = 0;/* 大漏 */
-    add_NG_nubmer = 0; /* +NG */
-    lose_NG_number = 0;/* -NG */
-    up_range_upperlimit_number    = 0;/* 超量程上限 */
-    down_range_downerlimit_number = 0;/* 低量程下限 */
-    test_press_upperlimit_number  = 0;/* 测试压超上限 */
-    test_press_downerlimit_number = 0;/* 测试压低下限 */
-
     QString result = "";
+
+    memset(&data_view_select, 0 ,sizeof(struct statistic_args));
+
     if (model != NULL)
     {
-        total_number = model->rowCount();
-        for (unsigned i = 0; i < total_number; i++)
+        data_view_select.total_number = model->rowCount();
+        for (unsigned i = 0; i < data_view_select.total_number; i++)
         {
             /*  */
             result = model->data(model->index(i, 6)).toString();
             if (result == BIT_LEAK)
             {
-                big_leak++;
+                data_view_select.big_leak++;
             }
             else if (result == ADD_NG_NUMBER)
             {
-                add_NG_nubmer++;
+                data_view_select.add_NG_nubmer++;
             }
             else if (result == LOSE_NG_NUMBER)
             {
-                lose_NG_number++;
+                data_view_select.lose_NG_number++;
             }
             else if (result == UP_RANGE_UPPERLIMIT_NUMBER)
             {
-                up_range_upperlimit_number++;
+                data_view_select.up_range_upperlimit_number++;
             }
             else if (result == DOWN_RANGE_DOWNERLIMIT_NUMBER)
             {
-                down_range_downerlimit_number++;
+                data_view_select.down_range_downerlimit_number++;
             }
             else if (result == TEST_PRESS_DOWNERLIMIT_NUMBER)
             {
-                test_press_upperlimit_number++;
+                data_view_select.test_press_upperlimit_number++;
             }
             else if (result == TEST_PRESS_DOWNERLIMIT_NUMBER)
             {
-                test_press_upperlimit_number++;
+                data_view_select.test_press_upperlimit_number++;
             }
             else if (result == PASS){
-                pass++;
+                data_view_select.pass++;
             }
             else{
                 DEBUG_LOG("store data error\n");
             }
         }/* end for */
-        /* 在界面显示 */
-        ui->label_total->setText(QString::number(total_number));
-        ui->label_pass->setText(QString::number(pass));
-        ui->label_big_leak->setText(QString::number(big_leak));
-        ui->label_add_NG->setText(QString::number(add_NG_nubmer));
-        ui->label_lose_NG->setText(QString::number(lose_NG_number));
-        ui->label_up_range_upperlimit_number->setText(QString::number(up_range_upperlimit_number));
-        ui->label_down_range_downerlimit_number->setText(QString::number(down_range_downerlimit_number));
-        ui->label_test_press_upperlimit_number->setText(QString::number(test_press_upperlimit_number));
-        ui->label_test_press_downerlimit_number->setText(QString::number(test_press_downerlimit_number));
-        if (total_number != 0)
-        {
-            percent_pass = pass*100.0/total_number;
-            ui->label_percent_pass->setText(QString::number(percent_pass,'f',2)+"%");
-        }
-        else
-        {
-            percent_pass = 0;
-            ui->label_percent_pass->setText(QString::number(percent_pass,'f',2)+"%");
-        }
+        update_statistics_view(data_view_select);
 
     }
 
 }
-void FormViewData::update_statistics_view()
+void FormViewData::update_statistics_view(struct statistic_args args)
 {
-
+    /* 在界面显示 */
+    ui->label_total->setText(QString::number(args.total_number));
+    ui->label_pass->setText(QString::number(args.pass));
+    ui->label_big_leak->setText(QString::number(args.big_leak));
+    ui->label_add_NG->setText(QString::number(args.add_NG_nubmer));
+    ui->label_lose_NG->setText(QString::number(args.lose_NG_number));
+    ui->label_up_range_upperlimit_number->setText(QString::number(args.up_range_upperlimit_number));
+    ui->label_down_range_downerlimit_number->setText(QString::number(args.down_range_downerlimit_number));
+    ui->label_test_press_upperlimit_number->setText(QString::number(args.test_press_upperlimit_number));
+    ui->label_test_press_downerlimit_number->setText(QString::number(args.test_press_downerlimit_number));
+    if (args.total_number != 0)
+    {
+        args.percent_pass = args.pass*100.0/args.total_number;
+        ui->label_percent_pass->setText(QString::number(args.percent_pass,'f',2)+"%");
+    }
+    else
+    {
+        args.percent_pass = 0;
+        ui->label_percent_pass->setText(QString::number(args.percent_pass,'f',2)+"%");
+    }
 }
 void FormViewData::on_pushButton_top_clicked()
 {
@@ -359,40 +346,58 @@ void FormViewData::page_value()
     update();
 }
 
+
 /*
  * 更新的是全部的内容数据
  */
 void FormViewData::update_args()
 {
-    QSqlQuery query = QSqlQuery(db);
-    query.exec("select * from testdata");
-    if (query.last())
-        total_number = query.at() + 1;
-    else
-        total_number = 0;
+    QString result = "";
 
-    query.exec("select * from testdata");
-    for (int i = 0; query.seek(i);i++)
+    if (model != NULL)
     {
-        QSqlRecord record = query.record();
-        QString ok = record.value("result").toString();
-        if (ok == "true")
+        data_view_all.total_number = model->rowCount();
+        for (unsigned i = 0; i < data_view_all.total_number; i++)
         {
-            pass++;
-        }
+            /*  */
+            result = model->data(model->index(i, 6)).toString();
+            if (result == BIT_LEAK)
+            {
+                data_view_all.big_leak++;
+            }
+            else if (result == ADD_NG_NUMBER)
+            {
+                data_view_all.add_NG_nubmer++;
+            }
+            else if (result == LOSE_NG_NUMBER)
+            {
+                data_view_all.lose_NG_number++;
+            }
+            else if (result == UP_RANGE_UPPERLIMIT_NUMBER)
+            {
+                data_view_all.up_range_upperlimit_number++;
+            }
+            else if (result == DOWN_RANGE_DOWNERLIMIT_NUMBER)
+            {
+                data_view_all.down_range_downerlimit_number++;
+            }
+            else if (result == TEST_PRESS_DOWNERLIMIT_NUMBER)
+            {
+                data_view_all.test_press_upperlimit_number++;
+            }
+            else if (result == TEST_PRESS_DOWNERLIMIT_NUMBER)
+            {
+                data_view_all.test_press_upperlimit_number++;
+            }
+            else if (result == PASS){
+                data_view_all.pass++;
+            }
+            else{
+                DEBUG_LOG("store data error\n");
+            }
+        }/* end for */
     }
-    ui->label_total->setText(QString::number(total_number));
-    ui->label_pass->setText(QString::number(pass));
-    if (total_number != 0)
-    {
-        percent_pass = pass*100.0/total_number;
-        ui->label_percent_pass->setText(QString::number(percent_pass,'f',2)+"%");
-    }
-    else
-    {
-        percent_pass = 0;
-        ui->label_percent_pass->setText(QString::number(percent_pass,'f',2)+"%");
-    }
+    update_statistics_view(data_view_all);
 }
 
 /*
@@ -464,9 +469,17 @@ void FormViewData::ReadDataFromSqlWriteToCSV(const QString &tableName,const QStr
     }
     if (!system("ls /mnt/usb > /dev/null"))
     {
-        system("cp /testdata.csv /mnt/usb");
-        /* 说明拷贝完成 */
-        dial.showMessage(2000,"拷贝完成");
+        if (!system("cp /testdata.csv /mnt/usb"))
+        {
+            system("sync");
+            /* 说明拷贝完成 */
+            dial.showMessage(2000,"拷贝完成");
+            system("umount /mnt/usb");
+
+        }else{
+            dial.showMessage(2000,"拷贝失败");
+
+        }
 
     }
     else
@@ -506,8 +519,55 @@ void FormViewData::on_pushButton_2_clicked()
     {
         if (passWord.sysOrUser == 1 || passWord.sysOrUser == 2)
         {
-            /* 删除数据库内容 */
-            qDebug()<<"111111111111111111111111";
+            /* 在这里添加删除数据库内容 */
+            model->setFilter("");
+            model->select();
+            unsigned total_number = model->rowCount();
+            qDebug()<<"remove total_number: "<<total_number;
+            for (unsigned i = 0; i < total_number; i++)
+            {
+                model->removeRow(i);
+            }
+            model->submitAll();
+            update_args();
+        }
+    }
+    viewFPS->isTrue = false;
+}
+
+/* 选择使用哪种数据显示 */
+void FormViewData::on_pushButton_total_clicked()
+{
+    update_statistics_view(data_view_all);
+}
+
+void FormViewData::on_pushButton_select_clicked()
+{
+    update_statistics_view(data_view_select);
+}
+
+void FormViewData::on_pushButton_3_clicked()
+{
+    if (viewFPS->isTrue != true)
+    {
+        viewFPS->show();
+        viewFPS->type = 3;
+    }
+    viewFPS->clearText();
+    qDebug()<<viewFPS->isTrue<<viewFPS->type;
+    if (viewFPS->isTrue == true && viewFPS->type == 3)
+    {
+        if (passWord.sysOrUser == 1 || passWord.sysOrUser == 2)
+        {
+            /* 在这里添加删除数据库内容 */
+            on_pushButton_search_clicked();
+            unsigned total_number = model->rowCount();
+            qDebug()<<"remove select_number: "<<total_number;
+            for (unsigned i = 0; i < total_number; i++)
+            {
+                model->removeRow(i);
+            }
+            model->submitAll();
         }
     }
     viewFPS->isTrue = false;

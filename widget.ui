@@ -76,7 +76,7 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>TextLabel</string>
+           <string>安徽万克姆科技有限公司</string>
           </property>
          </widget>
         </item>
