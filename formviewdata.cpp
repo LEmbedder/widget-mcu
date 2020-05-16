@@ -105,10 +105,9 @@ void FormViewData::insertDatabase(QString worker_number,
     QSqlQuery query = QSqlQuery(db);
 
     bool buscess = query.exec("select * from testdata");
-    printf("***************************************************\n");
-    if(buscess == true)
+    if(false == buscess)
     {
-        printf("select from testdata success\n");
+        printf("select from testdata failed\n");
     }
     if (query.last())
     {
@@ -120,21 +119,7 @@ void FormViewData::insertDatabase(QString worker_number,
         }
     }
 
-//    buscess = query.exec("insert into testdata values("+
-//                QString::number(next)+",'"+
-//                worker_number+"','"+
-//                workpiece_number+"','"+
-//                test_time+"',"+
-//                QString::number(revealStandardUpLimit)+","+
-//                QString::number(revealStandardDownLimit)+",'"+
-//                temp_test_result_unit+"','"+
-//                result+"','"+
-//                test_press_unit+"',"+
-//                QString::number(meter_number) + "s" +")");
-//    if(buscess == true)
-//    {
-//        printf("insert into testdata values");
-//    }
+
    buscess = query.exec("insert into testdata values("+
                    QString::number(next)+",'"+
                    worker_number+"','"+
@@ -148,9 +133,9 @@ void FormViewData::insertDatabase(QString worker_number,
                    QString::number(meter_number)+")");
 
 
-    if(buscess == true)
+    if(false == buscess)
     {
-        printf("insert into testdata values");
+        printf("insert into testdata failed!\n");
     }
     model->select();
     view->viewport()->update();

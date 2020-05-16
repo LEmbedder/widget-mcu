@@ -108,7 +108,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tab">
          <attribute name="title">
@@ -568,7 +568,7 @@
                <item>
                 <widget class="QLabel" name="label_total">
                  <property name="text">
-                  <string>6</string>
+                  <string>1</string>
                  </property>
                 </widget>
                </item>
@@ -586,7 +586,7 @@
                <item>
                 <widget class="QLabel" name="label_5">
                  <property name="text">
-                  <string>0</string>
+                  <string>1</string>
                  </property>
                 </widget>
                </item>

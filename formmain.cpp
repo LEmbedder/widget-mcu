@@ -607,9 +607,9 @@ void FormMain::on_textEdit_workpiece_number_textChanged()
     }
     else
     {
+         len = INPUT_STRING_LEN;
     }
     memcpy(systemData.args_config.work_piece, ui->textEdit_workpiece_number->toPlainText().toStdString().c_str(),len);
-    qDebug()<<ui->textEdit_workpiece_number->toPlainText();
 }
 
 void FormMain::channel_update_start_timer()
