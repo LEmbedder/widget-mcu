@@ -13,6 +13,13 @@ FormViewData::FormViewData(QWidget *parent) :
     pass = 0;
     percent_pass = 0;
     total_number = 0;
+    big_leak = 0;/* 大漏 */
+    add_NG_nubmer = 0; /* +NG */
+    lose_NG_number = 0;/* -NG */
+    up_range_upperlimit_number    = 0;/* 超量程上限 */
+    down_range_downerlimit_number = 0;/* 低量程下限 */
+    test_press_upperlimit_number  = 0;/* 测试压超上限 */
+    test_press_downerlimit_number = 0;/* 测试压低下限 */
 
     viewFPS = new FormPassword;
     connect(viewFPS,SIGNAL(emitIsTrue_2()),this,SLOT(on_pushButton_clicked()));
@@ -205,9 +212,95 @@ void FormViewData::on_pushButton_search_clicked()
     }
     qDebug()<<model->filter();
     model->select();
+    update_statistics_args();
     page_value();
 }
+/*
+ *  统计测试结果
+ */
+void FormViewData::update_statistics_args()
+{
+    total_number = 0;
+    pass = 0;
+    big_leak = 0;/* 大漏 */
+    add_NG_nubmer = 0; /* +NG */
+    lose_NG_number = 0;/* -NG */
+    up_range_upperlimit_number    = 0;/* 超量程上限 */
+    down_range_downerlimit_number = 0;/* 低量程下限 */
+    test_press_upperlimit_number  = 0;/* 测试压超上限 */
+    test_press_downerlimit_number = 0;/* 测试压低下限 */
 
+    QString result = "";
+    if (model != NULL)
+    {
+        total_number = model->rowCount();
+        for (unsigned i = 0; i < total_number; i++)
+        {
+            /*  */
+            result = model->data(model->index(i, 6)).toString();
+            if (result == BIT_LEAK)
+            {
+                big_leak++;
+            }
+            else if (result == ADD_NG_NUMBER)
+            {
+                add_NG_nubmer++;
+            }
+            else if (result == LOSE_NG_NUMBER)
+            {
+                lose_NG_number++;
+            }
+            else if (result == UP_RANGE_UPPERLIMIT_NUMBER)
+            {
+                up_range_upperlimit_number++;
+            }
+            else if (result == DOWN_RANGE_DOWNERLIMIT_NUMBER)
+            {
+                down_range_downerlimit_number++;
+            }
+            else if (result == TEST_PRESS_DOWNERLIMIT_NUMBER)
+            {
+                test_press_upperlimit_number++;
+            }
+            else if (result == TEST_PRESS_DOWNERLIMIT_NUMBER)
+            {
+                test_press_upperlimit_number++;
+            }
+            else if (result == PASS){
+                pass++;
+            }
+            else{
+                DEBUG_LOG("store data error\n");
+            }
+        }/* end for */
+        /* 在界面显示 */
+        ui->label_total->setText(QString::number(total_number));
+        ui->label_pass->setText(QString::number(pass));
+        ui->label_big_leak->setText(QString::number(big_leak));
+        ui->label_add_NG->setText(QString::number(add_NG_nubmer));
+        ui->label_lose_NG->setText(QString::number(lose_NG_number));
+        ui->label_up_range_upperlimit_number->setText(QString::number(up_range_upperlimit_number));
+        ui->label_down_range_downerlimit_number->setText(QString::number(down_range_downerlimit_number));
+        ui->label_test_press_upperlimit_number->setText(QString::number(test_press_upperlimit_number));
+        ui->label_test_press_downerlimit_number->setText(QString::number(test_press_downerlimit_number));
+        if (total_number != 0)
+        {
+            percent_pass = pass*100.0/total_number;
+            ui->label_percent_pass->setText(QString::number(percent_pass,'f',2)+"%");
+        }
+        else
+        {
+            percent_pass = 0;
+            ui->label_percent_pass->setText(QString::number(percent_pass,'f',2)+"%");
+        }
+
+    }
+
+}
+void FormViewData::update_statistics_view()
+{
+
+}
 void FormViewData::on_pushButton_top_clicked()
 {
     view->verticalScrollBar()->setSliderPosition(0);
@@ -266,6 +359,9 @@ void FormViewData::page_value()
     update();
 }
 
+/*
+ * 更新的是全部的内容数据
+ */
 void FormViewData::update_args()
 {
     QSqlQuery query = QSqlQuery(db);

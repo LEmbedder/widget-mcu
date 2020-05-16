@@ -17,6 +17,20 @@
 #include "dialogpassword.h"
 #include "formpassword.h"
 
+
+struct updata_statistic_view{
+    unsigned total_number;
+    unsigned big_leak;/* 大漏 */
+    unsigned add_NG_nubmer; /* +NG */
+    unsigned lose_NG_number;/* -NG */
+    unsigned up_range_upperlimit_number ;/* 超量程上限 */
+    unsigned down_range_downerlimit_number;/* 低量程下限 */
+    unsigned test_press_upperlimit_number ;/* 测试压超上限 */
+    unsigned test_press_downerlimit_number;/* 测试压低下限 */
+    unsigned pass; /* 好的 */
+    double percent_pass;
+};
+
 namespace Ui {
 class FormViewData;
 }
@@ -64,7 +78,14 @@ private:
     Ui::FormViewData *ui;
     void page_value();
     unsigned total_number;
-    unsigned pass;
+    unsigned big_leak;/* 大漏 */
+    unsigned add_NG_nubmer; /* +NG */
+    unsigned lose_NG_number;/* -NG */
+    unsigned up_range_upperlimit_number ;/* 超量程上限 */
+    unsigned down_range_downerlimit_number;/* 低量程下限 */
+    unsigned test_press_upperlimit_number ;/* 测试压超上限 */
+    unsigned test_press_downerlimit_number;/* 测试压低下限 */
+    unsigned pass; /* 好的 */
     double percent_pass;
     unsigned int currentTotalRecord;
     void update_args();
@@ -74,6 +95,8 @@ private:
     /*test use*/
     QTimer *timer;
     void ReadDataFromSqlWriteToCSV(const QString &tableName, const QString &csvFileName);
+    void update_statistics_args();
+    void update_statistics_view();
 };
 
 #endif // FORMVIEWDATA_H

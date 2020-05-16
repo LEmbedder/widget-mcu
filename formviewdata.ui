@@ -108,7 +108,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab">
          <attribute name="title">
@@ -584,7 +584,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_5">
+                <widget class="QLabel" name="label_big_leak">
                  <property name="text">
                   <string>1</string>
                  </property>
@@ -602,7 +602,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_7">
+                <widget class="QLabel" name="label_add_NG">
                  <property name="text">
                   <string>0</string>
                  </property>
@@ -620,7 +620,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_9">
+                <widget class="QLabel" name="label_lose_NG">
                  <property name="text">
                   <string>0</string>
                  </property>
@@ -642,7 +642,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_13">
+                <widget class="QLabel" name="label_up_range_upperlimit_number">
                  <property name="text">
                   <string>0</string>
                  </property>
@@ -660,7 +660,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_15">
+                <widget class="QLabel" name="label_down_range_downerlimit_number">
                  <property name="text">
                   <string>0</string>
                  </property>
@@ -678,7 +678,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_17">
+                <widget class="QLabel" name="label_test_press_upperlimit_number">
                  <property name="text">
                   <string>0</string>
                  </property>
@@ -696,7 +696,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_19">
+                <widget class="QLabel" name="label_test_press_downerlimit_number">
                  <property name="text">
                   <string>0</string>
                  </property>

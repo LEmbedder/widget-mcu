@@ -88,6 +88,15 @@
 
 #define  INPUT_STRING_LEN   32
 
+/* 数据库统计时候用的判断信息 */
+#define PASS                           "pass"
+#define BIT_LEAK                       "big_leak"                      /* 大漏 */
+#define ADD_NG_NUMBER                  "add_NG_number"                 /* +NG */
+#define LOSE_NG_NUMBER                 "lose_NG_number"                /* -NG */
+#define UP_RANGE_UPPERLIMIT_NUMBER     "up_range_upperlimit_number"    /* 超量程上限 */
+#define DOWN_RANGE_DOWNERLIMIT_NUMBER  "down_range_downerlimit_number" /* 低量程下限 */
+#define TEST_PRESS_UPPERLIMIT_NUMBER   "test_press_upperlimit_number"  /* 测试压超上限 */
+#define TEST_PRESS_DOWNERLIMIT_NUMBER  "test_press_downerlimit_number" /* 测试压低下限 */
 /* 界面参数配置 */
 struct Args_config {
     int model;
