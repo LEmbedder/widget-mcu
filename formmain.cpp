@@ -149,6 +149,10 @@ FormMain::FormMain(QWidget *parent) :
     timer_uart->start(100);// 启动定时器ms
     connect(timer_uart, SIGNAL(timeout()), this, SLOT(uart_updata()));
 
+    timer_update_unit = new QTimer(this);
+    timer_update_unit->start(1000);// 启动定时器ms
+    connect(timer_update_unit, SIGNAL(timeout()), this, SLOT(update_unit()));
+
 }
 
 FormMain::~FormMain()
@@ -606,7 +610,43 @@ void FormMain::uart_updata()
 {
     infoAll.clear();
 }
+/*
+ * 更新单位显示
+ */
 
+void FormMain::update_unit()
+{
+    QString revealUnit,testPressureBigRevealUint;
+    /* 先用A工位 */
+    int channel_number = ui->lineEdit_channle_number_A->text().toInt() - 1 ;
+    int page_int = channel_number/16;
+    int i = channel_number%16;
+
+    QString fileName = QApplication::applicationDirPath() + "/settings.ini";
+    QSettings setting(fileName, QSettings::IniFormat);
+
+    QStringList tagList;
+    if (QFile(fileName).exists())
+    {
+        setting.beginGroup("page_"+QString::number(page_int));
+        tagList = setting.childKeys();
+
+        if (tagList.indexOf("set_"+QString::number(i)+"_revealUnit") != -1)
+        {
+           revealUnit = setting.value("set_"+QString::number(i)+"_revealUnit").toString();
+        }
+        if (tagList.indexOf("set_"+QString::number(i)+"_testPressureBigRevealUint") != -1)
+        {
+            testPressureBigRevealUint = setting.value("set_"+QString::number(i)+"_testPressureBigRevealUint").toString();
+        }
+
+        setting.endGroup();
+    }
+//    qDebug()<<revealUnit<<testPressureBigRevealUint;
+    ui->label_testPressureBigRevealUint->setText(testPressureBigRevealUint);
+    ui->label_revealUnit->setText(revealUnit);
+
+}
 
 void FormMain::on_lineEdit_workpiece_number_textChanged(const QString &arg1)
 {

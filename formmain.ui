@@ -140,7 +140,7 @@
                 <set>Qt::AlignCenter</set>
                </property>
               </widget>
-              <widget class="QLabel" name="label_3">
+              <widget class="QLabel" name="label_testPressureBigRevealUint">
                <property name="geometry">
                 <rect>
                  <x>170</x>
@@ -646,7 +646,7 @@
                    <set>Qt::AlignCenter</set>
                   </property>
                  </widget>
-                 <widget class="QLabel" name="label_7">
+                 <widget class="QLabel" name="label_revealUnit">
                   <property name="geometry">
                    <rect>
                     <x>390</x>

@@ -54,6 +54,7 @@ public:
     QSerialPort *serialPort;
     QTimer *timer;
     QTimer *timer_uart;
+    QTimer *timer_update_unit;
 public slots:
     void receiveInfo();
     void update_args_config(Args_config *config);
@@ -82,6 +83,7 @@ private slots:
 
     void on_lineEdit_workpiece_number_textChanged(const QString &arg1);
 
+    void update_unit();
 private:
     Ui::FormMain *ui;
     void witchButtonChecked(QPushButton *button);
