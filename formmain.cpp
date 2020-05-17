@@ -266,7 +266,7 @@ void FormMain::receiveInfo()
     }
     qDebug()<<infoAll;
     memcpy(systemData.args_config.work_piece,infoAll.data(),len);
-    ui->textEdit_workpiece_number->setText(infoAll.data());
+    ui->lineEdit_workpiece_number->setText(infoAll.data());
 }
 
 void FormMain::update_mcu()
@@ -620,7 +620,7 @@ void FormMain::on_textEdit_workpiece_number_textChanged()
     {
          len = INPUT_STRING_LEN;
     }
-    memcpy(systemData.args_config.work_piece, ui->textEdit_workpiece_number->toPlainText().toStdString().c_str(),len);
+    memcpy(systemData.args_config.work_piece, ui->lineEdit_workpiece_number->text().toStdString().c_str(),len);
 }
 
 void FormMain::channel_update_start_timer()
