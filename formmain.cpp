@@ -145,6 +145,10 @@ FormMain::FormMain(QWidget *parent) :
     timer->setSingleShot(true);
     connect(timer, SIGNAL(timeout()), this, SLOT(channel_update()));
 
+    timer_uart = new QTimer(this);
+    timer_uart->start(100);// 启动定时器ms
+    connect(timer_uart, SIGNAL(timeout()), this, SLOT(uart_updata()));
+
 }
 
 FormMain::~FormMain()
@@ -251,16 +255,18 @@ void FormMain::receiveInfo()
 {
     unsigned int len = 0;
     QByteArray info = serialPort->readAll();
-    if(info.length() > INPUT_STRING_LEN)
+    infoAll.append(info);
+    if(infoAll.length() > INPUT_STRING_LEN)
     {
         len = INPUT_STRING_LEN;
     }
     else
     {
-         len = info.length();
+         len = infoAll.length();
     }
-    memcpy(systemData.args_config.work_piece,info.data(),len);
-    ui->textEdit_workpiece_number->setText(info.data());
+    qDebug()<<infoAll;
+    memcpy(systemData.args_config.work_piece,infoAll.data(),len);
+    ui->textEdit_workpiece_number->setText(infoAll.data());
 }
 
 void FormMain::update_mcu()
@@ -594,6 +600,11 @@ void FormMain::channel_update()
     {
         ui->lineEdit_channle_number_B->setText(QString::number(systemData.channel_number_B + 1));
     }
+}
+
+void FormMain::uart_updata()
+{
+    infoAll.clear();
 }
 
 

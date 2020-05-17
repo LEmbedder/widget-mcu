@@ -53,6 +53,7 @@ public:
     bool loadXmlFile(void);
     QSerialPort *serialPort;
     QTimer *timer;
+    QTimer *timer_uart;
 public slots:
     void receiveInfo();
     void update_args_config(Args_config *config);
@@ -77,6 +78,7 @@ private slots:
     void on_pushButton_set_channel_number_clicked();
 
     void channel_update();
+    void uart_updata();
 
     void on_textEdit_workpiece_number_textChanged();
 
@@ -88,6 +90,7 @@ private:
     FormViewData *formViewData;
     FormVolumeTest *formVolumeTest;
     FormCalibrationTest *formCalibrationTest;
+    QByteArray infoAll;
 
 
 
