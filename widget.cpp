@@ -48,7 +48,6 @@ Widget::Widget(QWidget *parent) :
     connect(communication,SIGNAL(update_label(bool)),formain,SLOT(updateLabelSucessOrFailed(bool)));
     connect(communication,SIGNAL(update_channel()),formain,SLOT(channel_update_start_timer()));
     communication->serialPort = formain->serialPort;
-//    connect(communication->serialPort,SIGNAL(readyRead()),formain,SLOT(receiveInfo()));
     formain->setViewData();
     ui->verticalLayout_target->addWidget(formain);
     communication->DataInit(0xaa,0x00);

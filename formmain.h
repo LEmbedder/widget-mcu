@@ -80,8 +80,6 @@ private slots:
     void channel_update();
     void uart_updata();
 
-    void on_textEdit_workpiece_number_textChanged();
-
 private:
     Ui::FormMain *ui;
     void witchButtonChecked(QPushButton *button);
