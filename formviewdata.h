@@ -51,12 +51,12 @@ public:
     void insertDatabase(QString worker_number,
                         QString workpiece_number,
                         QString test_time,
-                        int revealStandardUpLimit,
-                        int revealStandardDownLimit,
+                        QString revealStandardUpLimit,
+                        QString revealStandardDownLimit,
                         QString temp_test_result_unit,
                         QString result,
                         QString test_press_unit,
-                        int meter_number);
+                        QString meter_number);
 private slots:
     void on_pushButton_search_clicked();
 

@@ -4,6 +4,7 @@
 #include <QScrollBar>
 #include <QSqlRecord>
 #include <QFileDialog>
+#include <QHeaderView>
 
 FormViewData::FormViewData(QWidget *parent) :
     QWidget(parent),
@@ -19,7 +20,7 @@ FormViewData::FormViewData(QWidget *parent) :
     initDatabase();
     page_value();
     update_args();
-//    insertDatabase("127","1451122","2020-19-19",1651,684,"1353pa","true","1234kpa",13);
+//    insertDatabase("127","1451122","2020-19-19","1651pa","684pa","1353pa","true","1234kpa","13s");
 
 }
 
@@ -50,15 +51,14 @@ bool FormViewData::initDatabase()
                "worker_number varchar ,"
                "workpiece_number varchar,"
                "test_time varchar,"
-               "revealStandardUpLimit int,"
-               "revealStandardDownLimit int,"
+               "revealStandardUpLimit varchar,"
+               "revealStandardDownLimit varchar,"
                "temp_test_result_unit varchar,"
                "result varchar,"
                "test_press_unit varchar,"
-               "meter_number int)"
+               "meter_number varchar)"
                );
 
-//    insertDatabase("127","1451122","2020-19-19",1651,684,"1353pa","true","1234kpa",13);
     model = new QSqlTableModel(this);
     model->setTable("testdata");
     model->select();
@@ -74,6 +74,7 @@ bool FormViewData::initDatabase()
     model->setHeaderData(9,Qt::Horizontal,tr("测试节拍"));
     view = new QTableView(this);
     view->setModel(model);
+    view->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     view->setSelectionBehavior(QAbstractItemView::SelectRows);
     view->setSelectionMode(QAbstractItemView::SingleSelection);
     view->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -95,12 +96,12 @@ bool FormViewData::initDatabase()
 void FormViewData::insertDatabase(QString worker_number,
                                   QString workpiece_number,
                                   QString test_time,
-                                  int revealStandardUpLimit,
-                                  int revealStandardDownLimit,
+                                  QString revealStandardUpLimit,
+                                  QString revealStandardDownLimit,
                                   QString temp_test_result_unit,
                                   QString result,
                                   QString test_press_unit,
-                                  int meter_number)
+                                  QString meter_number)
 {
     int next = 1;
     QSqlQuery query = QSqlQuery(db);
@@ -125,13 +126,13 @@ void FormViewData::insertDatabase(QString worker_number,
                    QString::number(next)+",'"+
                    worker_number+"','"+
                    workpiece_number+"','"+
-                   test_time+"',"+
-                   QString::number(revealStandardUpLimit)+","+
-                   QString::number(revealStandardDownLimit)+",'"+
+                   test_time+"','"+
+                   revealStandardUpLimit+"','"+
+                   revealStandardDownLimit+"','"+
                    temp_test_result_unit+"','"+
                    result+"','"+
-                   test_press_unit+"',"+
-                   QString::number(meter_number)+")");
+                   test_press_unit+"','"+
+                   meter_number+"')");
 
 
     if(false == buscess)

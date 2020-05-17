@@ -293,12 +293,12 @@ void communicationToMCU::WriteTestResultToDb(unsigned int revealStandardUpLimit,
     formViewData->insertDatabase( QString(QLatin1String(systemData.args_config.work_number)),\
                                  QString::number(systemData.args_config.worker_space),\
                                  QString(QLatin1String(buff)),\
-                                 revealStandardUpLimit,\
-                                 revealStandardDownLimit,\
+                                 QString::number(revealStandardUpLimit),\
+                                 QString::number(revealStandardDownLimit),\
                                  revealUnit,\
                                  testResult,\
                                  testPressureBigRevealUint,\
-                                 PFCtaskTime);
+                                 QString::number(PFCtaskTime));
 }
 
 
