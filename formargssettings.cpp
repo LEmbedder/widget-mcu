@@ -230,3 +230,9 @@ void FormArgsSettings::on_pushButton_paste_clicked()
     updateUI();
     ui->lineEdit_channelNumber->setText(QString::number(tubleNumber));
 }
+
+/* 单位修改 */
+void FormArgsSettings::on_comboBox_revealUnit_currentIndexChanged(int index)
+{
+
+}
