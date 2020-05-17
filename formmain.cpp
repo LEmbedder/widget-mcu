@@ -608,10 +608,10 @@ void FormMain::uart_updata()
 }
 
 
-
-void FormMain::on_textEdit_workpiece_number_textChanged()
+void FormMain::on_lineEdit_workpiece_number_textChanged(const QString &arg1)
 {
     unsigned int len = 0;
+
     if(len > INPUT_STRING_LEN)
     {
         len = INPUT_STRING_LEN;
@@ -620,8 +620,9 @@ void FormMain::on_textEdit_workpiece_number_textChanged()
     {
          len = INPUT_STRING_LEN;
     }
-    memcpy(systemData.args_config.work_piece, ui->lineEdit_workpiece_number->text().toStdString().c_str(),len);
+    memcpy(systemData.args_config.work_piece, arg1.toStdString().c_str(),len);
 }
+
 
 void FormMain::channel_update_start_timer()
 {
@@ -903,5 +904,7 @@ bool FormMain::loadXmlFile(void)
       }
       return true;
 }
+
+
 
 

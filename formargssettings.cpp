@@ -231,8 +231,21 @@ void FormArgsSettings::on_pushButton_paste_clicked()
     ui->lineEdit_channelNumber->setText(QString::number(tubleNumber));
 }
 
+#if 0
+/*
+ * 没有好像也行
+*/
 /* 单位修改 */
 void FormArgsSettings::on_comboBox_revealUnit_currentIndexChanged(int index)
 {
-
+    Q_UNUSED(index);
+    sets->revealUnit = ui->comboBox_revealUnit->currentText();
 }
+
+/* 单位修改 */
+void FormArgsSettings::on_comboBox_testPressureBigRevealUint_currentIndexChanged(int index)
+{
+    Q_UNUSED(index);
+    sets->testPressureBigRevealUint = ui->comboBox_testPressureBigRevealUint->currentText();
+}
+#endif

@@ -34,9 +34,11 @@ private slots:
     void on_pushButton_copy_clicked();
 
     void on_pushButton_paste_clicked();
-
+#if 0
     void on_comboBox_revealUnit_currentIndexChanged(int index);
 
+    void on_comboBox_testPressureBigRevealUint_currentIndexChanged(int index);
+#endif
 private:
     Ui::FormArgsSettings *ui;
 

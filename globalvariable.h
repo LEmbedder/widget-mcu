@@ -145,6 +145,7 @@ struct SystemData{
     unsigned char BeatState;
     bool label_result;
     unsigned int db_time;
+    unsigned model_select;/* 差压,直压,流程 */
 };
 
 
