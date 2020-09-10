@@ -520,16 +520,20 @@ void FormViewData::on_pushButton_2_clicked()
     {
         if (passWord.sysOrUser == 1 || passWord.sysOrUser == 2)
         {
-            /* 在这里添加删除数据库内容 */
             model->setFilter("");
-            model->select();
-            unsigned total_number = model->rowCount();
-            qDebug()<<"remove total_number: "<<total_number;
-            for (unsigned i = 0; i < total_number; i++)
-            {
-                model->removeRow(i);
+            /* 在这里添加删除数据库内容 */
+            while(model->rowCount()){
+
+                model->select();
+                unsigned total_number = model->rowCount();
+                qDebug()<<"remove total_number: "<<total_number;
+//                for (unsigned i = 0; i < total_number; i++)
+//                {
+                    model->removeRows(0,total_number);
+//                }
+                model->submitAll();
             }
-            model->submitAll();
+            model->select();
             update_args();
         }
     }
